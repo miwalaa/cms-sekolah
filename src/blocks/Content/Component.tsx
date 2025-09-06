@@ -1,6 +1,7 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import RichText from '@/components/RichText'
+import { Media } from '@/components/Media'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
@@ -32,6 +33,12 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                 key={index}
               >
                 {richText && <RichText data={richText} enableGutter={false} />}
+
+                {col.media && typeof col.media === 'object' && (
+                  <div className="mt-4">
+                    <Media resource={col.media} />
+                  </div>
+                )}
 
                 {enableLink && <CMSLink {...link} />}
               </div>
