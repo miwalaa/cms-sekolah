@@ -101,3 +101,47 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 500ms,
+    transform 500ms;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition:
+    opacity 500ms,
+    transform 500ms;
+}
+
+/* Prevent text selection on slider */
+.slider * {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Update this in your globals.css */
+.image-slider-container * {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Or even better, only target images within the slider */
+.image-slider-container img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
