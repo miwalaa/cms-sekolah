@@ -4,12 +4,12 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({ links, highImpactMedia, richText }) => {
   return (
     <div className="relative w-full" style={{ minHeight: '60vh' }}>
       {/* Image Slider - Full width and height */}
       <div className="absolute inset-0 z-0 w-full h-[60vh]">
-        {media && media.length > 0 && <ImageSlider media={media} />}
+        {highImpactMedia && highImpactMedia.length > 0 && <ImageSlider media={highImpactMedia} />}
         <div className="absolute inset-0 bg-black/70 z-10" />
       </div>
 

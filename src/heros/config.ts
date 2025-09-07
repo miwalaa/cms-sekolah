@@ -58,12 +58,12 @@ export const hero: Field = {
         maxRows: 2,
       },
     }),
+    // High Impact Media (supports multiple images)
     {
-      name: 'media',
+      name: 'highImpactMedia',
       type: 'array',
-      required: true,
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => type === 'highImpact',
       },
       fields: [
         {
@@ -73,6 +73,16 @@ export const hero: Field = {
           required: true,
         },
       ],
+    },
+    // Medium Impact Media (single image)
+    {
+      name: 'mediumImpactMedia',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        condition: (_, { type } = {}) => type === 'mediumImpact',
+      },
+      required: true,
     },
   ],
   label: false,

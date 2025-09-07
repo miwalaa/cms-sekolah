@@ -189,12 +189,13 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media?:
+    highImpactMedia?:
       | {
           image: number | Media;
           id?: string | null;
         }[]
       | null;
+    mediumImpactMedia?: (number | null) | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
@@ -1021,12 +1022,13 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               id?: T;
             };
-        media?:
+        highImpactMedia?:
           | T
           | {
               image?: T;
               id?: T;
             };
+        mediumImpactMedia?: T;
       };
   layout?:
     | T
