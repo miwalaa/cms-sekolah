@@ -16,6 +16,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import AdminLogo from './components/AdminLogo/AdminLogo'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -29,6 +30,9 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
       // beforeDashboard: ['@/components/BeforeDashboard'],
+      graphics: { 
+        Logo: AdminLogo,
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),

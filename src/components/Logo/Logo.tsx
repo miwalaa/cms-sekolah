@@ -1,29 +1,44 @@
-import clsx from 'clsx'
 import React from 'react'
 
-interface Props {
+interface LogoProps {
+  loading?: 'eager' | 'lazy'
+  priority?: 'high' | 'low' | 'auto'
   className?: string
-  loading?: 'lazy' | 'eager'
-  priority?: 'auto' | 'high' | 'low'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
+const sizeClasses = {
+  sm: 'w-16 h-16',      // 4rem x 4rem (64px x 64px)
+  md: 'w-20 h-20',      // 5rem x 5rem (80px x 80px)
+  lg: 'w-24 h-24',      // 6rem x 6rem (96px x 96px)
+  xl: 'w-32 h-32',      // 8rem x 8rem (128px x 128px)
+  admin: 'w-48 h-48',   // 12rem x 12rem (192px x 192px) for admin panel
+}
 
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-
+const Logo: React.FC<LogoProps> = ({ 
+  loading, 
+  priority, 
+  className = '',
+  size = 'md' 
+}) => {
+  // Check if we're in the admin panel
+  const isAdminPanel = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')
+  const sizeToUse = isAdminPanel ? 'admin' : size
+  const sizeClass = sizeClasses[sizeToUse] || sizeClasses.md
+  
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
-    />
+    <div className="flex items-center">
+      <img
+        alt="PKBM Pemuda Pelopor Logo"
+        width={size === 'sm' ? 64 : size === 'md' ? 80 : size === 'lg' ? 96 : 128}
+        height={size === 'sm' ? 64 : size === 'md' ? 80 : size === 'lg' ? 96 : 128}
+        className={`object-contain ${sizeClass} ${className}`}
+        loading={loading}
+        fetchPriority={priority}
+        src="/logo.png"
+      />
+    </div>
   )
 }
+
+export default Logo
