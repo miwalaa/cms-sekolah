@@ -10,6 +10,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       {/* Image Slider - Full width and height */}
       <div className="absolute inset-0 z-0 w-full h-[60vh]">
         {media && media.length > 0 && <ImageSlider media={media} />}
+        <div className="absolute inset-0 bg-black/70 z-10" />
       </div>
 
       {/* Content - Positioned above the slider */}

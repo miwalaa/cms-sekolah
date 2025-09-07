@@ -24,7 +24,7 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
   // Auto-advance slides
   useEffect(() => {
     if (isPaused) return
-    
+
     const timer = setInterval(() => {
       nextSlide()
     }, 5000) // Change slide every 5 seconds
@@ -45,16 +45,16 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
 
   const handleMoveEnd = () => {
     if (!isDragging) return
-    
+
     const diff = touchStart - touchEnd
-    
+
     // Consider it a swipe if moved more than 50px
     if (diff > 50) {
       nextSlide()
     } else if (diff < -50) {
       prevSlide()
     }
-    
+
     // Reset state
     setTouchStart(0)
     setTouchEnd(0)
@@ -126,13 +126,15 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
             className={`absolute inset-0 transition-opacity duration-500 ${
               index === current ? 'opacity-100' : 'opacity-0 pointer-events-none'
             }`}
-            style={{
-              cursor: isDragging ? 'grabbing' : 'grab',
-              touchAction: 'pan-y',
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              WebkitTouchCallout: 'none',
-            } as React.CSSProperties}
+            style={
+              {
+                cursor: isDragging ? 'grabbing' : 'grab',
+                touchAction: 'pan-y',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                WebkitTouchCallout: 'none',
+              } as React.CSSProperties
+            }
           >
             <Media
               resource={item.image}
@@ -147,7 +149,7 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full z-20 hover:bg-opacity-75 transition-all"
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full z-20 hover:bg-opacity-75 transition-all hidden md:block"
           style={{ pointerEvents: 'auto' }} // Ensure buttons are clickable
           aria-label="Previous slide"
         >
@@ -155,7 +157,7 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full z-20 hover:bg-opacity-75 transition-all"
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full z-20 hover:bg-opacity-75 transition-all hidden md:block"
           style={{ pointerEvents: 'auto' }} // Ensure buttons are clickable
           aria-label="Next slide"
         >
