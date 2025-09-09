@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
 
@@ -13,13 +13,17 @@ type HeroMedia = {
 export default function ImageSlider({ media }: { media: HeroMedia[] }) {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [touchStart, setTouchStart] = useState(0)
-  const [touchEnd, setTouchEnd] = useState(0)
-  const [isDragging, setIsDragging] = useState(false)
   const sliderRef = useRef<HTMLDivElement>(null)
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % media.length)
-  const prevSlide = () => setCurrent((prev) => (prev - 1 + media.length) % media.length)
+  const nextSlide = useCallback(
+    () => setCurrent((prev) => (prev + 1) % media.length),
+    [media.length],
+  )
+
+  const prevSlide = useCallback(
+    () => setCurrent((prev) => (prev - 1 + media.length) % media.length),
+    [media.length],
+  )
 
   // Auto-advance slides
   useEffect(() => {
@@ -30,96 +34,20 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
     }, 5000) // Change slide every 5 seconds
 
     return () => clearInterval(timer)
-  }, [current, isPaused])
-
-  const handleMoveStart = (clientX: number) => {
-    setTouchStart(clientX)
-    setTouchEnd(clientX)
-    setIsDragging(true)
-  }
-
-  const handleMove = (clientX: number) => {
-    if (!isDragging) return
-    setTouchEnd(clientX)
-  }
-
-  const handleMoveEnd = () => {
-    if (!isDragging) return
-
-    const diff = touchStart - touchEnd
-
-    // Consider it a swipe if moved more than 50px
-    if (diff > 50) {
-      nextSlide()
-    } else if (diff < -50) {
-      prevSlide()
-    }
-
-    // Reset state
-    setTouchStart(0)
-    setTouchEnd(0)
-    setIsDragging(false)
-  }
-
-  // Touch event handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    handleMoveStart(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return
-    e.preventDefault()
-    handleMove(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchEnd = () => {
-    handleMoveEnd()
-  }
-
-  // Mouse event handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    handleMoveStart(e.clientX)
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return
-    e.preventDefault()
-    handleMove(e.clientX)
-  }
-
-  const handleMouseUp = () => {
-    handleMoveEnd()
-  }
-
-  const handleMouseLeave = () => {
-    if (isDragging) {
-      handleMoveEnd()
-    }
-  }
+  }, [current, isPaused, nextSlide])
 
   return (
     <div
       ref={sliderRef}
-      className="image-slider-container relative w-full h-full touch-pan-y"
+      className="image-slider-container relative w-full h-full"
       style={{
         height: '100%',
         touchAction: 'pan-y',
       }}
-      // Touch events
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      // Mouse events
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseEnter={() => !isDragging && setIsPaused(true)}
-      onMouseLeave={() => {
-        if (!isDragging) setIsPaused(false)
-        handleMouseLeave()
-      }}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="relative w-full h-full overflow-hidden">
+      <div className="relative w-full h-full overflow-hidden group">
         {media.map((item, index) => (
           <div
             key={item.id || index}
@@ -128,8 +56,7 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
             }`}
             style={
               {
-                cursor: isDragging ? 'grabbing' : 'grab',
-                touchAction: 'pan-y',
+                cursor: 'default',
                 userSelect: 'none',
                 WebkitUserSelect: 'none',
                 WebkitTouchCallout: 'none',
@@ -141,7 +68,7 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
               fill
               imgClassName="object-cover select-none"
               priority={index === 0}
-              draggable={true}
+              draggable={false} // ubah ini
             />
           </div>
         ))}
@@ -149,16 +76,16 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full z-20 hover:bg-opacity-75 transition-all hidden md:block"
-          style={{ pointerEvents: 'auto' }} // Ensure buttons are clickable
+          className="absolute left-8 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 border border-white z-20 hover:bg-opacity-75 transition-all duration-300 ease-in-out transform opacity-0 translate-x-[-20px] group-hover:opacity-100 group-hover:translate-x-0 xl:block hidden"
+          style={{ pointerEvents: 'auto' }}
           aria-label="Previous slide"
         >
           &larr;
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full z-20 hover:bg-opacity-75 transition-all hidden md:block"
-          style={{ pointerEvents: 'auto' }} // Ensure buttons are clickable
+          className="absolute right-8 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 border border-white z-20 hover:bg-opacity-75 transition-all duration-300 ease-in-out transform opacity-0 translate-x-[20px] group-hover:opacity-100 group-hover:translate-x-0 xl:block hidden"
+          style={{ pointerEvents: 'auto' }}
           aria-label="Next slide"
         >
           &rarr;

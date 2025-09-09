@@ -47,10 +47,3 @@
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
 }
-
-/* Prevent text selection and dragging on slider elements */
-.image-slider-container * {
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-}
