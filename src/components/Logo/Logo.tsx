@@ -8,11 +8,11 @@ interface LogoProps {
 }
 
 const sizeClasses = {
-  sm: 'w-16 h-16',      // 4rem x 4rem (64px x 64px)
-  md: 'w-20 h-20',      // 5rem x 5rem (80px x 80px)
-  lg: 'w-24 h-24',      // 6rem x 6rem (96px x 96px)
-  xl: 'w-32 h-32',      // 8rem x 8rem (128px x 128px)
-  admin: 'w-48 h-48',   // 12rem x 12rem (192px x 192px) for admin panel
+  sm: 'w-12 h-12 md:w-16 md:h-16',      // 3rem-4rem (48px-64px)
+  md: 'w-16 h-16 md:w-20 md:h-20',      // 4rem-5rem (64px-80px)
+  lg: 'w-20 h-20 md:w-24 md:h-24',      // 5rem-6rem (80px-96px)
+  xl: 'w-24 h-24 md:w-32 md:h-32',      // 6rem-8rem (96px-128px)
+  admin: 'w-32 h-32 md:w-48 md:h-48',   // 8rem-12rem (128px-192px) for admin panel
 }
 
 const Logo: React.FC<LogoProps> = ({ 
@@ -27,12 +27,12 @@ const Logo: React.FC<LogoProps> = ({
   const sizeClass = sizeClasses[sizeToUse] || sizeClasses.md
   
   return (
-    <div className="flex items-center">
+    <div className="flex items-center w-full h-full">
       <img
         alt="PKBM Pemuda Pelopor Logo"
-        width={size === 'sm' ? 64 : size === 'md' ? 80 : size === 'lg' ? 96 : 128}
-        height={size === 'sm' ? 64 : size === 'md' ? 80 : size === 'lg' ? 96 : 128}
-        className={`object-contain ${sizeClass} ${className}`}
+        width={size === 'sm' ? 48 : size === 'md' ? 64 : size === 'lg' ? 80 : size === 'xl' ? 96 : 128}
+        height={size === 'sm' ? 48 : size === 'md' ? 64 : size === 'lg' ? 80 : size === 'xl' ? 96 : 128}
+        className={`object-contain w-full h-auto ${sizeClass} ${className}`}
         loading={loading}
         fetchPriority={priority}
         src="/logo.png"
