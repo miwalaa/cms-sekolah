@@ -10,13 +10,13 @@ interface LogoProps {
 
 const Logo: React.FC<LogoProps> = ({ loading, priority, className = '', size = 'sm' }) => {
   return (
-    <div className="flex items-center w-full h-full">
+    <div className="flex items-center">
       <img
         alt="PKBM Pemuda Pelopor Logo"
         className={cn(`object-contain h-auto ${className}`, {
-          'w-16': size === 'sm',
-          'w-24': size === 'md',
-          'w-32': size === 'lg',
+          'w-16 h-16': size === 'sm',
+          'w-24 h-24': size === 'md',
+          'w-32 h-32': size === 'lg',
         })}
         loading={loading}
         fetchPriority={priority}
