@@ -61,6 +61,9 @@ const config = {
           foreground: 'hsl(var(--accent-foreground))',
         },
         background: 'hsl(var(--background))',
+        brand: {
+          DEFAULT: '#002a5d',
+        },
         border: 'hsla(var(--border))',
         card: {
           DEFAULT: 'hsl(var(--card))',
