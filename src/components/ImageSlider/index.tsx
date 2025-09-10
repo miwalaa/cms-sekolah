@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Media as MediaType } from '@/payload-types'
 import { Media } from '@/components/Media'
+import { CgChevronRight } from 'react-icons/cg'
+import { CgChevronLeft } from 'react-icons/cg'
 
 type HeroMedia = {
   image: number | MediaType
@@ -68,7 +70,7 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
               fill
               imgClassName="object-cover select-none"
               priority={index === 0}
-              draggable={false} // ubah ini
+              draggable={false}
             />
           </div>
         ))}
@@ -76,25 +78,25 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-8 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 border border-white z-20 hover:bg-opacity-75 transition-all duration-300 ease-in-out transform opacity-0 translate-x-[-20px] group-hover:opacity-100 group-hover:translate-x-0 xl:block hidden"
+          className="absolute left-8 top-1/2 -translate-y-1/2 bg-brand bg-opacity-30 text-white p-3 border border-white z-20 hover:bg-white hover:text-brand transition-all duration-500 ease-in-out transform opacity-0 translate-x-[-20px] group-hover:opacity-100 group-hover:translate-x-0 xl:block hidden"
           style={{ pointerEvents: 'auto' }}
           aria-label="Previous slide"
         >
-          &larr;
+          <CgChevronLeft />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-8 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 border border-white z-20 hover:bg-opacity-75 transition-all duration-300 ease-in-out transform opacity-0 translate-x-[20px] group-hover:opacity-100 group-hover:translate-x-0 xl:block hidden"
+          className="absolute right-8 top-1/2 -translate-y-1/2 bg-brand bg-opacity-30 text-white p-3 border border-white z-20 hover:bg-white hover:text-brand transition-all duration-500 ease-in-out transform opacity-0 translate-x-[20px] group-hover:opacity-100 group-hover:translate-x-0 xl:block hidden"
           style={{ pointerEvents: 'auto' }}
           aria-label="Next slide"
         >
-          &rarr;
+          <CgChevronRight />
         </button>
 
         {/* Dots */}
         <div
           className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20"
-          style={{ pointerEvents: 'auto' }} // Ensure dots are clickable
+          style={{ pointerEvents: 'auto' }}
         >
           {media.map((_, index) => (
             <button
