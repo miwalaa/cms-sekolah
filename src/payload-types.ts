@@ -197,7 +197,7 @@ export interface Page {
       | null;
     mediumImpactMedia?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | AboutSection)[];
   meta?: {
     title?: string | null;
     /**
@@ -743,6 +743,38 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSection".
+ */
+export interface AboutSection {
+  leftImage: number | Media;
+  subtitle?: string | null;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  buttonText?: string | null;
+  /**
+   * URL for the button link
+   */
+  buttonLink?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'aboutSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1038,6 +1070,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        aboutSection?: T | AboutSectionSelect<T>;
       };
   meta?:
     | T
@@ -1135,6 +1168,20 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSection_select".
+ */
+export interface AboutSectionSelect<T extends boolean = true> {
+  leftImage?: T;
+  subtitle?: T;
+  title?: T;
+  description?: T;
+  buttonText?: T;
+  buttonLink?: T;
   id?: T;
   blockName?: T;
 }
