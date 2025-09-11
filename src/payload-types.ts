@@ -197,7 +197,15 @@ export interface Page {
       | null;
     mediumImpactMedia?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | AboutSection)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | AboutSection
+    | SpecialitiesBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -775,6 +783,39 @@ export interface AboutSection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecialitiesBlock".
+ */
+export interface SpecialitiesBlock {
+  /**
+   * Title for the specialities section
+   */
+  sectionTitle?: string | null;
+  /**
+   * Add speciality items to display in the grid
+   */
+  items: {
+    /**
+     * CSS class for the icon (e.g., "fas fa-star", "material-icons school")
+     */
+    icon: string;
+    title: string;
+    description: string;
+    /**
+     * Optional URL link for the title
+     */
+    link?: string | null;
+    /**
+     * Optional background color (Hex code)
+     */
+    backgroundColor?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'specialities';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1071,6 +1112,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         aboutSection?: T | AboutSectionSelect<T>;
+        specialities?: T | SpecialitiesBlockSelect<T>;
       };
   meta?:
     | T
@@ -1182,6 +1224,25 @@ export interface AboutSectionSelect<T extends boolean = true> {
   description?: T;
   buttonText?: T;
   buttonLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpecialitiesBlock_select".
+ */
+export interface SpecialitiesBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        link?: T;
+        backgroundColor?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

@@ -22,6 +22,7 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.1",
     "@payloadcms/admin-bar": "3.54.0",
     "@payloadcms/db-postgres": "3.54.0",
     "@payloadcms/live-preview-react": "3.54.0",
