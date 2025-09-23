@@ -1,0 +1,61 @@
+'use client'
+
+import React, { useState, useRef } from 'react'
+import Link from 'next/link'
+import { ChevronDown } from 'lucide-react'
+import DropdownMenu from './DropdownMenu'
+import type { NavItem as NavItemType } from './types'
+
+interface Props {
+  item: NavItemType
+  index: number
+}
+
+const NavItem: React.FC<Props> = ({ item }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const openTimeout = useRef<NodeJS.Timeout | null>(null)
+  const closeTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  const handleMouseEnter = () => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current)
+    openTimeout.current = setTimeout(() => {
+      setIsOpen(true)
+    }, 150) // delay before opening
+  }
+
+  const handleMouseLeave = () => {
+    if (openTimeout.current) clearTimeout(openTimeout.current)
+    closeTimeout.current = setTimeout(() => {
+      setIsOpen(false)
+    }, 250) // delay before closing
+  }
+
+  const href =
+    item.link?.type === 'reference' && item.link.reference?.value
+      ? `${item.link.reference.relationTo !== 'pages' ? `/${item.link.reference.relationTo}` : ''}/${typeof item.link.reference.value === 'object' ? item.link.reference.value.slug : item.link.reference.value}`
+      : item.link?.url || '#'
+
+  const hasChildren = item.children && item.children.length > 0
+
+  return (
+    <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <Link
+        href={href}
+        target={item.link?.newTab ? '_blank' : undefined}
+        rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
+        className="flex items-center space-x-1 hover:text-gray-200 transition-colors"
+      >
+        <span>{item.link?.label || 'Untitled'}</span>
+        {hasChildren && (
+          <ChevronDown
+            className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          />
+        )}
+      </Link>
+
+      {hasChildren && isOpen && <DropdownMenu items={item.children || []} />}
+    </div>
+  )
+}
+
+export default NavItem
