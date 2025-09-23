@@ -2,22 +2,22 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { AboutSection } from '@/blocks/AboutSection/Component'
 import { Specialities } from '@/blocks/Specialities/Component'
+import NewsCarouselComponent from '@/blocks/NewsCarousel/Component'
 
 const blockComponents = {
-  archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   aboutSection: AboutSection,
   specialities: Specialities,
+  newsCarousel: NewsCarouselComponent,
 }
 
 export const RenderBlocks: React.FC<{

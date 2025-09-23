@@ -201,10 +201,10 @@ export interface Page {
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
-    | ArchiveBlock
     | FormBlock
     | AboutSection
     | SpecialitiesBlock
+    | NewsCarousel
   )[];
   meta?: {
     title?: string | null;
@@ -517,40 +517,6 @@ export interface MediaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
- */
-export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
@@ -813,6 +779,27 @@ export interface SpecialitiesBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'specialities';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsCarousel".
+ */
+export interface NewsCarousel {
+  /**
+   * Small section label, e.g., "Publikasi"
+   */
+  subtitle?: string | null;
+  /**
+   * Section heading, e.g., "News & Blog"
+   */
+  heading: string;
+  /**
+   * Maximum number of posts to show in the carousel
+   */
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsCarousel';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1109,10 +1096,10 @@ export interface PagesSelect<T extends boolean = true> {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
-        archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         aboutSection?: T | AboutSectionSelect<T>;
         specialities?: T | SpecialitiesBlockSelect<T>;
+        newsCarousel?: T | NewsCarouselSelect<T>;
       };
   meta?:
     | T
@@ -1190,20 +1177,6 @@ export interface MediaBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock_select".
- */
-export interface ArchiveBlockSelect<T extends boolean = true> {
-  introContent?: T;
-  populateBy?: T;
-  relationTo?: T;
-  categories?: T;
-  limit?: T;
-  selectedDocs?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
@@ -1243,6 +1216,17 @@ export interface SpecialitiesBlockSelect<T extends boolean = true> {
         backgroundColor?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsCarousel_select".
+ */
+export interface NewsCarouselSelect<T extends boolean = true> {
+  subtitle?: T;
+  heading?: T;
+  limit?: T;
   id?: T;
   blockName?: T;
 }
