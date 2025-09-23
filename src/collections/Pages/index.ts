@@ -2,13 +2,16 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { AboutSection } from '../../blocks/AboutSection/config'
 import { Specialities } from '../../blocks/Specialities/config'
 import { NewsCarousel } from '../../blocks/NewsCarousel/config'
+import { ContactAndFAQ } from '../../blocks/ContactAndFAQ/config'
+import { GalleryBlock } from '../../blocks/GalleryBlock/config'
+import { MapBlock } from '../../blocks/MapBlock/config'
+import { InfoRegisterBlock } from '../../blocks/InfoRegisterBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -78,13 +81,16 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                CallToAction,
                 Content,
                 MediaBlock,
                 FormBlock,
                 AboutSection,
                 Specialities,
                 NewsCarousel,
+                ContactAndFAQ,
+                GalleryBlock,
+                MapBlock,
+                InfoRegisterBlock,
               ],
               required: true,
               admin: {

@@ -2,22 +2,28 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { AboutSection } from '@/blocks/AboutSection/Component'
 import { Specialities } from '@/blocks/Specialities/Component'
 import NewsCarouselComponent from '@/blocks/NewsCarousel/Component'
+import ContactAndFAQComponent from '@/blocks/ContactAndFAQ/Component'
+import GalleryBlockComponent from '@/blocks/GalleryBlock/Component'
+import MapBlockComponent from '@/blocks/MapBlock/Component'
+import InfoRegisterBlock from '@/blocks/InfoRegisterBlock/Component'
 
 const blockComponents = {
   content: ContentBlock,
-  cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   aboutSection: AboutSection,
   specialities: Specialities,
   newsCarousel: NewsCarouselComponent,
+  contactAndFAQ: ContactAndFAQComponent,
+  galleryBlock: GalleryBlockComponent,
+  mapBlock: MapBlockComponent,
+  infoRegisterBlock: InfoRegisterBlock,
 }
 
 export const RenderBlocks: React.FC<{

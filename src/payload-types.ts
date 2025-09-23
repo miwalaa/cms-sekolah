@@ -198,13 +198,16 @@ export interface Page {
     mediumImpactMedia?: (number | null) | Media;
   };
   layout: (
-    | CallToActionBlock
     | ContentBlock
     | MediaBlock
     | FormBlock
     | AboutSection
     | SpecialitiesBlock
     | NewsCarousel
+    | ContactAndFAQ
+    | GalleryBlock
+    | MapBlock
+    | InfoRegisterBlock
   )[];
   meta?: {
     title?: string | null;
@@ -405,54 +408,6 @@ export interface User {
       }[]
     | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -803,6 +758,110 @@ export interface NewsCarousel {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactAndFAQ".
+ */
+export interface ContactAndFAQ {
+  formSubtitle?: string | null;
+  formTitle?: string | null;
+  formSource?: ('payloadForm' | 'customAction') | null;
+  form?: (number | null) | Form;
+  /**
+   * If provided, the form will POST to this URL.
+   */
+  actionUrl?: string | null;
+  fullNameLabel?: string | null;
+  phoneLabel?: string | null;
+  emailLabel?: string | null;
+  messageLabel?: string | null;
+  submitLabel?: string | null;
+  faqSubtitle?: string | null;
+  faqTitle?: string | null;
+  faqs?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactAndFAQ';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock".
+ */
+export interface GalleryBlock {
+  subtitle?: string | null;
+  title: string;
+  items?:
+    | {
+        title: string;
+        image: number | Media;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MapBlock".
+ */
+export interface MapBlock {
+  title?: string | null;
+  latitude: number;
+  longitude: number;
+  zoom?: number | null;
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mapBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfoRegisterBlock".
+ */
+export interface InfoRegisterBlock {
+  title?: string | null;
+  buttonHref?: string | null;
+  buttonLabel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'infoRegisterBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1093,13 +1152,16 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         aboutSection?: T | AboutSectionSelect<T>;
         specialities?: T | SpecialitiesBlockSelect<T>;
         newsCarousel?: T | NewsCarouselSelect<T>;
+        contactAndFAQ?: T | ContactAndFAQSelect<T>;
+        galleryBlock?: T | GalleryBlockSelect<T>;
+        mapBlock?: T | MapBlockSelect<T>;
+        infoRegisterBlock?: T | InfoRegisterBlockSelect<T>;
       };
   meta?:
     | T
@@ -1114,30 +1176,6 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock_select".
- */
-export interface CallToActionBlockSelect<T extends boolean = true> {
-  richText?: T;
-  links?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
-            };
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1227,6 +1265,75 @@ export interface NewsCarouselSelect<T extends boolean = true> {
   subtitle?: T;
   heading?: T;
   limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactAndFAQ_select".
+ */
+export interface ContactAndFAQSelect<T extends boolean = true> {
+  formSubtitle?: T;
+  formTitle?: T;
+  formSource?: T;
+  form?: T;
+  actionUrl?: T;
+  fullNameLabel?: T;
+  phoneLabel?: T;
+  emailLabel?: T;
+  messageLabel?: T;
+  submitLabel?: T;
+  faqSubtitle?: T;
+  faqTitle?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock_select".
+ */
+export interface GalleryBlockSelect<T extends boolean = true> {
+  subtitle?: T;
+  title?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MapBlock_select".
+ */
+export interface MapBlockSelect<T extends boolean = true> {
+  title?: T;
+  latitude?: T;
+  longitude?: T;
+  zoom?: T;
+  label?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "InfoRegisterBlock_select".
+ */
+export interface InfoRegisterBlockSelect<T extends boolean = true> {
+  title?: T;
+  buttonHref?: T;
+  buttonLabel?: T;
   id?: T;
   blockName?: T;
 }
