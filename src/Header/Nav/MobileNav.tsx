@@ -28,6 +28,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
         const hasChildren = item.children && item.children.length > 0
         const itemId = item.id || `item-${index}`
         const isOpen = openItems[itemId]
+        const submenuId = `${itemId}-submenu`
 
         const href =
           item.link?.type === 'reference' && item.link.reference?.value
@@ -38,19 +39,30 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
 
         return (
           <div key={itemId} className="mb-2">
-            <div className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-              <Link
-                href={href}
-                className="flex-1"
-                target={item.link?.newTab ? '_blank' : undefined}
-                rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
-                onClick={onClose}
+            {hasChildren ? (
+              // Item with children - render as div with toggle button
+              <div
+                className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                onClick={() => toggleItem(itemId)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    toggleItem(itemId)
+                  }
+                }}
+                role="button"
+                aria-expanded={!!isOpen}
+                aria-controls={submenuId}
+                tabIndex={0}
               >
-                {item.link?.label || 'Untitled'}
-              </Link>
-              {hasChildren && (
+                <span className="flex-1">
+                  {item.link?.label || 'Untitled'}
+                </span>
                 <button
-                  onClick={() => toggleItem(itemId)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    toggleItem(itemId)
+                  }}
                   className="p-1 text-gray-500 hover:text-gray-700 transition-colors"
                   aria-label={isOpen ? 'Collapse menu' : 'Expand menu'}
                 >
@@ -58,16 +70,32 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
                     className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                   />
                 </button>
-              )}
-            </div>
+              </div>
+            ) : (
+              // Item without children - render as normal link
+              <Link
+                href={href}
+                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
+                target={item.link?.newTab ? '_blank' : undefined}
+                rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
+                onClick={onClose}
+              >
+                {item.link?.label || 'Untitled'}
+              </Link>
+            )}
 
-            {hasChildren && isOpen && (
-              <MobileNav
-                items={item.children || []}
-                parentPath={fullPath}
-                level={level + 1}
-                onClose={onClose}
-              />
+            {hasChildren && (
+              <div
+                id={submenuId}
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+              >
+                <MobileNav
+                  items={item.children || []}
+                  parentPath={fullPath}
+                  level={level + 1}
+                  onClose={onClose}
+                />
+              </div>
             )}
           </div>
         )
