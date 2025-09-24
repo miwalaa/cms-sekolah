@@ -202,7 +202,7 @@ export async function Footer() {
       {/* Bottom Bar */}
       <div className="bg-black/30">
         <div className="container px-4 py-4 text-center text-sm text-white/80">
-          © {new Date().getFullYear()} All rights reserved
+          © {new Date().getFullYear()} PKBM Pemuda Pelopor. All rights reserved
         </div>
       </div>
     </footer>
