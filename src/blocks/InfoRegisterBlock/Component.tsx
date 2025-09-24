@@ -18,14 +18,14 @@ const InfoRegisterBlock: React.FC<Props> = ({
 }) => {
   return (
     <section className={className}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative top-10">
         <div className="row">
           <div className="col-lg-12">
             {/* Wrapper with Tailwind background + padding */}
-            <div className="relative flex flex-col items-start justify-between gap-4 rounded-xl bg-blue-100 p-6 md:flex-row md:items-center">
+            <div className="flex flex-col items-start justify-between gap-4 rounded-xl bg-blue-100 p-6 md:flex-row md:items-center">
               {/* Left content */}
               <div className="left-content-wrap">
-                <h2 className="text-2xl font-semibold text-blue-900 flex items-center gap-3">
+                <h2 className="text-4xl font-semibold text-blue-900 flex items-center gap-3">
                   <i className="fas fa-info-circle" aria-hidden="true"></i>
                   {title}
                 </h2>
@@ -33,7 +33,7 @@ const InfoRegisterBlock: React.FC<Props> = ({
 
               {/* Right content */}
               <div className="right-content-wrap">
-                <div className="btn-wrapper">
+                <div className="btn-wrapper text-2xl">
                   <Link
                     href={buttonHref}
                     target="_blank"

@@ -47,3 +47,20 @@
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
 }
+
+
+.swiper-pagination {
+  position: static !important; /* disable absolute positioning */
+}
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 0 !important; /* square */
+  background: #4b5563; /* gray-600 */
+  opacity: 1;
+  margin: 0 6px;
+  transition: background 0.3s;
+}
+.swiper-pagination-bullet-active {
+  background: #111827; /* gray-900 */
+}

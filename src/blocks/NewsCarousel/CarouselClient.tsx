@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { Media } from '@/components/Media'
 import type { Post } from '@/payload-types'
@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
+import '@/app/(frontend)/globals.css'
 
 export type CarouselClientProps = {
   posts: Array<
@@ -32,6 +33,10 @@ function formatMonth(dateStr?: string | Date): string {
 export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
   const paginationRef = useRef<HTMLDivElement | null>(null)
 
+  useEffect(() => {
+    // Just ensure paginationRef exists after mount
+  }, [])
+
   return (
     <div className="relative">
       <Swiper
@@ -46,17 +51,16 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
         }}
         pagination={{
           clickable: true,
-          el: paginationRef.current,
+          el: paginationRef.current ?? undefined,
         }}
-        onBeforeInit={(swiper) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const s: any = swiper
+        onSwiper={(swiper) => {
           if (paginationRef.current) {
-            s.params.pagination.el = paginationRef.current
-            s.params.pagination.clickable = true
+            swiper.pagination.init()
+            swiper.pagination.render()
+            swiper.pagination.update()
           }
         }}
-        className="pb-10"
+        className="pb-4"
       >
         {posts.map((post, idx) => {
           const metaImage = post.meta?.image
@@ -67,7 +71,7 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
 
           return (
             <SwiperSlide key={idx}>
-              <article className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+              <article className="group overflow-hidden rounded-lg border mb-5 border-gray-200 bg-white shadow-sm transition hover:shadow-md">
                 {/* Image wrapper */}
                 <div className="relative aspect-[18/10] w-full overflow-hidden border-b border-gray-200">
                   {image ? (
@@ -111,24 +115,6 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
           )
         })}
       </Swiper>
-
-      {/* External pagination dots */}
-      <div ref={paginationRef} className="mt-6 flex justify-center gap-2" />
-
-      {/* Custom styles for square bullets */}
-      <style jsx global>{`
-        .swiper-pagination-bullet {
-          width: 10px;
-          height: 10px;
-          border-radius: 2px !important; /* make square-ish */
-          background: #d1d5db; /* gray-300 */
-          opacity: 1;
-          transition: background 0.3s;
-        }
-        .swiper-pagination-bullet-active {
-          background: #2563eb; /* primary (blue-600) */
-        }
-      `}</style>
     </div>
   )
 }
