@@ -18,7 +18,10 @@ export const appearanceOptions: Record<LinkAppearances, { label: string; value: 
 type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
   disableLabel?: boolean
-  overrides?: Partial<GroupField>
+  // Allow callers to provide a fields transformer function for overrides
+  overrides?: Omit<Partial<GroupField>, 'fields'> & {
+    fields?: Field[] | ((defaultFields: Field[]) => Field[])
+  }
 }) => Field
 
 export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
@@ -135,5 +138,14 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     })
   }
 
-  return deepMerge(linkResult, overrides)
+  // Resolve functional overrides for fields if provided
+  let overridesToApply = overrides
+  if (typeof overrides.fields === 'function') {
+    overridesToApply = {
+      ...overrides,
+      fields: overrides.fields(linkResult.fields as Field[]),
+    }
+  }
+
+  return deepMerge(linkResult, overridesToApply)
 }

@@ -208,6 +208,7 @@ export interface Page {
     | GalleryBlock
     | MapBlock
     | InfoRegisterBlock
+    | TentangBlock
   )[];
   meta?: {
     title?: string | null;
@@ -862,6 +863,67 @@ export interface InfoRegisterBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TentangBlock".
+ */
+export interface TentangBlock {
+  left?: {
+    image?: (number | null) | Media;
+    imageWidth?: ('full' | 'threeQuarters' | 'twoThirds' | 'half') | null;
+    content?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  right?: {
+    widgets?:
+      | {
+          type: 'menu';
+          title?: string | null;
+          items?:
+            | {
+                label: string;
+                link?: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'posts';
+                        value: number | Post;
+                      } | null);
+                  url?: string | null;
+                };
+                /**
+                 * Optional Font Awesome icon name (e.g., fa-solid fa-user)
+                 */
+                icon?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tentangBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1162,6 +1224,7 @@ export interface PagesSelect<T extends boolean = true> {
         galleryBlock?: T | GalleryBlockSelect<T>;
         mapBlock?: T | MapBlockSelect<T>;
         infoRegisterBlock?: T | InfoRegisterBlockSelect<T>;
+        tentangBlock?: T | TentangBlockSelect<T>;
       };
   meta?:
     | T
@@ -1334,6 +1397,47 @@ export interface InfoRegisterBlockSelect<T extends boolean = true> {
   title?: T;
   buttonHref?: T;
   buttonLabel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TentangBlock_select".
+ */
+export interface TentangBlockSelect<T extends boolean = true> {
+  left?:
+    | T
+    | {
+        image?: T;
+        imageWidth?: T;
+        content?: T;
+      };
+  right?:
+    | T
+    | {
+        widgets?:
+          | T
+          | {
+              type?: T;
+              title?: T;
+              items?:
+                | T
+                | {
+                    label?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                        };
+                    icon?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
   id?: T;
   blockName?: T;
 }

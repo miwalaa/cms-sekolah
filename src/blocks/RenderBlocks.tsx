@@ -7,6 +7,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { AboutSection } from '@/blocks/AboutSection/Component'
 import { Specialities } from '@/blocks/Specialities/Component'
+import TentangBlock from '@/blocks/TentangBlock/Component'
 import NewsCarouselComponent from '@/blocks/NewsCarousel/Component'
 import ContactAndFAQComponent from '@/blocks/ContactAndFAQ/Component'
 import GalleryBlockComponent from '@/blocks/GalleryBlock/Component'
@@ -24,6 +25,7 @@ const blockComponents = {
   galleryBlock: GalleryBlockComponent,
   mapBlock: MapBlockComponent,
   infoRegisterBlock: InfoRegisterBlock,
+  tentangBlock: TentangBlock,
 }
 
 export const RenderBlocks: React.FC<{
