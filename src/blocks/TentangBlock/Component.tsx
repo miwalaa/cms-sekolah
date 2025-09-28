@@ -22,14 +22,15 @@ function getImageWidthClass(width?: string) {
 
 export default function TentangBlock(props: TentangBlockType) {
   // Payload sometimes nests block fields under `fields`
-  const data: TentangBlockType = (typeof (props as unknown as { fields?: TentangBlockType }).fields !== 'undefined'
-    ? (props as unknown as { fields: TentangBlockType }).fields
-    : props)
+  const data: TentangBlockType =
+    typeof (props as unknown as { fields?: TentangBlockType }).fields !== 'undefined'
+      ? (props as unknown as { fields: TentangBlockType }).fields
+      : props
   const left = data?.left
   const right = data?.right
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 pb-12">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
         {/* Left column: 2/3 width */}
         <div className="lg:col-span-2">

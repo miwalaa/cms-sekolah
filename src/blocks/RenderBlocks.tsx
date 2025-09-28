@@ -13,6 +13,7 @@ import ContactAndFAQComponent from '@/blocks/ContactAndFAQ/Component'
 import GalleryBlockComponent from '@/blocks/GalleryBlock/Component'
 import MapBlockComponent from '@/blocks/MapBlock/Component'
 import InfoRegisterBlock from '@/blocks/InfoRegisterBlock/Component'
+import VideoGalleryBlock from '@/blocks/VideoGallery/Component'
 
 const blockComponents = {
   content: ContentBlock,
@@ -26,6 +27,7 @@ const blockComponents = {
   mapBlock: MapBlockComponent,
   infoRegisterBlock: InfoRegisterBlock,
   tentangBlock: TentangBlock,
+  'video-gallery': VideoGalleryBlock,
 }
 
 export const RenderBlocks: React.FC<{

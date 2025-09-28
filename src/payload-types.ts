@@ -209,6 +209,7 @@ export interface Page {
     | MapBlock
     | InfoRegisterBlock
     | TentangBlock
+    | VideoGallery
   )[];
   meta?: {
     title?: string | null;
@@ -924,6 +925,26 @@ export interface TentangBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoGallery".
+ */
+export interface VideoGallery {
+  videos: {
+    /**
+     * Enter the YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)
+     */
+    youtubeUrl: string;
+    /**
+     * Enter a title for this video
+     */
+    title: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'video-gallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1225,6 +1246,7 @@ export interface PagesSelect<T extends boolean = true> {
         mapBlock?: T | MapBlockSelect<T>;
         infoRegisterBlock?: T | InfoRegisterBlockSelect<T>;
         tentangBlock?: T | TentangBlockSelect<T>;
+        'video-gallery'?: T | VideoGallerySelect<T>;
       };
   meta?:
     | T
@@ -1437,6 +1459,21 @@ export interface TentangBlockSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoGallery_select".
+ */
+export interface VideoGallerySelect<T extends boolean = true> {
+  videos?:
+    | T
+    | {
+        youtubeUrl?: T;
+        title?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;

@@ -13,6 +13,7 @@ import { GalleryBlock } from '../../blocks/GalleryBlock/config'
 import { MapBlock } from '../../blocks/MapBlock/config'
 import { InfoRegisterBlock } from '../../blocks/InfoRegisterBlock/config'
 import { TentangBlock } from '../../blocks/TentangBlock/config'
+import { VideoGallery } from '../../blocks/VideoGallery/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -93,6 +94,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MapBlock,
                 InfoRegisterBlock,
                 TentangBlock,
+                VideoGallery,
               ],
               required: true,
               admin: {
