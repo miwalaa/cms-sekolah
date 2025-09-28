@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { FormBlock as PayloadFormBlock } from '@/blocks/Form/Component'
-import RichText from '@/components/RichText'
 import type { ContactAndFAQ as ContactAndFAQType, Form as PayloadFormType } from '@/payload-types'
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import { ContactForm, Accordion } from './components'
 
 export type Props = {
   formSubtitle?: string
@@ -19,48 +21,20 @@ export type Props = {
   submitLabel?: string
   faqSubtitle?: string
   faqTitle?: string
-  faqs?: Array<{ question: string; answer: NonNullable<ContactAndFAQType['faqs']>[number]['answer'] }>
+  faqs?: Array<{
+    question: string
+    answer: NonNullable<ContactAndFAQType['faqs']>[number]['answer']
+  }>
   className?: string
   disableInnerContainer?: boolean
-}
-
-const Accordion: React.FC<{
-  items: { question: string; answer: NonNullable<ContactAndFAQType['faqs']>[number]['answer'] }[]
-}> = ({ items }) => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
-
-  return (
-    <div className="divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
-      {items.map((item, idx) => {
-        const isOpen = openIndex === idx
-        return (
-          <div key={idx} className="">
-            <button
-              type="button"
-              aria-expanded={isOpen}
-              onClick={() => setOpenIndex(isOpen ? null : idx)}
-              className="flex w-full items-center justify-between gap-4 p-4 text-left"
-            >
-              <span className="font-medium text-gray-900">{item.question}</span>
-              <span
-                className={`inline-flex h-6 w-6 items-center justify-center rounded-md border text-xs transition-transform ${
-                  isOpen ? 'rotate-45' : ''
-                }`}
-                aria-hidden
-              >
-                +
-              </span>
-            </button>
-            {isOpen && (
-              <div className="px-4 pb-4 text-gray-700">
-                <RichText enableGutter={false} data={item.answer} />
-              </div>
-            )}
-          </div>
-        )
-      })}
-    </div>
-  )
+  formID?: string
+  redirect?: { url: string }
+  confirmationType?: 'message' | 'redirect'
+  /**
+   * Custom API endpoint for form submission
+   * If provided, will use this instead of Payload's /api/form-submissions
+   */
+  customApiEndpoint?: string
 }
 
 export default function ContactAndFAQComponent(props: Props) {
@@ -79,7 +53,118 @@ export default function ContactAndFAQComponent(props: Props) {
     faqSubtitle = 'Tanya Jawab',
     faqTitle = 'Seputar Pendidikan Kesetaraan',
     faqs = [],
+    formID = '1', // Using actual Payload form ID
+    redirect,
+    confirmationType = 'message',
+    customApiEndpoint,
   } = props
+
+  const router = useRouter()
+
+  // Form state management
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasSubmitted, setHasSubmitted] = useState(false)
+  const [error, setError] = useState<{ message: string; status?: number } | undefined>(undefined)
+
+  // react-hook-form setup
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    clearErrors,
+  } = useForm<{
+    fullName: string
+    phone: string
+    email: string
+    message: string
+  }>({
+    mode: 'onBlur',
+    defaultValues: {
+      fullName: '',
+      phone: '',
+      email: '',
+      message: '',
+    },
+  })
+
+  // Helper function to get client-side URL
+  const getClientSideURL = (): string => {
+    if (typeof window !== 'undefined') {
+      return window.location.origin
+    }
+    return ''
+  }
+
+  // Form submission handler
+  // Form submission handler
+  const onSubmit = useCallback(
+    (data: { fullName: string; phone: string; email: string; message: string }) => {
+      let loadingTimerID: ReturnType<typeof setTimeout>
+
+      const submitForm = async () => {
+        setError(undefined)
+
+        const dataToSend = Object.entries(data).map(([name, value]) => ({
+          field: name,
+          value,
+        }))
+
+        loadingTimerID = setTimeout(() => {
+          setIsLoading(true)
+        }, 1000)
+
+        try {
+          // Determine which endpoint to use
+          const endpoint = customApiEndpoint || `/api/form-submissions`
+          const payload = customApiEndpoint 
+            ? dataToSend  // For custom API, send data directly
+            : {
+                form: formID, // This should be the actual Payload form document ID
+                submissionData: dataToSend,
+              }
+          
+          const req = await fetch(endpoint, {
+            body: JSON.stringify(payload),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          })
+
+          const res = await req.json()
+          console.log('Form submission response:', res) // debug
+
+          clearTimeout(loadingTimerID)
+
+          if (!req.ok) {
+            setIsLoading(false)
+            setError({
+              message: res?.errors?.[0]?.message || res.message || res.error || 'Internal Server Error',
+              status: req.status,
+            })
+            return
+          }
+
+          setIsLoading(false)
+          setHasSubmitted(true)
+          reset()
+          clearErrors()
+
+          if (confirmationType === 'redirect' && redirect?.url) {
+            router.push(redirect.url)
+          }
+        } catch (err: unknown) {
+          console.error('Form submission error:', err)
+          setIsLoading(false)
+          setError({ message: 'Something went wrong.' })
+        }
+      }
+
+      void submitForm()
+    },
+    [router, reset, clearErrors, formID, redirect, confirmationType],
+  )
 
   return (
     <section className={className}>
@@ -96,59 +181,19 @@ export default function ContactAndFAQComponent(props: Props) {
               {formSource === 'payloadForm' && form && typeof form !== 'number' ? (
                 <PayloadFormBlock enableIntro={false} form={form as unknown as FormType} />
               ) : (
-                <form action={actionUrl} method="post" className="space-y-4">
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700">
-                      {fullNameLabel}
-                    </label>
-                    <input
-                      type="text"
-                      name="fullName"
-                      required
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none"
-                    />
-                  </div>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">
-                        {phoneLabel}
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">
-                        {emailLabel}
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700">
-                      {messageLabel}
-                    </label>
-                    <textarea
-                      name="message"
-                      rows={5}
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white shadow-sm hover:opacity-95"
-                    >
-                      {submitLabel}
-                    </button>
-                  </div>
-                </form>
+                <ContactForm
+                  fullNameLabel={fullNameLabel}
+                  phoneLabel={phoneLabel}
+                  emailLabel={emailLabel}
+                  messageLabel={messageLabel}
+                  submitLabel={submitLabel}
+                  register={register}
+                  errors={errors}
+                  isLoading={isLoading}
+                  hasSubmitted={hasSubmitted}
+                  error={error}
+                  onSubmit={handleSubmit(onSubmit)}
+                />
               )}
             </div>
           </div>
