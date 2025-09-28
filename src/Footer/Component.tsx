@@ -2,7 +2,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import Link from 'next/link'
 import React from 'react'
 
-import type { Footer } from '@/payload-types'
+import type { Footer, Media as MediaType, Post } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import Logo from '@/components/Logo/Logo'
@@ -30,7 +30,8 @@ export async function Footer() {
     },
     sort: '-publishedAt',
   })
-  const recentPosts = postsRes?.docs ?? []
+  type RecentPost = Pick<Post, 'title' | 'slug' | 'publishedAt' | 'meta' | 'heroImage'>
+  const recentPosts = (postsRes?.docs as RecentPost[]) ?? []
 
   const CONTACT = {
     address: 'Jl. Contoh No. 123, Kota, Provinsi',
@@ -127,17 +128,15 @@ export async function Footer() {
             <ul className="space-y-4">
               {recentPosts.map((post, i) => {
                 // Choose thumbnail from meta.image or heroImage
-                const metaImage = (post as any)?.meta?.image
-                const heroImage = (post as any)?.heroImage
-                const image =
-                  metaImage && typeof metaImage !== 'string'
-                    ? metaImage
-                    : heroImage && typeof heroImage !== 'string'
-                      ? heroImage
-                      : undefined
-                const href = `/posts/${(post as any)?.slug}`
+                const metaImage = post?.meta?.image
+                const heroImage = post?.heroImage
+                const image: MediaType | undefined =
+                  metaImage && typeof metaImage !== 'number' ? metaImage :
+                  heroImage && typeof heroImage !== 'number' ? heroImage :
+                  undefined
+                const href = `/posts/${post?.slug ?? ''}`
                 const date = post?.publishedAt
-                  ? new Date(post.publishedAt as string).toLocaleDateString('id-ID', {
+                  ? new Date(post.publishedAt).toLocaleDateString('id-ID', {
                       year: 'numeric',
                       month: 'short',
                       day: '2-digit',
@@ -160,7 +159,7 @@ export async function Footer() {
                         href={href}
                         className="line-clamp-2 text-sm font-medium hover:underline"
                       >
-                        {(post as any)?.title}
+                        {post?.title}
                       </Link>
                       <div className="mt-1 flex items-center gap-1 text-xs text-white/70">
                         {/* Calendar Icon */}

@@ -3,12 +3,14 @@
 import React, { useState } from 'react'
 import { FormBlock as PayloadFormBlock } from '@/blocks/Form/Component'
 import RichText from '@/components/RichText'
+import type { ContactAndFAQ as ContactAndFAQType, Form as PayloadFormType } from '@/payload-types'
+import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 export type Props = {
   formSubtitle?: string
   formTitle?: string
   formSource?: 'payloadForm' | 'customAction'
-  form?: any
+  form?: number | PayloadFormType
   actionUrl?: string
   fullNameLabel?: string
   phoneLabel?: string
@@ -17,13 +19,13 @@ export type Props = {
   submitLabel?: string
   faqSubtitle?: string
   faqTitle?: string
-  faqs?: Array<{ question: string; answer: any }>
+  faqs?: Array<{ question: string; answer: NonNullable<ContactAndFAQType['faqs']>[number]['answer'] }>
   className?: string
   disableInnerContainer?: boolean
 }
 
 const Accordion: React.FC<{
-  items: { question: string; answer: any }[]
+  items: { question: string; answer: NonNullable<ContactAndFAQType['faqs']>[number]['answer'] }[]
 }> = ({ items }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
@@ -51,7 +53,7 @@ const Accordion: React.FC<{
             </button>
             {isOpen && (
               <div className="px-4 pb-4 text-gray-700">
-                <RichText enableGutter={false} data={item.answer as any} />
+                <RichText enableGutter={false} data={item.answer} />
               </div>
             )}
           </div>
@@ -91,8 +93,8 @@ export default function ContactAndFAQComponent(props: Props) {
             <h2 className="mt-1 text-2xl font-bold text-gray-900">{formTitle}</h2>
 
             <div className="mt-6">
-              {formSource === 'payloadForm' && form ? (
-                <PayloadFormBlock enableIntro={false} form={form as any} />
+              {formSource === 'payloadForm' && form && typeof form !== 'number' ? (
+                <PayloadFormBlock enableIntro={false} form={form as unknown as FormType} />
               ) : (
                 <form action={actionUrl} method="post" className="space-y-4">
                   <div>
@@ -160,9 +162,7 @@ export default function ContactAndFAQComponent(props: Props) {
 
             <div className="mt-6">
               {faqs?.length ? (
-                <Accordion
-                  items={faqs.map((f: any) => ({ question: f.question, answer: f.answer }))}
-                />
+                <Accordion items={faqs.map((f) => ({ question: f.question, answer: f.answer }))} />
               ) : (
                 <p className="text-gray-500">Belum ada FAQ.</p>
               )}

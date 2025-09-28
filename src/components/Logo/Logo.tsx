@@ -1,5 +1,6 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
+import Image from 'next/image'
 
 interface LogoProps {
   loading?: 'eager' | 'lazy'
@@ -11,7 +12,7 @@ interface LogoProps {
 const Logo: React.FC<LogoProps> = ({ loading, priority, className = '', size = 'sm' }) => {
   return (
     <div className="flex items-center">
-      <img
+      <Image
         alt="PKBM Pemuda Pelopor Logo"
         className={cn(`object-contain h-auto ${className}`, {
           'w-16 h-16': size === 'sm',
@@ -21,6 +22,9 @@ const Logo: React.FC<LogoProps> = ({ loading, priority, className = '', size = '
         loading={loading}
         fetchPriority={priority}
         src="/logo.png"
+        width={128}
+        height={128}
+        priority={priority === 'high'}
       />
     </div>
   )

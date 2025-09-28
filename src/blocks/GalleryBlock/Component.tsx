@@ -1,14 +1,15 @@
 import React from 'react'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import type { GalleryBlock as GalleryBlockType, Media as MediaType } from '@/payload-types'
 
 export type Props = {
   subtitle?: string
   title: string
   items?: Array<{
     title: string
-    image: any
-    description?: any
+    image: number | MediaType
+    description?: NonNullable<NonNullable<GalleryBlockType['items']>[number]['description']>
   }>
   className?: string
 }
@@ -34,7 +35,7 @@ export default function GalleryBlockComponent(props: Props) {
         {/* Grid */}
         <div className="row -mx-4 flex flex-wrap">
           {items?.map((item, idx) => {
-            const image = item?.image && typeof item.image !== 'string' ? item.image : undefined
+            const image = item?.image && typeof item.image !== 'number' ? item.image : undefined
             const hasDesc = !!item?.description
 
             return (
@@ -71,13 +72,9 @@ export default function GalleryBlockComponent(props: Props) {
                       <h4 className="title text-lg font-semibold">
                         <a href="#">{item.title}</a>
                       </h4>
-                      {hasDesc ? (
+                      {hasDesc && item.description ? (
                         <div className="mt-2 text-sm text-white/90">
-                          <RichText
-                            enableGutter={false}
-                            enableProse={false}
-                            data={item.description as any}
-                          />
+                          <RichText enableGutter={false} enableProse={false} data={item.description} />
                         </div>
                       ) : null}
                     </div>

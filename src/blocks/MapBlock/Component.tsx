@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import type { Map as LeafletMap, Icon as LeafletIcon } from 'leaflet'
+import type * as LeafletNamespace from 'leaflet'
 
 export type Props = {
   title?: string
@@ -20,12 +22,13 @@ export default function MapBlockComponent({
   className,
 }: Props) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null)
-  const mapRef = useRef<any>(null)
+  const mapRef = useRef<LeafletMap | null>(null)
+  const cleanupRef = useRef<(() => void) | null>(null)
   const [initError, setInitError] = useState<string | null>(null)
   const [overlayVisible, setOverlayVisible] = useState(false)
   const [overlayMessage, setOverlayMessage] = useState('')
-  const ctrlZoomTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const overlayHideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const ctrlZoomTimeoutRef = useRef<number | null>(null)
+  const overlayHideTimeoutRef = useRef<number | null>(null)
 
   useEffect(() => {
     let isMounted = true
@@ -33,7 +36,7 @@ export default function MapBlockComponent({
     async function initMap() {
       try {
         const leaflet = await import('leaflet')
-        const L = leaflet.default || leaflet
+        const L = leaflet.default || leaflet as typeof LeafletNamespace
 
         // Load Leaflet CSS via JS (fallback if not globally imported)
         const id = 'leaflet-css-injector'
@@ -50,14 +53,15 @@ export default function MapBlockComponent({
         if (!isMounted || !mapContainerRef.current) return
 
         // Fix default marker icons when bundling
-        const DefaultIcon = L.icon({
+        const DefaultIcon: LeafletIcon = L.icon({
           iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
           iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
           shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
           iconAnchor: [12, 41],
           popupAnchor: [1, -34],
         })
-        ;(L as any).Marker.prototype.options.icon = DefaultIcon
+        // Assign default icon for markers
+        ;(L as typeof LeafletNamespace).Marker.prototype.options.icon = DefaultIcon
 
         // Initialize map if not already created
         if (!mapRef.current) {
@@ -86,21 +90,19 @@ export default function MapBlockComponent({
               const isTouch = navigator.maxTouchPoints > 0
               if (isTouch) return // handled by touch listeners
 
-              if (e.ctrlKey) {
-                // allow zoom temporarily
-                setOverlayVisible(false)
-                setOverlayMessage('')
-                mapRef.current.scrollWheelZoom.enable()
-                if (ctrlZoomTimeoutRef.current) clearTimeout(ctrlZoomTimeoutRef.current)
-                ctrlZoomTimeoutRef.current = setTimeout(() => {
-                  mapRef.current?.scrollWheelZoom?.disable()
-                }, 1500)
+              if (e.ctrlKey || e.metaKey) {
+                // Allow zoom with Ctrl/Cmd + scroll
+                if (ctrlZoomTimeoutRef.current) window.clearTimeout(ctrlZoomTimeoutRef.current)
+                ctrlZoomTimeoutRef.current = window.setTimeout(() => {
+                  if (overlayVisible) setOverlayVisible(false)
+                }, 2000)
               } else {
-                // show guidance overlay; do not hijack page scroll
+                // Block regular scroll
+                e.preventDefault()
                 setOverlayMessage('Use Ctrl + scroll to zoom the map')
                 setOverlayVisible(true)
-                if (overlayHideTimeoutRef.current) clearTimeout(overlayHideTimeoutRef.current)
-                overlayHideTimeoutRef.current = setTimeout(() => setOverlayVisible(false), 2000)
+                if (overlayHideTimeoutRef.current) window.clearTimeout(overlayHideTimeoutRef.current)
+                overlayHideTimeoutRef.current = window.setTimeout(() => setOverlayVisible(false), 2000)
               }
             }
 
@@ -110,14 +112,18 @@ export default function MapBlockComponent({
             const touchStartHandler = (e: TouchEvent) => {
               if (e.touches.length >= 2) {
                 // Enable interactions when two fingers used
-                mapRef.current.dragging.enable()
-                mapRef.current.touchZoom.enable()
+                if (mapRef.current) {
+                  mapRef.current.dragging.enable()
+                  mapRef.current.touchZoom.enable()
+                }
                 setOverlayVisible(false)
                 setOverlayMessage('')
               } else {
                 // Single-finger: show guidance and keep disabled
-                mapRef.current.dragging.disable()
-                mapRef.current.touchZoom.disable()
+                if (mapRef.current) {
+                  mapRef.current.dragging.disable()
+                  mapRef.current.touchZoom.disable()
+                }
                 setOverlayMessage('Use two fingers to move the map')
                 setOverlayVisible(true)
               }
@@ -125,8 +131,10 @@ export default function MapBlockComponent({
             const touchEndHandler = (e: TouchEvent) => {
               if (e.touches.length < 2) {
                 // back to disabled when not using two fingers
-                mapRef.current.dragging.disable()
-                mapRef.current.touchZoom.disable()
+                if (mapRef.current) {
+                  mapRef.current.dragging.disable()
+                  mapRef.current.touchZoom.disable()
+                }
               }
             }
             containerEl.addEventListener('touchstart', touchStartHandler, { passive: true })
@@ -135,20 +143,19 @@ export default function MapBlockComponent({
 
             // Cleanup listeners on unmount
             const cleanup = () => {
-              containerEl.removeEventListener('wheel', wheelHandler as any)
-              containerEl.removeEventListener('touchstart', touchStartHandler as any)
-              containerEl.removeEventListener('touchmove', touchStartHandler as any)
-              containerEl.removeEventListener('touchend', touchEndHandler as any)
+              containerEl.removeEventListener('wheel', wheelHandler)
+              containerEl.removeEventListener('touchstart', touchStartHandler)
+              containerEl.removeEventListener('touchmove', touchStartHandler)
+              containerEl.removeEventListener('touchend', touchEndHandler)
             }
-            // Store cleanup to map instance for later removal
-            ;(mapRef.current as any)._customCleanup = cleanup
+            cleanupRef.current = cleanup
           }
         } else {
           mapRef.current.setView([latitude, longitude], zoom)
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Failed to initialize Leaflet map:', err)
-        setInitError(err?.message || 'Failed to load map library')
+        setInitError(err instanceof Error ? err.message : 'Failed to load map library')
       }
     }
 
@@ -156,17 +163,15 @@ export default function MapBlockComponent({
 
     return () => {
       isMounted = false
+      if (cleanupRef.current) cleanupRef.current()
       if (mapRef.current) {
-        if ((mapRef.current as any)._customCleanup) {
-          ;(mapRef.current as any)._customCleanup()
-        }
         mapRef.current.remove()
         mapRef.current = null
       }
-      if (ctrlZoomTimeoutRef.current) clearTimeout(ctrlZoomTimeoutRef.current)
-      if (overlayHideTimeoutRef.current) clearTimeout(overlayHideTimeoutRef.current)
+      if (ctrlZoomTimeoutRef.current) window.clearTimeout(ctrlZoomTimeoutRef.current)
+      if (overlayHideTimeoutRef.current) window.clearTimeout(overlayHideTimeoutRef.current)
     }
-  }, [latitude, longitude, zoom, label])
+  }, [latitude, longitude, zoom, label, overlayVisible])
 
   return (
     <section className={className}>
@@ -177,7 +182,7 @@ export default function MapBlockComponent({
         <div className="custom-embed-map relative w-full overflow-hidden border border-gray-200 shadow-sm">
           {initError ? (
             <div className="flex h-[72px] w-full items-center justify-center bg-red-50 text-sm text-red-700">
-              {initError}. Make sure the "leaflet" package is installed.
+              {initError}. Make sure the &quot;leaflet&quot; package is installed.
             </div>
           ) : null}
           {overlayVisible && !initError ? (

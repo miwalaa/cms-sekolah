@@ -3,6 +3,8 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  OrderedListFeature,
+  UnorderedListFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
@@ -46,11 +48,13 @@ export const TentangBlock: Block = {
           type: 'richText',
           required: false,
           editor: lexicalEditor({
-            features: ({ rootFeatures }) => [
-              ...rootFeatures,
+            features: ({ defaultFeatures }) => [
+              ...defaultFeatures,
               HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5'] }),
               FixedToolbarFeature(),
               InlineToolbarFeature(),
+              OrderedListFeature(),
+              UnorderedListFeature(),
             ],
           }),
         },

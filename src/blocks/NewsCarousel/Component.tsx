@@ -10,7 +10,7 @@ export type Props = NewsCarouselProps & {
 }
 
 export default async function NewsCarouselComponent(props: Props) {
-  const { subtitle, heading, limit = 9, className, disableInnerContainer = false } = props
+  const { subtitle, heading, limit = 9, className, disableInnerContainer: _disableInnerContainer = false } = props
 
   const payload = await getPayload({ config: configPromise })
   const limitToUse: number | undefined = typeof limit === 'number' ? limit : undefined
