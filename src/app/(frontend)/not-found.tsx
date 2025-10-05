@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
       <div className="text-center px-4">
-        <p className="text-base font-semibold text-indigo-400">404</p>
+        <p className="text-base font-semibold text-brand">404</p>
         <h1 className="mt-4 text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
           Halaman tidak ditemukan
         </h1>
@@ -16,7 +16,7 @@ export default function NotFound() {
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link
             href="/"
-            className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            className="rounded-md bg-brand px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >
             Kembali ke halaman
           </Link>
