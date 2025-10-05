@@ -20,10 +20,20 @@ export const Specialities: Block = {
       fields: [
         {
           name: 'icon',
-          type: 'text',
+          type: 'select',
           required: true,
+          options: [
+            { label: 'Certificate', value: 'fa-solid fa-certificate' },
+            { label: 'Check', value: 'fa-solid fa-circle-check' },
+            { label: 'User', value: 'fa-solid fa-circle-user' },
+            { label: 'Earth', value: 'fas fa-earth-americas' },
+            { label: 'Hand Holding Dollar', value: 'fa-solid fa-hand-holding-dollar' },
+            { label: 'Person Chalkboard', value: 'fa-solid fa-person-chalkboard' },
+            { label: 'Chalkboard User', value: 'fa-solid fa-chalkboard-user' },
+            { label: 'Clock', value: 'fa-solid fa-clock' },
+          ],
           admin: {
-            description: 'CSS class for the icon (e.g., "fas fa-star", "material-icons school")',
+            description: 'Choose an icon',
           },
         },
         {
@@ -37,19 +47,18 @@ export const Specialities: Block = {
           required: true,
         },
         {
-          name: 'link',
-          type: 'text',
-          required: false,
+          name: 'color',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Ungu', value: '#695ac7' },
+            { label: 'Biru', value: '#4582ff' },
+            { label: 'Hijau', value: '#55b56a' },
+            { label: 'Merah', value: '#f27676' },
+            { label: 'Biru Muda', value: '#35c5fa' },
+          ],
           admin: {
-            description: 'Optional URL link for the title',
-          },
-        },
-        {
-          name: 'backgroundColor',
-          type: 'text',
-          required: false,
-          admin: {
-            description: 'Optional background color (Hex code)',
+            description: 'Choose a background color',
           },
         },
       ],

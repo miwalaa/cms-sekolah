@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 
 import type { SpecialitiesBlock as SpecialitiesProps } from '@/payload-types'
 
@@ -26,54 +25,37 @@ export const Specialities: React.FC<Props> = (props) => {
         {/* Section Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{sectionTitle}</h2>
-          <div className="w-24 h-1 bg-blue-600 mx-auto"></div>
         </div>
 
         {/* Specialities Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {items.map((item, index) => {
-            const { icon, title, description, link, backgroundColor = '#ffffff' } = item
+            const { icon, title, description, color } = item
 
-            const TitleElement = link ? (
-              <Link
-                href={link}
-                className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200"
-              >
-                {title}
-              </Link>
-            ) : (
-              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-            )
-
-            const safeBackgroundColor =
-              backgroundColor && backgroundColor.trim() !== '' ? backgroundColor : '#ffffff'
+            const TitleElement = <h3 className="font-bold text-xl text-gray-900">{title}</h3>
 
             return (
               <div
                 key={index}
-                className={`
-                  rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300
-                  p-6 flex flex-col items-center text-center
-                  border border-gray-100
-                `}
-                style={{ backgroundColor: safeBackgroundColor }}
+                className="w-full h-[360px] flex flex-col justify-center bg-white shadow-[0px_0px_15px_RGBA(0,0,0,0.09)] p-6 sm:p-9 space-y-3 relative overflow-hidden rounded-lg"
               >
                 {/* Icon */}
                 {icon && (
-                  <div className="mb-4">
-                    <div
-                      className={`w-16 h-16 flex items-center justify-center rounded-full bg-blue-50 text-blue-600`}
-                    >
-                      <i className={`${icon} text-2xl`}></i>
+                  <div
+                    className={`w-24 h-24 rounded-full absolute -left-5 -top-7`}
+                    style={{ backgroundColor: color }}
+                  >
+                    <div className="absolute fill-white bottom-4 right-6 w-9">
+                      <i className={`${icon} text-white text-3xl`}></i>
                     </div>
                   </div>
                 )}
 
                 {/* Title */}
-                <div className="mb-3">{TitleElement}</div>
+                <div className="font-bold text-xl">{TitleElement}</div>
 
                 {/* Description */}
-                <p className="text-gray-600 text-sm leading-relaxed flex-grow">{description}</p>
+                <p className="text-sm text-zinc-500 leading-6">{description}</p>
               </div>
             )
           })}

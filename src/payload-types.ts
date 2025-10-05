@@ -718,19 +718,23 @@ export interface SpecialitiesBlock {
    */
   items: {
     /**
-     * CSS class for the icon (e.g., "fas fa-star", "material-icons school")
+     * Choose an icon
      */
-    icon: string;
+    icon:
+      | 'fa-solid fa-certificate'
+      | 'fa-solid fa-circle-check'
+      | 'fa-solid fa-circle-user'
+      | 'fas fa-earth-americas'
+      | 'fa-solid fa-hand-holding-dollar'
+      | 'fa-solid fa-person-chalkboard'
+      | 'fa-solid fa-chalkboard-user'
+      | 'fa-solid fa-clock';
     title: string;
     description: string;
     /**
-     * Optional URL link for the title
+     * Choose a background color
      */
-    link?: string | null;
-    /**
-     * Optional background color (Hex code)
-     */
-    backgroundColor?: string | null;
+    color: '#695ac7' | '#4582ff' | '#55b56a' | '#f27676' | '#35c5fa';
     id?: string | null;
   }[];
   id?: string | null;
@@ -1335,8 +1339,7 @@ export interface SpecialitiesBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
-        link?: T;
-        backgroundColor?: T;
+        color?: T;
         id?: T;
       };
   id?: T;

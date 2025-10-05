@@ -60,21 +60,21 @@ export default function GalleryBlockComponent(props: Props) {
 
                     {/* Title below image */}
                     <div className="content p-4 text-center">
-                      <h4 className="title text-base font-medium text-gray-900">
-                        <a href="#">{item.title}</a>
-                      </h4>
+                      <h4 className="title text-base font-medium text-gray-900">{item.title}</h4>
                     </div>
                   </div>
 
                   {/* Full card hover overlay */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#002a5d] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <div className="px-4 text-center text-white">
-                      <h4 className="title text-lg font-semibold">
-                        <a href="#">{item.title}</a>
-                      </h4>
+                      <h4 className="title text-lg font-semibold">{item.title}</h4>
                       {hasDesc && item.description ? (
                         <div className="mt-2 text-sm text-white/90">
-                          <RichText enableGutter={false} enableProse={false} data={item.description} />
+                          <RichText
+                            enableGutter={false}
+                            enableProse={false}
+                            data={item.description}
+                          />
                         </div>
                       ) : null}
                     </div>
