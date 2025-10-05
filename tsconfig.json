@@ -25,6 +25,7 @@
       }
     ],
     "paths": {
+      "@/utilities/*": ["./src/utilities/*"],
       "@payload-config": [
         "./src/payload.config.ts"
       ],

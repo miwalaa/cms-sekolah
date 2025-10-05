@@ -1,31 +1,31 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Link from 'next/link'
-
-import { Media } from '@/components/Media'
+import { cn } from '@/utilities/cn'
 import RichText from '@/components/RichText'
+import { Media } from '@/components/Media'
+import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import type { AboutSection as AboutSectionType } from '@/payload-types'
 
-import type { AboutSection as AboutSectionProps } from '@/payload-types'
-
-type Props = AboutSectionProps & {
+type AboutSectionProps = AboutSectionType & {
   className?: string
   disableInnerContainer?: boolean
+  description?: DefaultTypedEditorState
 }
 
-export const AboutSection: React.FC<Props> = (props) => {
-  const {
-    leftImage,
-    subtitle,
-    title,
-    description,
-    buttonText,
-    buttonLink,
-    className,
-    disableInnerContainer = false,
-  } = props
+export const AboutSection: FC<AboutSectionProps> = ({
+  leftImage,
+  subtitle,
+  title,
+  description,
+  buttonText,
+  buttonLink,
+  className,
+  disableInnerContainer = false,
+}) => {
 
   return (
-    <div className={`container my-16 ${className || ''}`}>
-      <div className={`${disableInnerContainer ? '' : 'container'}`}>
+    <div className={cn('container my-16', className)}>
+      <div className={cn({ 'container': !disableInnerContainer })}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left column - Image */}
           <div className="flex justify-center lg:justify-start order-1 lg:order-1">

@@ -1,6 +1,5 @@
 import type { Metadata } from 'next/types'
 
-import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import { PostCard, Sidebar } from '@/components/blog'
 import configPromise from '@payload-config'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { UseFormRegister, FieldErrors, Path } from 'react-hook-form'
+import { UseFormRegister, FieldErrors } from 'react-hook-form'
 import FormStatusMessages from './FormStatusMessages'
 import FormField from './FormField'
 

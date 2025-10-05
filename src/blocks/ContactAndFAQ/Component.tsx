@@ -44,7 +44,6 @@ export default function ContactAndFAQComponent(props: Props) {
     formTitle = 'Ada Pertanyaan?',
     formSource = 'payloadForm',
     form,
-    actionUrl,
     fullNameLabel = 'Nama Lengkap',
     phoneLabel = 'Nomor Telepon / WhatsApp',
     emailLabel = 'Email',
@@ -88,14 +87,6 @@ export default function ContactAndFAQComponent(props: Props) {
     },
   })
 
-  // Helper function to get client-side URL
-  const getClientSideURL = (): string => {
-    if (typeof window !== 'undefined') {
-      return window.location.origin
-    }
-    return ''
-  }
-
   // Form submission handler
   // Form submission handler
   const onSubmit = useCallback(
@@ -117,13 +108,13 @@ export default function ContactAndFAQComponent(props: Props) {
         try {
           // Determine which endpoint to use
           const endpoint = customApiEndpoint || `/api/form-submissions`
-          const payload = customApiEndpoint 
-            ? dataToSend  // For custom API, send data directly
+          const payload = customApiEndpoint
+            ? dataToSend // For custom API, send data directly
             : {
                 form: formID, // This should be the actual Payload form document ID
                 submissionData: dataToSend,
               }
-          
+
           const req = await fetch(endpoint, {
             body: JSON.stringify(payload),
             headers: {
@@ -140,7 +131,8 @@ export default function ContactAndFAQComponent(props: Props) {
           if (!req.ok) {
             setIsLoading(false)
             setError({
-              message: res?.errors?.[0]?.message || res.message || res.error || 'Internal Server Error',
+              message:
+                res?.errors?.[0]?.message || res.message || res.error || 'Internal Server Error',
               status: req.status,
             })
             return
@@ -163,7 +155,7 @@ export default function ContactAndFAQComponent(props: Props) {
 
       void submitForm()
     },
-    [router, reset, clearErrors, formID, redirect, confirmationType],
+    [router, reset, clearErrors, formID, redirect, confirmationType, customApiEndpoint],
   )
 
   return (
