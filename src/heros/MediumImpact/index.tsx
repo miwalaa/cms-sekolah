@@ -27,7 +27,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ mediumImpactMedia, ti
       >
         <div className="container">
           <div className="mx-auto max-w-[36.5rem] text-center" style={{ pointerEvents: 'auto' }}>
-            {title && <h1 className="text-6xl text-white mb-6">{title}</h1>}
+            {title && <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">{title}</h1>}
           </div>
         </div>
       </div>

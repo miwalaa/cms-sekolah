@@ -29,7 +29,7 @@ export const AboutSection: FC<AboutSectionProps> = ({
           {/* Left column - Image */}
           <div className="flex justify-center lg:justify-start order-1 lg:order-1">
             {leftImage && (
-              <Media resource={leftImage} className="max-w-[500px] max-h-[500px] rounded-lg" />
+              <Media resource={leftImage} className="w-full max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[500px] max-h-[250px] sm:max-h-[300px] md:max-h-[400px] lg:max-h-[500px] object-contain rounded-lg" />
             )}
           </div>
 

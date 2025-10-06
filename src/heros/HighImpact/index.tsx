@@ -1,7 +1,6 @@
 import React from 'react'
 import ImageSlider from '@/components/ImageSlider'
 import type { Page } from '@/payload-types'
-import RichText from '@/components/RichText'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ highImpactMedia, title }) => {
   return (
@@ -22,7 +21,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ highImpactMedia, title 
             className="mx-auto max-w-[36.5rem] text-center"
             style={{ pointerEvents: 'auto' }} // Re-enable pointer events for interactive elements
           >
-            {title && <h1 className="text-6xl text-white mb-6">{title}</h1>}
+            {title && <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">{title}</h1>}
           </div>
         </div>
       </div>
