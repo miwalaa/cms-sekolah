@@ -25,6 +25,28 @@ export const Footer: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'contactInfo',
+      label: 'Contact Information',
+      type: 'group',
+      fields: [
+        {
+          name: 'address',
+          label: 'Address',
+          type: 'text',
+        },
+        {
+          name: 'phone',
+          label: 'Phone Number',
+          type: 'text',
+        },
+        {
+          name: 'email',
+          label: 'Email',
+          type: 'text',
+        },
+      ],
+    },
   ],
   hooks: {
     afterChange: [revalidateFooter],

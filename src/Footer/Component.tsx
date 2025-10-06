@@ -34,9 +34,9 @@ export async function Footer() {
   const recentPosts = (postsRes?.docs as RecentPost[]) ?? []
 
   const CONTACT = {
-    address: 'Jl. Contoh No. 123, Kota, Provinsi',
-    phone: '0812-3456-7890',
-    email: 'info@example.com',
+    address: footerData?.contactInfo?.address,
+    phone: footerData?.contactInfo?.phone,
+    email: footerData?.contactInfo?.email,
   }
 
   return (
@@ -131,9 +131,11 @@ export async function Footer() {
                 const metaImage = post?.meta?.image
                 const heroImage = post?.heroImage
                 const image: MediaType | undefined =
-                  metaImage && typeof metaImage !== 'number' ? metaImage :
-                  heroImage && typeof heroImage !== 'number' ? heroImage :
-                  undefined
+                  metaImage && typeof metaImage !== 'number'
+                    ? metaImage
+                    : heroImage && typeof heroImage !== 'number'
+                      ? heroImage
+                      : undefined
                 const href = `/posts/${post?.slug ?? ''}`
                 const date = post?.publishedAt
                   ? new Date(post.publishedAt).toLocaleDateString('id-ID', {
