@@ -2,13 +2,11 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { AboutSection } from '@/blocks/AboutSection/Component'
 
 const blockComponents = {
-  content: ContentBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   aboutSection: AboutSection,

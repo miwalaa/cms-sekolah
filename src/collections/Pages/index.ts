@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { AboutSection } from '../../blocks/AboutSection/config'
@@ -83,7 +82,6 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                Content,
                 MediaBlock,
                 FormBlock,
                 AboutSection,
@@ -157,4 +155,3 @@ export const Pages: CollectionConfig<'pages'> = {
     maxPerDoc: 50,
   },
 }
-
