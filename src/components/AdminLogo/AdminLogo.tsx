@@ -9,7 +9,7 @@ const AdminLogo: React.ComponentType = () => (
       width={150}
       height={150}
       className="object-contain"
-      src="/logo.png"
+      src="/logo-color.png"
       priority
     />
   </div>
