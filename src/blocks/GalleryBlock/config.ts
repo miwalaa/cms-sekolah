@@ -60,4 +60,7 @@ export const GalleryBlock: Block = {
       ],
     },
   ],
+  admin: {
+    group: 'Gallery Blocks',
+  },
 }

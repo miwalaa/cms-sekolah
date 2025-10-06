@@ -17,7 +17,8 @@ export const VideoGallery: Block = {
           label: 'YouTube Embed URL',
           required: true,
           admin: {
-            description: 'Enter the YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)',
+            description:
+              'Enter the YouTube embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)',
           },
           validate: (value: string | string[] | null | undefined) => {
             if (!value) return true
@@ -42,6 +43,6 @@ export const VideoGallery: Block = {
     },
   ],
   admin: {
-    group: 'Content',
+    group: 'Gallery Blocks',
   },
 }
