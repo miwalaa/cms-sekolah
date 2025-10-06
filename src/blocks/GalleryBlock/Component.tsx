@@ -23,7 +23,10 @@ export default function GalleryBlockComponent(props: Props) {
         {/* Header */}
         <div className="mx-auto mb-12 max-w-3xl text-center">
           {subtitle ? (
-            <span className="subtitle block text-sm font-medium uppercase tracking-wide text-primary">
+            <span
+              className="subtitle block text-sm font-medium uppercase tracking-wide"
+              style={{ color: '#f1ac44' }}
+            >
               {subtitle}
             </span>
           ) : null}

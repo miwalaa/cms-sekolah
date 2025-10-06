@@ -10,7 +10,13 @@ export type Props = NewsCarouselProps & {
 }
 
 export default async function NewsCarouselComponent(props: Props) {
-  const { subtitle, heading, limit = 9, className, disableInnerContainer: _disableInnerContainer = false } = props
+  const {
+    subtitle,
+    heading,
+    limit = 9,
+    className,
+    disableInnerContainer: _disableInnerContainer = false,
+  } = props
 
   const payload = await getPayload({ config: configPromise })
   const limitToUse: number | undefined = typeof limit === 'number' ? limit : undefined
@@ -37,7 +43,9 @@ export default async function NewsCarouselComponent(props: Props) {
       {/* Title area */}
       <div className="mb-8 text-center">
         {subtitle && (
-          <p className="text-sm font-medium uppercase tracking-wide text-gray-500">{subtitle}</p>
+          <p className="text-sm font-medium uppercase tracking-wide" style={{ color: '#f1ac44' }}>
+            {subtitle}
+          </p>
         )}
         {heading && (
           <h2 className="mt-1 text-3xl font-bold leading-tight text-gray-900">{heading}</h2>
