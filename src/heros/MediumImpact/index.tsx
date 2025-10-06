@@ -1,14 +1,8 @@
 import React from 'react'
 import type { Page } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
-import RichText from '@/components/RichText'
 
-export const MediumImpactHero: React.FC<Page['hero']> = ({
-  links,
-  mediumImpactMedia,
-  richText,
-}) => {
+export const MediumImpactHero: React.FC<Page['hero']> = ({ mediumImpactMedia, title }) => {
   return (
     <div className="relative w-full" style={{ minHeight: '60vh' }}>
       {/* Single Image - Full width and height */}
@@ -33,16 +27,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({
       >
         <div className="container">
           <div className="mx-auto max-w-[36.5rem] text-center" style={{ pointerEvents: 'auto' }}>
-            {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
-            {Array.isArray(links) && links.length > 0 && (
-              <ul className="flex justify-center gap-4">
-                {links.map(({ link }, i) => (
-                  <li key={i}>
-                    <CMSLink {...link} />
-                  </li>
-                ))}
-              </ul>
-            )}
+            {title && <h1 className="text-6xl text-white mb-6">{title}</h1>}
           </div>
         </div>
       </div>

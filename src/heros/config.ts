@@ -1,5 +1,14 @@
 import type { Field } from 'payload'
 
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+
+import { linkGroup } from '@/fields/linkGroup'
+
 export const hero: Field = {
   name: 'hero',
   type: 'group',
@@ -30,10 +39,25 @@ export const hero: Field = {
       required: true,
     },
     {
-      name: 'title',
-      type: 'text',
-      required: true,
+      name: 'richText',
+      type: 'richText',
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => {
+          return [
+            ...rootFeatures,
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+          ]
+        },
+      }),
+      label: false,
     },
+    linkGroup({
+      overrides: {
+        maxRows: 2,
+      },
+    }),
     // High Impact Media (supports multiple images)
     {
       name: 'highImpactMedia',

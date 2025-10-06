@@ -1,10 +1,9 @@
 import React from 'react'
 import ImageSlider from '@/components/ImageSlider'
 import type { Page } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, highImpactMedia, richText }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({ highImpactMedia, title }) => {
   return (
     <div className="relative w-full" style={{ minHeight: '60vh' }}>
       {/* Image Slider - Full width and height */}
@@ -23,16 +22,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, highImpactMedia,
             className="mx-auto max-w-[36.5rem] text-center"
             style={{ pointerEvents: 'auto' }} // Re-enable pointer events for interactive elements
           >
-            {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
-            {Array.isArray(links) && links.length > 0 && (
-              <ul className="flex justify-center gap-4">
-                {links.map(({ link }, i) => (
-                  <li key={i}>
-                    <CMSLink {...link} />
-                  </li>
-                ))}
-              </ul>
-            )}
+            {title && <h1 className="text-6xl text-white mb-6">{title}</h1>}
           </div>
         </div>
       </div>
