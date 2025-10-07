@@ -11,20 +11,13 @@ export interface PostCardProps {
 }
 
 export const PostCard: React.FC<PostCardProps> = ({ post }) => {
-  const {
-    slug,
-    title,
-    meta,
-    categories,
-    publishedAt,
-    populatedAuthors,
-    heroImage,
-  } = post
+  const { slug, title, meta, categories, publishedAt, populatedAuthors, heroImage } = post
 
   const { description, image: metaImage } = meta || {}
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
-  const hasAuthors = populatedAuthors && Array.isArray(populatedAuthors) && populatedAuthors.length > 0
-  
+  const hasAuthors =
+    populatedAuthors && Array.isArray(populatedAuthors) && populatedAuthors.length > 0
+
   // Use heroImage if available, otherwise fall back to meta image
   const featuredImage = heroImage || metaImage
   const href = `/posts/${slug}`
@@ -41,12 +34,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <article className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
       {/* Featured Image */}
-      <div className="relative w-full h-48 overflow-hidden bg-gray-100">
+      <div className="relative w-full h-48 md:h-72 lg:h-72 xl:h-96 overflow-hidden bg-gray-100">
         {featuredImage && typeof featuredImage !== 'string' ? (
-          <Media 
-            resource={featuredImage} 
-            className="w-full h-full object-cover"
-          />
+          <Media resource={featuredImage} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200">
             <span className="text-gray-500">No image</span>
@@ -71,13 +61,11 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
               </span>
             </div>
           )}
-          
+
           {publishedAt && (
             <div className="flex items-center gap-1">
               <span className="font-medium">On:</span>
-              <time dateTime={publishedAt}>
-                {formatDate(publishedAt)}
-              </time>
+              <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
             </div>
           )}
         </div>
@@ -103,20 +91,13 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
         {/* Title */}
         <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
-          <Link 
-            href={href}
-            className="hover:text-blue-600 transition-colors duration-200"
-          >
+          <Link href={href} className="hover:text-blue-600 transition-colors duration-200">
             {title}
           </Link>
         </h3>
 
         {/* Excerpt */}
-        {description && (
-          <p className="text-gray-600 mb-4 line-clamp-3">
-            {description}
-          </p>
-        )}
+        {description && <p className="text-gray-600 mb-4 line-clamp-3">{description}</p>}
 
         {/* Read More Button */}
         <Link
