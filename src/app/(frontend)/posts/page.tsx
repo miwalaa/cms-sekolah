@@ -6,6 +6,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import { Media } from '@/components/Media'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -40,30 +41,35 @@ export default async function Page() {
       sort: '-publishedAt',
     })
 
+    // Fetch the hero image from Payload CMS
+    const {
+      docs: [heroImage],
+    } = await payload.find({
+      collection: 'media',
+      where: {
+        filename: { equals: 'hero-3.png' },
+      },
+      limit: 1,
+    })
+
     return (
       <div className="pb-24">
         <PageClient />
 
-        {/* Page Header */}
+        {/* Page Header - Matches HighImpactHero styling */}
         <div className="relative w-full" style={{ minHeight: '60vh' }}>
-          <div className="absolute inset-0 z-0 w-full h-[60vh] overflow-hidden">
-            <div className="w-full h-full object-cover">
-              <picture>
-                <img
-                  alt="School 1"
-                  width={2917}
-                  height={1634}
-                  decoding="async"
-                  data-nimg="1"
-                  className="w-full h-full object-cover"
-                  style={{ color: 'transparent' }}
-                  sizes="(max-width: 1920px) 3840w, (max-width: 1536px) 3072w, (max-width: 1280px) 2560w, (max-width: 1024px) 2048w, (max-width: 768px) 1536w, (max-width: 640px) 1280w"
-                  srcSet="/images/school-1.webp 16w, /images/school-1.webp 32w, /images/school-1.webp 48w, /images/school-1.webp 64w, /images/school-1.webp 96w, /images/school-1.webp 128w, /images/school-1.webp 256w, /images/school-1.webp 384w, /images/school-1.webp 640w, /images/school-1.webp 750w, /images/school-1.webp 828w, /images/school-1.webp 1080w, /images/school-1.webp 1200w, /images/school-1.webp 1920w, /images/school-1.webp 2048w, /images/school-1.webp 3840w"
-                  src="/images/school-1.webp"
-                />
-              </picture>
+          {/* Image - Full width and height */}
+          <div className="absolute inset-0 z-0 w-full h-[60vh]">
+            <div className="relative w-full h-full overflow-hidden">
+              <Media
+                resource={heroImage}
+                className="absolute inset-0 w-full h-full"
+                imgClassName="object-cover w-full h-full select-none"
+                fill
+                priority
+              />
             </div>
-            <div className="absolute inset-0 bg-black/70 z-10"></div>
+            <div className="absolute inset-0 bg-black/70 z-10" />
           </div>
           <div
             className="relative z-10 flex items-center justify-center min-h-[60vh] py-16 text-white"
