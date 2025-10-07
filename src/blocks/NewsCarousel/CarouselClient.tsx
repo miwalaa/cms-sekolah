@@ -71,7 +71,7 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
 
           return (
             <SwiperSlide key={idx}>
-              <article className="group overflow-hidden rounded-lg border mb-5 border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+              <article className="group overflow-hidden rounded-lg border mb-5 border-gray-200 bg-white shadow-sm transition">
                 {/* Image wrapper */}
                 <div className="relative aspect-[18/10] w-full overflow-hidden border-b border-gray-200">
                   {image ? (
@@ -86,9 +86,12 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
                   )}
 
                   {/* Date badge */}
-                  <div className="absolute left-4 top-4 z-10 rounded-md bg-white px-3 py-2 text-center shadow-md">
-                    <div className="text-lg font-extrabold text-gray-900">{day}</div>
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">
+                  <div
+                    className="absolute left-4 top-4 z-10 border border-gray-200 rounded-md px-3 py-2 text-center shadow-md"
+                    style={{ backgroundColor: '#f1ac44' }}
+                  >
+                    <div className="text-lg font-extrabold text-white">{day}</div>
+                    <div className="text-xs font-semibold uppercase tracking-wide text-white/80">
                       {month}
                     </div>
                   </div>
@@ -99,13 +102,10 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
 
                 {/* Content */}
                 <div className="p-5">
-                  <h3 className="mb-3 line-clamp-2 text-lg font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  <h3 className="mb-3 line-clamp-2 text-lg font-semibold text-gray-900 group-hover:text-blue-900 transition-colors">
                     <Link href={href}>{post.title}</Link>
                   </h3>
-                  <Link
-                    href={href}
-                    className="inline-flex items-center gap-2 text-primary font-medium"
-                  >
+                  <Link href={href} className="inline-flex items-center gap-2 font-medium">
                     Read More
                     <span className="transition-transform group-hover:translate-x-1">→</span>
                   </Link>

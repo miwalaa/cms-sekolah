@@ -159,12 +159,15 @@ export default function ContactAndFAQComponent(props: Props) {
   )
 
   return (
-    <section className={className}>
+    <section className={className + ' bg-gray-50 pb-10'}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Left: Form */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <p className="text-sm text-gray-500 uppercase tracking-wide text-primary">
+          <div className="rounded-2xl p-6">
+            <p
+              className="text-sm uppercase tracking-wide text-primary"
+              style={{ color: '#f1ac44' }}
+            >
               {formSubtitle}
             </p>
             <h2 className="mt-1 text-2xl font-bold text-gray-900">{formTitle}</h2>
@@ -191,8 +194,11 @@ export default function ContactAndFAQComponent(props: Props) {
           </div>
 
           {/* Right: FAQ */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <p className="text-sm font-semibold uppercase tracking-wide text-primary">
+          <div className="rounded-2xl p-6">
+            <p
+              className="text-sm uppercase tracking-wide text-primary"
+              style={{ color: '#f1ac44' }}
+            >
               {faqSubtitle}
             </p>
             <h2 className="mt-1 text-2xl font-bold text-gray-900">{faqTitle}</h2>

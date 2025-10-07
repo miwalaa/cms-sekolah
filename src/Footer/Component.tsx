@@ -131,10 +131,10 @@ export async function Footer() {
                 const metaImage = post?.meta?.image
                 const heroImage = post?.heroImage
                 const image: MediaType | undefined =
-                  metaImage && typeof metaImage !== 'number'
-                    ? metaImage
-                    : heroImage && typeof heroImage !== 'number'
-                      ? heroImage
+                  heroImage && typeof heroImage !== 'number'
+                    ? heroImage
+                    : metaImage && typeof metaImage !== 'number'
+                      ? metaImage
                       : undefined
                 const href = `/posts/${post?.slug ?? ''}`
                 const date = post?.publishedAt
@@ -146,20 +146,22 @@ export async function Footer() {
                   : ''
 
                 return (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className="relative h-12 w-12 overflow-hidden rounded-md bg-white/10">
-                      {image ? (
-                        <Media resource={image} fill className="h-full w-full object-cover" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-xs text-white/60">
-                          No image
-                        </div>
-                      )}
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="flex-shrink-0">
+                      <div className="relative h-12 w-12 overflow-hidden rounded-md bg-white/10">
+                        {image ? (
+                          <Media resource={image} fill className="h-full w-full object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs text-white/60">
+                            No image
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1 overflow-hidden">
                       <Link
                         href={href}
-                        className="line-clamp-2 text-sm font-medium hover:underline"
+                        className="block text-sm font-medium hover:underline line-clamp-2"
                       >
                         {post?.title}
                       </Link>

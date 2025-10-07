@@ -46,9 +46,10 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               const isInfoRegisterBlock = blockType === 'infoRegisterBlock'
+              const isMapBlock = blockType === 'mapBlock'
 
               return (
-                <div className={isInfoRegisterBlock ? '' : 'mt-16'} key={index}>
+                <div className={isMapBlock ? '' : isInfoRegisterBlock ? '' : 'mt-16'} key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>
