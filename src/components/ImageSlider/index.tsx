@@ -93,22 +93,6 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
           <CgChevronRight />
         </button>
 
-        {/* Dots */}
-        <div
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20"
-          style={{ pointerEvents: 'auto' }}
-        >
-          {media.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrent(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === current ? 'bg-white' : 'bg-white bg-opacity-50'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
       </div>
     </div>
   )

@@ -4,9 +4,9 @@ import { Media } from '@/components/Media'
 
 export const MediumImpactHero: React.FC<Page['hero']> = ({ mediumImpactMedia, title }) => {
   return (
-    <div className="relative w-full" style={{ minHeight: '60vh' }}>
+    <div className="relative w-full min-h-[80vh] md:min-h-[70vh] lg:min-h-[60vh] [@media(orientation:landscape)_and_(max-width:1023px)]:min-h-[100vh]">
       {/* Single Image - Full width and height */}
-      <div className="absolute inset-0 z-0 w-full h-[60vh] overflow-hidden">
+      <div className="absolute inset-0 z-0 w-full h-full overflow-hidden">
         {mediumImpactMedia && (
           <>
             <Media
@@ -22,7 +22,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ mediumImpactMedia, ti
 
       {/* Content - Positioned above the image */}
       <div
-        className="relative z-10 flex items-center justify-center min-h-[60vh] py-16 text-white"
+        className="relative z-10 flex items-center justify-center min-h-[80vh] md:min-h-[70vh] lg:min-h-[60vh] [@media(orientation:landscape)_and_(max-width:1023px)]:min-h-[100vh] py-16 text-white"
         style={{ pointerEvents: 'none' }}
       >
         <div className="container">

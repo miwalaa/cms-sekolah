@@ -31,7 +31,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       </nav>
       <Link
         href="/search"
-        className="text-white hover:text-gray-200 transition-colors hidden lg:flex"
+        className="text-white hover:text-yellow-500 transition-colors hidden lg:flex"
       >
         <span className="sr-only">Search</span>
         <SearchIcon className="w-5 h-5" />

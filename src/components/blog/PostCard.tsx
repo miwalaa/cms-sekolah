@@ -50,7 +50,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-3">
           {hasAuthors && (
             <div className="flex items-center gap-1">
-              <span className="font-medium">By:</span>
+              <span className="font-medium text-gray-500">
+                <i className="fa-solid fa-user"></i>
+              </span>
               <span>
                 {populatedAuthors?.map((author, index) => (
                   <span key={index}>
@@ -64,7 +66,9 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
           {publishedAt && (
             <div className="flex items-center gap-1">
-              <span className="font-medium">On:</span>
+              <span className="font-medium text-gray-500">
+                <i className="fa-solid fa-calendar"></i>
+              </span>
               <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
             </div>
           )}
@@ -91,7 +95,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
         {/* Title */}
         <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
-          <Link href={href} className="hover:text-blue-600 transition-colors duration-200">
+          <Link href={href} className="hover:text-blue-800 transition-colors duration-200">
             {title}
           </Link>
         </h3>
@@ -102,7 +106,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         {/* Read More Button */}
         <Link
           href={href}
-          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors duration-200"
+          className="inline-flex items-center px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-800 transition-colors duration-200"
         >
           Read More
           <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
