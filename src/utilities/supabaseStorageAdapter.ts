@@ -12,7 +12,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 export const supabaseAdapter: Adapter = ({ prefix }) => {
   return {
     name: 'supabase',
-    handleUpload: async ({ data, file, req }) => {
+    handleUpload: async ({ data, file }) => {
       const bucket = process.env.SUPABASE_BUCKET || 'uploads'
       const filePath = prefix ? `${prefix}/${file.filename}` : file.filename
 

@@ -1,10 +1,4 @@
 import type { Block } from 'payload'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 
 export const ContactAndFAQ: Block = {
   slug: 'contactAndFAQ',
@@ -14,47 +8,23 @@ export const ContactAndFAQ: Block = {
     plural: 'Contact & FAQs',
   },
   fields: [
+    // Form Section
     {
-      name: 'formSubtitle',
-      type: 'text',
-      label: 'Form Subtitle',
-      defaultValue: 'Tinggalkan Pesan',
-    },
-    {
-      name: 'formTitle',
-      type: 'text',
-      label: 'Form Title',
-      defaultValue: 'Ada Pertanyaan?',
-    },
-    {
-      name: 'formSource',
-      type: 'radio',
-      label: 'Form Source',
-      defaultValue: 'payloadForm',
-      options: [
-        { label: 'Payload Form (select from Forms collection)', value: 'payloadForm' },
-        { label: 'Custom Action URL', value: 'customAction' },
+      type: 'row',
+      fields: [
+        {
+          name: 'formSubtitle',
+          type: 'text',
+          label: 'Form Subtitle',
+          defaultValue: 'Tinggalkan Pesan',
+        },
+        {
+          name: 'formTitle',
+          type: 'text',
+          label: 'Form Title',
+          defaultValue: 'Ada Pertanyaan?',
+        },
       ],
-      admin: {
-        layout: 'horizontal',
-      },
-    },
-    {
-      name: 'form',
-      type: 'relationship',
-      relationTo: 'forms',
-      admin: {
-        condition: (_, siblingData) => siblingData?.formSource === 'payloadForm',
-      },
-    },
-    {
-      name: 'actionUrl',
-      type: 'text',
-      label: 'Custom Action URL',
-      admin: {
-        description: 'If provided, the form will POST to this URL.',
-        condition: (_, siblingData) => siblingData?.formSource === 'customAction',
-      },
     },
     {
       type: 'row',
@@ -114,27 +84,22 @@ export const ContactAndFAQ: Block = {
       type: 'array',
       label: 'FAQs',
       labels: { singular: 'FAQ', plural: 'FAQs' },
-      required: false,
       fields: [
         {
           name: 'question',
           type: 'text',
+          label: 'Question',
           required: true,
         },
         {
           name: 'answer',
           type: 'richText',
+          label: 'Answer',
           required: true,
-          editor: lexicalEditor({
-            features: ({ rootFeatures }) => [
-              ...rootFeatures,
-              HeadingFeature({ enabledHeadingSizes: ['h3', 'h4', 'h5'] }),
-              FixedToolbarFeature(),
-              InlineToolbarFeature(),
-            ],
-          }),
         },
       ],
     },
   ],
 }
+
+export default ContactAndFAQ

@@ -3,16 +3,13 @@
 import React, { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { FormBlock as PayloadFormBlock } from '@/blocks/Form/Component'
-import type { ContactAndFAQ as ContactAndFAQType, Form as PayloadFormType } from '@/payload-types'
-import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import emailjs from '@emailjs/browser'
+import type { ContactAndFAQ as ContactAndFAQType } from '@/payload-types'
 import { ContactForm, Accordion } from './components'
 
 export type Props = {
   formSubtitle?: string
   formTitle?: string
-  formSource?: 'payloadForm' | 'customAction'
-  form?: number | PayloadFormType
   actionUrl?: string
   fullNameLabel?: string
   phoneLabel?: string
@@ -42,8 +39,6 @@ export default function ContactAndFAQComponent(props: Props) {
     className,
     formSubtitle = 'Tinggalkan Pesan',
     formTitle = 'Ada Pertanyaan?',
-    formSource = 'payloadForm',
-    form,
     fullNameLabel = 'Nama Lengkap',
     phoneLabel = 'Nomor Telepon / WhatsApp',
     emailLabel = 'Email',
@@ -52,10 +47,9 @@ export default function ContactAndFAQComponent(props: Props) {
     faqSubtitle = 'Tanya Jawab',
     faqTitle = 'Seputar Pendidikan Kesetaraan',
     faqs = [],
-    formID = '1', // Using actual Payload form ID
+    // Form ID is no longer needed as we're using EmailJS directly
     redirect,
     confirmationType = 'message',
-    customApiEndpoint,
   } = props
 
   const router = useRouter()
@@ -95,49 +89,30 @@ export default function ContactAndFAQComponent(props: Props) {
 
       const submitForm = async () => {
         setError(undefined)
-
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
-
         loadingTimerID = setTimeout(() => {
           setIsLoading(true)
         }, 1000)
 
         try {
-          // Determine which endpoint to use
-          const endpoint = customApiEndpoint || `/api/form-submissions`
-          const payload = customApiEndpoint
-            ? dataToSend // For custom API, send data directly
-            : {
-                form: formID, // This should be the actual Payload form document ID
-                submissionData: dataToSend,
-              }
+          // EmailJS service configuration
+          const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'your_service_id'
+          const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'your_template_id'
+          const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'your_public_key'
 
-          const req = await fetch(endpoint, {
-            body: JSON.stringify(payload),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
-
-          const res = await req.json()
-          console.log('Form submission response:', res) // debug
-
-          clearTimeout(loadingTimerID)
-
-          if (!req.ok) {
-            setIsLoading(false)
-            setError({
-              message:
-                res?.errors?.[0]?.message || res.message || res.error || 'Internal Server Error',
-              status: req.status,
-            })
-            return
+          // Prepare the template parameters
+          const templateParams = {
+            from_name: data.fullName,
+            from_email: data.email,
+            phone: data.phone,
+            message: data.message,
+            to_email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'your-default@email.com',
           }
 
+          // Send email using EmailJS
+          const response = await emailjs.send(serviceID, templateID, templateParams, publicKey)
+
+          console.log('Email sent successfully:', response)
+          clearTimeout(loadingTimerID)
           setIsLoading(false)
           setHasSubmitted(true)
           reset()
@@ -147,19 +122,34 @@ export default function ContactAndFAQComponent(props: Props) {
             router.push(redirect.url)
           }
         } catch (err: unknown) {
-          console.error('Form submission error:', err)
+          clearTimeout(loadingTimerID)
           setIsLoading(false)
-          setError({ message: 'Something went wrong.' })
+          const error = err as Error
+          console.error('Error sending email:', error)
+          setError({
+            message: error.message || 'Failed to send message. Please try again later.',
+            status: 500,
+          })
         }
       }
 
-      void submitForm()
+      // Call the submit function
+      submitForm()
     },
-    [router, reset, clearErrors, formID, redirect, confirmationType, customApiEndpoint],
+    [
+      router,
+      reset,
+      clearErrors,
+      redirect,
+      confirmationType,
+      setError,
+      setIsLoading,
+      setHasSubmitted,
+    ],
   )
 
   return (
-    <section className={className + ' bg-gray-50 pb-10'}>
+    <section className={className}>
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Left: Form */}
@@ -173,23 +163,19 @@ export default function ContactAndFAQComponent(props: Props) {
             <h2 className="mt-1 text-2xl font-bold text-gray-900">{formTitle}</h2>
 
             <div className="mt-6">
-              {formSource === 'payloadForm' && form && typeof form !== 'number' ? (
-                <PayloadFormBlock enableIntro={false} form={form as unknown as FormType} />
-              ) : (
-                <ContactForm
-                  fullNameLabel={fullNameLabel}
-                  phoneLabel={phoneLabel}
-                  emailLabel={emailLabel}
-                  messageLabel={messageLabel}
-                  submitLabel={submitLabel}
-                  register={register}
-                  errors={errors}
-                  isLoading={isLoading}
-                  hasSubmitted={hasSubmitted}
-                  error={error}
-                  onSubmit={handleSubmit(onSubmit)}
-                />
-              )}
+              <ContactForm
+                fullNameLabel={fullNameLabel}
+                phoneLabel={phoneLabel}
+                emailLabel={emailLabel}
+                messageLabel={messageLabel}
+                submitLabel={submitLabel}
+                register={register}
+                errors={errors}
+                isLoading={isLoading}
+                hasSubmitted={hasSubmitted}
+                error={error}
+                onSubmit={handleSubmit(onSubmit)}
+              />
             </div>
           </div>
 

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Props = {
   className?: string
@@ -25,10 +26,12 @@ const InfoRegisterBlock: React.FC<Props> = ({
             <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 rounded-2xl bg-saffron p-6 md:p-8 overflow-hidden min-h-[180px] md:min-h-[220px] lg:min-h-[240px]">
               {/* Left content - Illustration (hidden on mobile, BIGGER SIZE) */}
               <div className="hidden md:block absolute -left-4 bottom-0 w-56 md:w-64 lg:w-72 xl:w-80 flex-shrink-0">
-                <img
+                <Image
                   src="/vector.svg"
                   alt="Students illustration"
                   className="w-full h-full object-contain"
+                  width={377}
+                  height={239}
                 />
               </div>
 

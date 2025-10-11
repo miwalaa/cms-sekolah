@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { AboutSection } from '@/blocks/AboutSection/Component'
 import { Specialities } from '@/blocks/Specialities/Component'
@@ -15,7 +14,6 @@ import InfoRegisterBlock from '@/blocks/InfoRegisterBlock/Component'
 import VideoGalleryBlock from '@/blocks/VideoGallery/Component'
 
 const blockComponents = {
-  formBlock: FormBlock,
   mediaBlock: MediaBlock,
   aboutSection: AboutSection,
   specialities: Specialities,
