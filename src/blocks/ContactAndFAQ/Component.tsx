@@ -195,10 +195,7 @@ export default function ContactAndFAQComponent(props: Props) {
 
           {/* Right: FAQ */}
           <div className="rounded-2xl p-6">
-            <p
-              className="text-sm uppercase tracking-wide text-primary"
-              style={{ color: '#f1ac44' }}
-            >
+            <p className="text-sm uppercase tracking-wide text-primary text-saffron">
               {faqSubtitle}
             </p>
             <h2 className="mt-1 text-2xl font-bold text-gray-900">{faqTitle}</h2>

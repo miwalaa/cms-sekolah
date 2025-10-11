@@ -86,10 +86,7 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
                   )}
 
                   {/* Date badge */}
-                  <div
-                    className="absolute left-4 top-4 z-10 border border-gray-200 rounded-md px-3 py-2 text-center shadow-md"
-                    style={{ backgroundColor: '#f1ac44' }}
-                  >
+                  <div className="absolute left-4 top-4 z-10 border border-gray-200 rounded-md px-3 py-2 text-center shadow-md bg-saffron">
                     <div className="text-lg font-extrabold text-white">{day}</div>
                     <div className="text-xs font-semibold uppercase tracking-wide text-white/80">
                       {month}

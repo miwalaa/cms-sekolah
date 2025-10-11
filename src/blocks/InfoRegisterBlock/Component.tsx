@@ -34,7 +34,9 @@ const InfoRegisterBlock: React.FC<Props> = ({
 
               {/* Center content - Title */}
               <div className="flex-1 flex items-center md:pl-48 lg:pl-60 xl:pl-72 md:text-left w-full">
-                <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">{title}</h2>
+                <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight z-10">
+                  {title}
+                </h2>
               </div>
 
               {/* Right content - WhatsApp Button */}
