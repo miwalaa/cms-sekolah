@@ -31,19 +31,6 @@ export const TentangBlock: Block = {
           required: false,
         },
         {
-          name: 'imageWidth',
-          type: 'select',
-          dbName: 'iw',
-          required: false,
-          defaultValue: 'full',
-          options: [
-            { label: 'Full', value: 'full' },
-            { label: 'Three Quarters', value: 'threeQuarters' },
-            { label: 'Two Thirds', value: 'twoThirds' },
-            { label: 'Half', value: 'half' },
-          ],
-        },
-        {
           name: 'content',
           type: 'richText',
           required: false,

@@ -64,6 +64,9 @@ const config = {
         brand: {
           DEFAULT: '#002a5d',
         },
+        saffron: {
+          DEFAULT: '#f1ac44',
+        },
         border: 'hsla(var(--border))',
         card: {
           DEFAULT: 'hsl(var(--card))',

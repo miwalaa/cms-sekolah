@@ -43,7 +43,7 @@ const NavItem: React.FC<Props> = ({ item }) => {
         href={href}
         target={item.link?.newTab ? '_blank' : undefined}
         rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
-        className="flex items-center space-x-1 font-semibold hover:text-yellow-500 transition-colors"
+        className="flex items-center space-x-1 font-semibold hover:text-saffron transition-colors duration-200"
       >
         <span>{item.link?.label || 'Untitled'}</span>
         {hasChildren && (

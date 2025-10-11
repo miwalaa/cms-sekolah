@@ -47,30 +47,19 @@ type Widget = {
   items?: WidgetItem[] | null
 }
 
-function getImageWidthClass(width?: string) {
-  switch (width) {
-    case 'half':
-      return 'w-1/2'
-    case 'twoThirds':
-      return 'w-2/3'
-    case 'threeQuarters':
-      return 'w-3/4'
-    case 'full':
-    default:
-      return 'w-full'
-  }
-}
-
 const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left column: 2/3 width */}
         <div className="lg:col-span-2">
-          <article className="bg-white rounded-2xl shadow-sm p-6">
+          <article className="bg-white rounded-2xl">
             {left?.image ? (
-              <div className={`${getImageWidthClass(left?.imageWidth ?? undefined)} mb-6`}>
-                <Media resource={left.image} className="rounded-xl shadow-sm w-full object-cover" />
+              <div className="mb-6">
+                <Media
+                  resource={left.image}
+                  className="w-full object-cover flex items-center justify-center"
+                />
               </div>
             ) : null}
             {left?.content ? (
@@ -92,10 +81,7 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
                 }
 
                 return (
-                  <div
-                    key={widget.id || `widget-${index}`}
-                    className="bg-white rounded-2xl shadow-sm p-6"
-                  >
+                  <div key={widget.id || `widget-${index}`} className="bg-white rounded-2xl">
                     {widget.title && (
                       <h3 className="mb-4 text-xl font-bold text-gray-900 border-b border-gray-200 pb-2">
                         {widget.title}

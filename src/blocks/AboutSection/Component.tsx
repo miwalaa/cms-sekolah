@@ -29,7 +29,10 @@ export const AboutSection: FC<AboutSectionProps> = ({
           {/* Left column - Image */}
           <div className="flex justify-center lg:justify-start order-1 lg:order-1">
             {leftImage && (
-              <Media resource={leftImage} className="w-full max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[500px] max-h-[250px] sm:max-h-[300px] md:max-h-[400px] lg:max-h-[500px] object-contain rounded-lg" />
+              <Media
+                resource={leftImage}
+                className="w-full max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[500px] max-h-[250px] sm:max-h-[300px] md:max-h-[400px] lg:max-h-[500px] object-contain rounded-lg"
+              />
             )}
           </div>
 
@@ -52,8 +55,7 @@ export const AboutSection: FC<AboutSectionProps> = ({
             {buttonText && buttonLink && (
               <Link
                 href={buttonLink}
-                className="inline-flex items-center gap-2.5 px-6 py-3 text-white rounded-lg font-medium"
-                style={{ backgroundColor: '#f1ac44' }}
+                className="inline-flex items-center gap-2.5 px-6 py-3 text-white rounded-lg font-medium bg-saffron hover:bg-[#e19b33] transition-colors duration-200"
               >
                 <i className="fa-brands fa-whatsapp text-2xl"></i>
                 <span>{buttonText}</span>

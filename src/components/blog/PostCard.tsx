@@ -32,7 +32,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   }
 
   return (
-    <article className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <article className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
       {/* Featured Image */}
       <div className="relative w-full h-48 md:h-72 lg:h-72 xl:h-96 overflow-hidden bg-gray-100">
         {featuredImage && typeof featuredImage !== 'string' ? (
@@ -106,7 +106,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         {/* Read More Button */}
         <Link
           href={href}
-          className="inline-flex items-center px-4 py-2 bg-blue-900 text-white text-sm font-medium rounded-md hover:bg-blue-800 transition-colors duration-200"
+          className="inline-flex items-center px-4 py-2 bg-blue-800 text-white text-sm font-medium rounded-md hover:bg-blue-900 transition-colors duration-200"
         >
           Read More
           <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

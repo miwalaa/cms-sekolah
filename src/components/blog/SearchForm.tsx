@@ -24,7 +24,7 @@ export const SearchForm: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search posts..."
-            className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-800 focus:border-transparent"
+            className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-saffron focus:border-transparent"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
             <svg
@@ -45,7 +45,7 @@ export const SearchForm: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full px-4 py-2 bg-blue-800 text-white text-sm font-medium rounded-md hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 transition-colors duration-200"
+          className="w-full px-4 py-2 bg-saffron text-white text-sm font-medium rounded-md hover:bg-[#e19b33] focus:outline-none focus:ring-2 focus:ring-saffron focus:ring-offset-2 transition-colors duration-200"
         >
           Search
         </button>

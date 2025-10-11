@@ -633,7 +633,6 @@ export interface InfoRegisterBlock {
 export interface TentangBlock {
   left?: {
     image?: (number | null) | Media;
-    imageWidth?: ('full' | 'threeQuarters' | 'twoThirds' | 'half') | null;
     content?: {
       root: {
         type: string;
@@ -1244,7 +1243,6 @@ export interface TentangBlockSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
-        imageWidth?: T;
         content?: T;
       };
   right?:

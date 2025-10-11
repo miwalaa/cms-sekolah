@@ -54,13 +54,13 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, parentPath = '', lev
           >
             <Link
               href={href}
-              className="flex items-center justify-between  w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:text-white hover:bg-yellow-500 rounded-md transition-colors"
+              className="flex items-center justify-between  w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:text-white hover:bg-saffron rounded-md transition-colors duration-200"
               target={item.link?.newTab ? '_blank' : undefined}
               rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
             >
               <span>{item.link?.label || 'Untitled'}</span>
               {hasChildren && (
-                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-yellow-500 transition-transform duration-200" />
+                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-saffron transition-transform duration-200" />
               )}
             </Link>
 
