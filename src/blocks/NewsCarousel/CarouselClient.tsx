@@ -41,9 +41,10 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
     <div className="relative">
       <Swiper
         modules={[Autoplay, Pagination]}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
         loop
         spaceBetween={30}
+        grabCursor={true}
         breakpoints={{
           0: { slidesPerView: 1 },
           768: { slidesPerView: 2 },
@@ -60,7 +61,13 @@ export const CarouselClient: React.FC<CarouselClientProps> = ({ posts }) => {
             swiper.pagination.update()
           }
         }}
-        className="pb-4"
+        className="pb-4 cursor-grab active:cursor-grabbing"
+        style={{
+          '--swiper-theme-color': '#F1AC44',
+          '--swiper-pagination-bullet-inactive-color': '#E5E7EB',
+          '--swiper-pagination-bullet-inactive-opacity': 1,
+          '--swiper-pagination-bullet-horizontal-gap': '6px',
+        } as React.CSSProperties}
       >
         {posts.map((post, idx) => {
           const metaImage = post.meta?.image

@@ -100,6 +100,9 @@ export const ContactAndFAQ: Block = {
       ],
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }
 
 export default ContactAndFAQ

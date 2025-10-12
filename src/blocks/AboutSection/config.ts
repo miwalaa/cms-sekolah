@@ -35,4 +35,7 @@ export const AboutSection: Block = {
       },
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }

@@ -100,12 +100,18 @@ export default function ContactAndFAQComponent(props: Props) {
           const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'your_public_key'
 
           // Prepare the template parameters
+          // Prepare the template parameters
           const templateParams = {
             from_name: data.fullName,
             from_email: data.email,
             phone: data.phone,
             message: data.message,
             to_email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'your-default@email.com',
+            timestamp: new Date().toLocaleString('id-ID', {
+              dateStyle: 'full',
+              timeStyle: 'short',
+              timeZone: 'Asia/Jakarta',
+            }),
           }
 
           // Send email using EmailJS

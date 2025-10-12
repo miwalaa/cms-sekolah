@@ -41,4 +41,7 @@ export const MapBlock: Block = {
       defaultValue: 'PKBM Pemuda Pelopor - Sekolah Kesetaraan Sukabumi',
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }

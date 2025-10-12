@@ -48,7 +48,7 @@ const InfoRegisterBlock: React.FC<Props> = ({
                   href={buttonHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center md:justify-between gap-2 md:gap-3 rounded-full bg-white px-4 md:px-5 py-2.5 md:py-3 font-semibold text-saffron text-base md:text-lg lg:text-2xl md:w-auto"
+                  className="inline-flex items-center justify-center md:justify-between gap-2 md:gap-3 rounded-full bg-white px-3 md:px-5 py-2 font-semibold text-saffron text-base md:text-lg lg:text-2xl md:w-auto"
                   aria-label={`${buttonLabel} link`}
                 >
                   <span className="whitespace-nowrap">{buttonLabel}</span>

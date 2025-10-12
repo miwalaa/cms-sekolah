@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
       <div className="text-center px-4">
-        <p className="text-base font-semibold text-brand">404</p>
+        <p className="text-base font-semibold text-saffron">404</p>
         <h1 className="mt-4 text-5xl font-semibold tracking-tight text-balance sm:text-7xl">
           Halaman tidak ditemukan
         </h1>

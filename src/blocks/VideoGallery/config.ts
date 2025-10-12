@@ -43,6 +43,6 @@ export const VideoGallery: Block = {
     },
   ],
   admin: {
-    group: 'Gallery Blocks',
+    group: 'Halaman Galeri Video',
   },
 }

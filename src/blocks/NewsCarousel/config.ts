@@ -32,4 +32,7 @@ export const NewsCarousel: Block = {
       },
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }

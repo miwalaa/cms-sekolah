@@ -67,4 +67,7 @@ export const Specialities: Block = {
       },
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }

@@ -30,4 +30,7 @@ export const InfoRegisterBlock: Block = {
       defaultValue: 'Whatsapp',
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }
