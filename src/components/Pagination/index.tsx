@@ -1,3 +1,8 @@
+// Export the new BlogPagination component
+export { BlogPagination } from './BlogPagination'
+export type { BlogPaginationProps } from './BlogPagination'
+
+// Keep the old Pagination component for backward compatibility
 'use client'
 import {
   Pagination as PaginationComponent,

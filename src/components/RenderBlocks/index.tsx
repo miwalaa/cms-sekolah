@@ -21,14 +21,16 @@ export const RenderBlocks: React.FC<{
     return (
       <Fragment>
         {blocks.map((block, index) => {
-          const { blockType } = block
+          const { blockType, id } = block
+          // Use block.id as primary key, fallback to blockType-index for safety
+          const uniqueKey = id || `${blockType}-${index}`
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType as keyof typeof blockComponents]
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className="my-16" key={uniqueKey}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

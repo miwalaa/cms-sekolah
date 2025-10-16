@@ -7,6 +7,7 @@ import { AboutSection } from '../../blocks/AboutSection/config'
 import { Specialities } from '../../blocks/Specialities/config'
 import { NewsCarousel } from '../../blocks/NewsCarousel/config'
 import { ContactAndFAQ } from '../../blocks/ContactAndFAQ/config'
+import { ContactBlock } from '../../blocks/ContactBlock/config'
 import { GalleryBlock } from '../../blocks/GalleryBlock/config'
 import { MapBlock } from '../../blocks/MapBlock/config'
 import { InfoRegisterBlock } from '../../blocks/InfoRegisterBlock/config'
@@ -86,6 +87,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 Specialities,
                 NewsCarousel,
                 ContactAndFAQ,
+                ContactBlock,
                 GalleryBlock,
                 MapBlock,
                 InfoRegisterBlock,
