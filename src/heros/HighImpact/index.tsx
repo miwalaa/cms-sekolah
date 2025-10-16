@@ -6,9 +6,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ highImpactMedia, title 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[70vh] lg:min-h-[60vh] [@media(orientation:landscape)_and_(max-width:1023px)]:min-h-[100vh]">
       {/* Image Slider - Full width and height */}
-      <div className="absolute inset-0 z-0 w-full h-full">
-        {highImpactMedia && highImpactMedia.length > 0 && <ImageSlider media={highImpactMedia} />}
-        <div className="absolute inset-0 bg-black/70 z-10" />
+      <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 z-0">
+          {highImpactMedia && highImpactMedia.length > 0 && <ImageSlider media={highImpactMedia} />}
+        </div>
+        <div className="absolute inset-0 bg-black/70 z-[5] pointer-events-none" />
       </div>
 
       {/* Content - Positioned above the slider */}
@@ -18,7 +20,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ highImpactMedia, title 
       >
         <div className="container">
           <div
-            className="mx-auto max-w-[36.5rem] text-center"
+            className="mx-auto max-w-[45rem] text-center"
             style={{ pointerEvents: 'auto' }} // Re-enable pointer events for interactive elements
           >
             {title && <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">{title}</h1>}

@@ -161,6 +161,7 @@ export interface Page {
     | SpecialitiesBlock
     | NewsCarousel
     | ContactAndFAQ
+    | ContactBlock
     | GalleryBlock
     | MapBlock
     | InfoRegisterBlock
@@ -232,7 +233,13 @@ export interface MediaBlock {
  * via the `definition` "AboutSection".
  */
 export interface AboutSection {
+  /**
+   * Recommended size: 800x600px
+   */
   leftImage: number | Media;
+  /**
+   * Optional subtitle text
+   */
   subtitle?: string | null;
   title: string;
   description?: {
@@ -358,6 +365,51 @@ export interface ContactAndFAQ {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  title: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  formTitle: string;
+  showAddress?: boolean | null;
+  showPhone?: boolean | null;
+  showEmail?: boolean | null;
+  address?: string | null;
+  phoneNumber?: string | null;
+  emailAddress?: string | null;
+  formPlaceholders?: {
+    name?: string | null;
+    email?: string | null;
+    message?: string | null;
+    submit?: string | null;
+  };
+  socialMedia?:
+    | {
+        platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok' | 'github';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "GalleryBlock".
  */
 export interface GalleryBlock {
@@ -441,8 +493,7 @@ export interface TentangBlock {
   right?: {
     widgets?:
       | {
-          type: 'menu';
-          title?: string | null;
+          title: string;
           items?:
             | {
                 label: string;
@@ -460,10 +511,7 @@ export interface TentangBlock {
                       } | null);
                   url?: string | null;
                 };
-                /**
-                 * Optional Font Awesome icon name (e.g., fa-solid fa-user)
-                 */
-                icon?: string | null;
+                image: number | Media;
                 id?: string | null;
               }[]
             | null;
@@ -845,6 +893,7 @@ export interface PagesSelect<T extends boolean = true> {
         specialities?: T | SpecialitiesBlockSelect<T>;
         newsCarousel?: T | NewsCarouselSelect<T>;
         contactAndFAQ?: T | ContactAndFAQSelect<T>;
+        contactBlock?: T | ContactBlockSelect<T>;
         galleryBlock?: T | GalleryBlockSelect<T>;
         mapBlock?: T | MapBlockSelect<T>;
         infoRegisterBlock?: T | InfoRegisterBlockSelect<T>;
@@ -943,6 +992,38 @@ export interface ContactAndFAQSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  formTitle?: T;
+  showAddress?: T;
+  showPhone?: T;
+  showEmail?: T;
+  address?: T;
+  phoneNumber?: T;
+  emailAddress?: T;
+  formPlaceholders?:
+    | T
+    | {
+        name?: T;
+        email?: T;
+        message?: T;
+        submit?: T;
+      };
+  socialMedia?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "GalleryBlock_select".
  */
 export interface GalleryBlockSelect<T extends boolean = true> {
@@ -1000,7 +1081,6 @@ export interface TentangBlockSelect<T extends boolean = true> {
         widgets?:
           | T
           | {
-              type?: T;
               title?: T;
               items?:
                 | T
@@ -1014,7 +1094,7 @@ export interface TentangBlockSelect<T extends boolean = true> {
                           reference?: T;
                           url?: T;
                         };
-                    icon?: T;
+                    image?: T;
                     id?: T;
                   };
               id?: T;

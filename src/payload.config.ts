@@ -5,7 +5,6 @@ import { supabaseAdapter } from './utilities/supabaseStorageAdapter'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
-import type { CustomComponent } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
@@ -18,7 +17,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import AdminLogo from './components/AdminLogo/AdminLogo'
+import { AdminLogo } from './components/AdminLogo/AdminLogo'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +26,7 @@ export default buildConfig({
   admin: {
     components: {
       graphics: {
-        Logo: AdminLogo as unknown as CustomComponent,
+        Logo: AdminLogo as any,
       },
     },
     importMap: {
