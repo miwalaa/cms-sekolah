@@ -1,9 +1,5 @@
-// Export the new BlogPagination component
-export { BlogPagination } from './BlogPagination'
-export type { BlogPaginationProps } from './BlogPagination'
-
-// Keep the old Pagination component for backward compatibility
 'use client'
+
 import {
   Pagination as PaginationComponent,
   PaginationContent,
@@ -16,6 +12,12 @@ import {
 import { cn } from '@/utilities/ui'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+
+// Export the new BlogPagination component
+export { BlogPagination } from './BlogPagination'
+export type { BlogPaginationProps } from './BlogPagination'
+
+// Keep the old Pagination component for backward compatibility
 
 export const Pagination: React.FC<{
   className?: string

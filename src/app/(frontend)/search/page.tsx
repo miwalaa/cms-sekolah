@@ -117,7 +117,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               </div>
               {query && (
                 <p className="text-lg text-gray-200">
-                  Showing results for: <span className="font-semibold text-white">"{query}"</span>
+                  Showing results for: <span className="font-semibold text-white">&ldquo;{query}&rdquo;</span>
                 </p>
               )}
             </div>
