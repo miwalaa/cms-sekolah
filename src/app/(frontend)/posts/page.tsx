@@ -1,6 +1,6 @@
 import type { Metadata } from 'next/types'
 
-import { Pagination } from '@/components/Pagination'
+import { BlogPagination } from '@/components/Pagination/BlogPagination'
 import { PostCard, Sidebar } from '@/components/blog'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -8,18 +8,29 @@ import React from 'react'
 import PageClient from './page.client'
 import { Media } from '@/components/Media'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 export const revalidate = 600
 
-export default async function Page() {
+type Args = {
+  searchParams: Promise<{
+    page?: string
+  }>
+}
+
+export default async function Page({ searchParams: searchParamsPromise }: Args) {
   try {
+    const { page: pageParam } = await searchParamsPromise
+    const currentPage = Number(pageParam) || 1
+    const postsPerPage = 6
+
     const payload = await getPayload({ config: configPromise })
 
-    // Fetch posts with more fields for the new layout
+    // Fetch posts with pagination
     const posts = await payload.find({
       collection: 'posts',
       depth: 2, // Increased depth to get populated authors and categories
-      limit: 12,
+      limit: postsPerPage,
+      page: currentPage,
       overrideAccess: false,
       sort: '-publishedAt', // Sort by published date descending
     })
@@ -112,8 +123,12 @@ export default async function Page() {
 
               {/* Pagination at the bottom of posts */}
               <div className="mt-12">
-                {posts.totalPages && posts.totalPages > 1 && posts.page && (
-                  <Pagination page={posts.page} totalPages={posts.totalPages} />
+                {posts.totalPages && posts.totalPages > 1 && (
+                  <BlogPagination
+                    currentPage={currentPage}
+                    totalPages={posts.totalPages}
+                    basePath="/posts"
+                  />
                 )}
               </div>
             </div>
