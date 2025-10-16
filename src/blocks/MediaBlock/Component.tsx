@@ -1,3 +1,5 @@
+'use client'
+
 import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/ui'
@@ -7,6 +9,7 @@ import RichText from '@/components/RichText'
 import type { MediaBlock as MediaBlockProps } from '@/payload-types'
 
 import { Media } from '../../components/Media'
+import { motion } from 'framer-motion'
 
 type Props = MediaBlockProps & {
   breakout?: boolean
@@ -33,7 +36,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
   if (media && typeof media === 'object') caption = media.caption
 
   return (
-    <div
+    <motion.div
       className={cn(
         '',
         {
@@ -41,6 +44,10 @@ export const MediaBlock: React.FC<Props> = (props) => {
         },
         className,
       )}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       {(media || staticImage) && (
         <Media
@@ -62,6 +69,6 @@ export const MediaBlock: React.FC<Props> = (props) => {
           <RichText data={caption} enableGutter={false} />
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }

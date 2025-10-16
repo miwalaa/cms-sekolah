@@ -1,6 +1,9 @@
+'use client'
+
 import React from 'react'
 
 import type { SpecialitiesBlock as SpecialitiesProps } from '@/payload-types'
+import { motion } from 'framer-motion'
 
 type Props = SpecialitiesProps & {
   className?: string
@@ -20,7 +23,13 @@ export const Specialities: React.FC<Props> = (props) => {
   }
 
   return (
-    <div className={`container my-16 ${className || ''}`}>
+    <motion.div
+      className={`container my-16 ${className || ''}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className={`${disableInnerContainer ? '' : 'container'} mx-auto px-4`}>
         {/* Section Title */}
         <div className="text-center mb-12">
@@ -35,9 +44,13 @@ export const Specialities: React.FC<Props> = (props) => {
             const TitleElement = <h3 className="font-bold text-xl text-gray-900">{title}</h3>
 
             return (
-              <div
+              <motion.div
                 key={index}
                 className="w-full h-[360px] flex flex-col justify-center bg-white shadow-[0px_0px_15px_RGBA(0,0,0,0.09)] p-6 sm:p-9 space-y-3 relative overflow-hidden rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: index * 0.1 }}
               >
                 {/* Icon */}
                 {icon && (
@@ -56,11 +69,11 @@ export const Specialities: React.FC<Props> = (props) => {
 
                 {/* Description */}
                 <p className="text-sm text-zinc-500 leading-6">{description}</p>
-              </div>
+              </motion.div>
             )
           })}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

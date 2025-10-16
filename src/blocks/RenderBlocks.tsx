@@ -12,6 +12,7 @@ import GalleryBlockComponent from '@/blocks/GalleryBlock/Component'
 import MapBlockComponent from '@/blocks/MapBlock/Component'
 import InfoRegisterBlock from '@/blocks/InfoRegisterBlock/Component'
 import VideoGalleryBlock from '@/blocks/VideoGallery/Component'
+import ContactBlock from '@/blocks/ContactBlock/Component'
 
 const blockComponents = {
   mediaBlock: MediaBlock,
@@ -24,6 +25,7 @@ const blockComponents = {
   infoRegisterBlock: InfoRegisterBlock,
   tentangBlock: TentangBlock,
   'video-gallery': VideoGalleryBlock,
+  contactBlock: ContactBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -37,7 +39,9 @@ export const RenderBlocks: React.FC<{
     return (
       <Fragment>
         {blocks.map((block, index) => {
-          const { blockType } = block
+          const { blockType, id } = block
+          // Use block.id as primary key, fallback to blockType-index for safety
+          const uniqueKey = id || `${blockType}-${index}`
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType]
@@ -45,9 +49,15 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               const isInfoRegisterBlock = blockType === 'infoRegisterBlock'
               const isMapBlock = blockType === 'mapBlock'
+              const isContactBlock = blockType === 'contactBlock'
 
               return (
-                <div className={isMapBlock ? '' : isInfoRegisterBlock ? '' : 'mt-16'} key={index}>
+                <div
+                  className={
+                    isMapBlock ? '' : isInfoRegisterBlock ? '' : isContactBlock ? '' : 'mt-16'
+                  }
+                  key={uniqueKey}
+                >
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 type Props = {
   className?: string
@@ -18,7 +19,13 @@ const InfoRegisterBlock: React.FC<Props> = ({
   buttonLabel = 'Whatsapp',
 }) => {
   return (
-    <section className={className}>
+    <motion.section
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="container mx-auto px-4 relative top-10">
         <div className="row">
           <div className="col-lg-12">
@@ -61,7 +68,7 @@ const InfoRegisterBlock: React.FC<Props> = ({
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }
 

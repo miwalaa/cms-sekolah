@@ -1,3 +1,5 @@
+'use client'
+
 import React, { FC } from 'react'
 import Link from 'next/link'
 import { cn } from '@/utilities/cn'
@@ -5,6 +7,7 @@ import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { AboutSection as AboutSectionType } from '@/payload-types'
+import { motion } from 'framer-motion'
 
 type AboutSectionProps = AboutSectionType & {
   className?: string
@@ -23,7 +26,13 @@ export const AboutSection: FC<AboutSectionProps> = ({
   disableInnerContainer = false,
 }) => {
   return (
-    <div className={cn('container my-16', className)}>
+    <motion.div
+      className={cn('container my-16', className)}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className={cn({ container: !disableInnerContainer })}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left column - Image */}
@@ -64,6 +73,6 @@ export const AboutSection: FC<AboutSectionProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

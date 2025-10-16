@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import emailjs from '@emailjs/browser'
 import type { ContactAndFAQ as ContactAndFAQType } from '@/payload-types'
 import { ContactForm, Accordion } from './components'
+import { motion } from 'framer-motion'
 
 export type Props = {
   formSubtitle?: string
@@ -155,7 +156,13 @@ export default function ContactAndFAQComponent(props: Props) {
   )
 
   return (
-    <section className={className}>
+    <motion.section
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Left: Form */}
@@ -202,6 +209,6 @@ export default function ContactAndFAQComponent(props: Props) {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

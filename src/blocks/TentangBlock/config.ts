@@ -61,28 +61,15 @@ export const TentangBlock: Block = {
           labels: { singular: 'Widget', plural: 'Widgets' },
           fields: [
             {
-              name: 'type',
-              type: 'select',
-              dbName: 'typ',
-              required: true,
-              defaultValue: 'menu',
-              options: [{ label: 'Menu', value: 'menu' }],
-            },
-            {
               name: 'title',
               type: 'text',
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'menu',
-              },
+              required: true,
             },
             {
               name: 'items',
               type: 'array',
               dbName: 'itm',
               labels: { singular: 'Item', plural: 'Items' },
-              admin: {
-                condition: (_, siblingData) => siblingData?.type === 'menu',
-              },
               fields: [
                 {
                   name: 'label',
@@ -107,12 +94,10 @@ export const TentangBlock: Block = {
                   },
                 }),
                 {
-                  name: 'icon',
-                  type: 'text',
-                  required: false,
-                  admin: {
-                    description: 'Optional Font Awesome icon name (e.g., fa-solid fa-user)',
-                  },
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
                 },
               ],
             },

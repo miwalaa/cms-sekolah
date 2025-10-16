@@ -1,7 +1,10 @@
+'use client'
+
 import React from 'react'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import type { GalleryBlock as GalleryBlockType, Media as MediaType } from '@/payload-types'
+import { motion } from 'framer-motion'
 
 export type Props = {
   subtitle?: string
@@ -18,7 +21,13 @@ export default function GalleryBlockComponent(props: Props) {
   const { subtitle = 'Dokumentasi', title = 'Galeri Kegiatan', items = [], className } = props
 
   return (
-    <section className={className}>
+    <motion.section
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mx-auto mb-12 max-w-3xl text-center">
@@ -39,7 +48,14 @@ export default function GalleryBlockComponent(props: Props) {
             const hasDesc = !!item?.description
 
             return (
-              <div key={idx} className="col-lg-4 col-md-6 mb-8 w-full px-4 md:w-1/2 lg:w-1/3">
+              <motion.div
+                key={idx}
+                className="col-lg-4 col-md-6 mb-8 w-full px-4 md:w-1/2 lg:w-1/3"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: 'easeOut', delay: idx * 0.1 }}
+              >
                 <div className="relative group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
                   {/* Card content */}
                   <div>
@@ -80,11 +96,11 @@ export default function GalleryBlockComponent(props: Props) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )
           })}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

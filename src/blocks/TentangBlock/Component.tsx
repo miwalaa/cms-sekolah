@@ -1,50 +1,29 @@
+// src/blocks/TentangBlock/Component.tsx
 'use client'
 
 import React from 'react'
-import type { Page, Post } from '@/payload-types'
+import type { Page, Post, Media as MediaType } from '@/payload-types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { TentangBlock as TentangBlockType } from '@/payload-types'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
 
-// Define the reference type expected by CMSLink
-type CMSLinkReference = {
+// Type guard for CMSLink reference
+const isCMSLinkReference = (
+  ref: unknown,
+): ref is {
   relationTo: 'pages' | 'posts'
   value: string | number | Page | Post
-}
-
-// Type guard to check if an object is a valid reference
-const isCMSLinkReference = (ref: unknown): ref is CMSLinkReference => {
+} => {
+  if (!ref || typeof ref !== 'object') return false
   const r = ref as Record<string, unknown>
-  return (
-    typeof r === 'object' &&
-    r !== null &&
-    'relationTo' in r &&
-    (r.relationTo === 'pages' || r.relationTo === 'posts') &&
-    'value' in r
-  )
+  return 'relationTo' in r && (r.relationTo === 'pages' || r.relationTo === 'posts') && 'value' in r
 }
 
-// Define the widget item type
-type WidgetItem = {
-  id?: string | null
-  label?: string | null
-  link?: {
-    type?: 'reference' | 'custom' | null
-    url?: string | null
-    reference?: CMSLinkReference | null
-    newTab?: boolean | null
-  } | null
-  icon?: string | null
-}
-
-// Define the widget type
-type Widget = {
-  id?: string | null
-  type: string
-  title?: string | null
-  items?: WidgetItem[] | null
+// Type guard for MediaType
+const isMediaType = (item: unknown): item is MediaType => {
+  return typeof item === 'object' && item !== null && 'id' in item && 'url' in item
 }
 
 const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
@@ -54,20 +33,20 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
         {/* Left column: 2/3 width */}
         <div className="lg:col-span-2">
           <article className="bg-white rounded-2xl">
-            {left?.image ? (
+            {left?.image && (
               <div className="mb-6">
                 <Media
                   resource={left.image}
                   className="w-full object-cover flex items-center justify-center"
                 />
               </div>
-            ) : null}
-            {left?.content ? (
+            )}
+            {left?.content && (
               <RichText
                 data={left.content as unknown as DefaultTypedEditorState}
                 className="prose max-w-none prose-headings:font-semibold prose-headings:text-gray-900 prose-p:text-gray-700"
               />
-            ) : null}
+            )}
           </article>
         </div>
 
@@ -75,79 +54,96 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
         <aside className="lg:col-span-1">
           <div className="space-y-8">
             {Array.isArray(right?.widgets) &&
-              right.widgets.map((widget: Widget | null | undefined, index: number) => {
-                if (!widget || widget.type !== 'menu' || !widget.items) {
-                  return null
-                }
-
-                return (
-                  <div key={widget.id || `widget-${index}`} className="bg-white rounded-2xl">
-                    {widget.title && (
-                      <h3 className="mb-4 text-xl font-bold text-gray-900 border-b border-gray-200 pb-2">
-                        {widget.title}
-                      </h3>
-                    )}
-                    {widget.items.length > 0 && (
-                      <ul className="space-y-2">
-                        {widget.items.map((item, itemIndex) => {
-                          if (!item?.link) return null
-
-                          const hrefProps = item.link
-                          const linkType = hrefProps.type || 'custom'
-                          const url = hrefProps.url || '#'
-                          const newTab = hrefProps.newTab || false
-
-                          // Handle reference safely
-                          let reference:
-                            | { relationTo: 'pages' | 'posts'; value: string }
-                            | undefined
-
-                          if (hrefProps.reference) {
-                            if (isCMSLinkReference(hrefProps.reference)) {
-                              reference = {
-                                relationTo: hrefProps.reference.relationTo,
-                                value: String(hrefProps.reference.value),
-                              }
-                            } else {
-                              const ref = hrefProps.reference as Record<string, unknown>
-                              if (ref && typeof ref === 'object' && 'value' in ref) {
-                                reference = {
-                                  relationTo: 'pages',
-                                  value: String(ref.value),
-                                }
-                              } else {
-                                reference = {
-                                  relationTo: 'pages',
-                                  value: String(hrefProps.reference),
-                                }
-                              }
-                            }
-                          }
-
-                          return (
-                            <li key={item.id || `item-${itemIndex}`}>
-                              <CMSLink
-                                className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
-                                type={linkType}
-                                url={url}
-                                reference={reference}
-                                newTab={newTab}
-                              >
-                                {item.icon && (
-                                  <span className="w-5 h-5 flex items-center justify-center">
-                                    <i className={item.icon} />
-                                  </span>
-                                )}
-                                <span>{item.label}</span>
-                              </CMSLink>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    )}
-                  </div>
+              right.widgets
+                .filter(
+                  (widget): widget is NonNullable<typeof widget> =>
+                    widget !== null &&
+                    widget !== undefined &&
+                    (!('type' in widget) || widget.type === 'menu'),
                 )
-              })}
+                .map((widget, index) => {
+                  const widgetKey = `widget-${widget.id || `index-${index}`}`
+
+                  return (
+                    <div
+                      key={widgetKey}
+                      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+                    >
+                      {'title' in widget && widget.title && (
+                        <h3 
+                          className="mb-4 text-xl font-bold text-gray-900 border-b border-gray-200 pb-2"
+                        >
+                          {widget.title}
+                        </h3>
+                      )}
+
+                      {'items' in widget &&
+                        Array.isArray(widget.items) &&
+                        widget.items.length > 0 && (
+                          <ul className="space-y-2">
+                            {widget.items
+                              .filter(
+                                (item): item is NonNullable<typeof item> & { link?: any } =>
+                                  item !== null && item !== undefined && item.link !== undefined,
+                              )
+                              .map((item, itemIndex) => {
+                                const itemKey = `item-${item.id || `index-${itemIndex}`}`
+                                const hrefProps = item.link
+                                const linkType = hrefProps?.type || 'custom'
+                                const url = hrefProps?.url || '#'
+                                const newTab = hrefProps?.newTab || false
+
+                                let reference:
+                                  | { relationTo: 'pages' | 'posts'; value: string }
+                                  | undefined
+
+                                if (hrefProps?.reference) {
+                                  if (isCMSLinkReference(hrefProps.reference)) {
+                                    reference = {
+                                      relationTo: hrefProps.reference.relationTo,
+                                      value: String(hrefProps.reference.value),
+                                    }
+                                  } else {
+                                    const ref = hrefProps.reference as Record<string, unknown>
+                                    if (ref && typeof ref === 'object' && 'value' in ref) {
+                                      reference = {
+                                        relationTo: 'pages',
+                                        value: String(ref.value),
+                                      }
+                                    }
+                                  }
+                                }
+
+                                return (
+                                  <li key={itemKey}>
+                                    <CMSLink
+                                      className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
+                                      type={linkType}
+                                      url={url}
+                                      reference={reference}
+                                      newTab={newTab}
+                                    >
+                                      {isMediaType(item.image) ? (
+                                        <Media 
+                                          resource={item.image} 
+                                        />
+                                      ) : (
+                                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                                          <span className="text-gray-500">?</span>
+                                        </div>
+                                      )}
+                                      {'label' in item && item.label && (
+                                        <span>{item.label}</span>
+                                      )}
+                                    </CMSLink>
+                                  </li>
+                                )
+                              })}
+                          </ul>
+                        )}
+                    </div>
+                  )
+                })}
           </div>
         </aside>
       </div>
