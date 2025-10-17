@@ -1,13 +1,32 @@
 /**
  * Script to check for duplicate block IDs in the pages collection
- * Run with: node scripts/check-duplicate-block-ids.js
+ * Run with: pnpm exec tsx scripts/check-duplicate-block-ids.js
  */
 
-import { getPayload } from 'payload'
-import config from '../src/payload.config.js'
+import { config as dotenvConfig } from 'dotenv'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+// Get directory name for ES modules
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+// Load environment variables FIRST before importing payload config
+const envPath = resolve(__dirname, '../.env')
+console.log('Loading .env from:', envPath)
+const result = dotenvConfig({ path: envPath })
+if (result.error) {
+  console.error('Error loading .env:', result.error)
+  process.exit(1)
+}
+console.log('✅ Environment variables loaded')
+
+// NOW import payload after env vars are loaded
+const { getPayload } = await import('payload')
+const { default: config } = await import('../src/payload.config.ts')
 
 async function checkDuplicateBlockIds() {
-  console.log('🔍 Checking for duplicate block IDs in pages collection...\n')
+  console.log('\n🔍 Checking for duplicate block IDs in pages collection...\n')
 
   const payload = await getPayload({ config })
 

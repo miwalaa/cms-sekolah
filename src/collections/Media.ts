@@ -8,7 +8,10 @@ import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+// Only create Supabase client if env vars are available
+const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
+  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+  : null
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -42,6 +45,10 @@ export const Media: CollectionConfig = {
     afterDelete: [
       async ({ doc }) => {
         if (!doc?.filename) return
+        if (!supabase) {
+          console.warn('Supabase client not initialized, skipping file deletion')
+          return
+        }
 
         const { error } = await supabase.storage
           .from('payload-uploads') // ganti dengan bucket kamu

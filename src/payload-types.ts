@@ -156,7 +156,6 @@ export interface Page {
     mediumImpactMedia?: (number | null) | Media;
   };
   layout: (
-    | MediaBlock
     | AboutSection
     | SpecialitiesBlock
     | NewsCarousel
@@ -217,16 +216,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -888,7 +877,6 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        mediaBlock?: T | MediaBlockSelect<T>;
         aboutSection?: T | AboutSectionSelect<T>;
         specialities?: T | SpecialitiesBlockSelect<T>;
         newsCarousel?: T | NewsCarouselSelect<T>;
@@ -913,15 +901,6 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock_select".
- */
-export interface MediaBlockSelect<T extends boolean = true> {
-  media?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1528,6 +1507,16 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

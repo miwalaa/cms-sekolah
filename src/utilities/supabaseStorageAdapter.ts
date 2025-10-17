@@ -1,18 +1,25 @@
 import type { Adapter } from '@payloadcms/plugin-cloud-storage/types'
 import { createClient } from '@supabase/supabase-js'
 
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+// Only throw error if not running in script mode
+const isScriptMode = process.argv.some(arg => arg.includes('scripts/'))
+
+if (!isScriptMode && (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY)) {
   throw new Error(
     'Missing required environment variables: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY',
   )
 }
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY 
+  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+  : null
 
 export const supabaseAdapter: Adapter = ({ prefix }) => {
   return {
     name: 'supabase',
     handleUpload: async ({ data, file }) => {
+      if (!supabase) throw new Error('Supabase client not initialized')
+      
       const bucket = process.env.SUPABASE_BUCKET || 'uploads'
       const filePath = prefix ? `${prefix}/${file.filename}` : file.filename
 
@@ -27,6 +34,8 @@ export const supabaseAdapter: Adapter = ({ prefix }) => {
       data.url = `${process.env.SUPABASE_URL}/storage/v1/object/public/${bucket}/${filePath}`
     },
     handleDelete: async ({ doc }) => {
+      if (!supabase) throw new Error('Supabase client not initialized')
+      
       const bucket = process.env.SUPABASE_BUCKET || 'uploads'
       const filePath = prefix ? `${prefix}/${doc.filename}` : doc.filename
 
@@ -39,6 +48,8 @@ export const supabaseAdapter: Adapter = ({ prefix }) => {
       return `${process.env.SUPABASE_URL}/storage/v1/object/public/${bucket}/${filePath}`
     },
     staticHandler: async (req, { params }) => {
+      if (!supabase) return new Response(null, { status: 503 })
+      
       const { filename } = params
       const bucket = process.env.SUPABASE_BUCKET || 'uploads'
       const filePath = prefix ? `${prefix}/${filename}` : filename

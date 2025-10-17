@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { AboutSection } from '../../blocks/AboutSection/config'
 import { Specialities } from '../../blocks/Specialities/config'
 import { NewsCarousel } from '../../blocks/NewsCarousel/config'
@@ -82,7 +81,6 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                MediaBlock,
                 AboutSection,
                 Specialities,
                 NewsCarousel,

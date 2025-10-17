@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import ImageSlider from '@/components/ImageSlider'
 import type { Page } from '@/payload-types'

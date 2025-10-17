@@ -36,7 +36,7 @@ export default function MapBlockComponent({
     async function initMap() {
       try {
         const leaflet = await import('leaflet')
-        const L = leaflet.default || leaflet as typeof LeafletNamespace
+        const L = leaflet.default || (leaflet as typeof LeafletNamespace)
 
         // Load Leaflet CSS via JS (fallback if not globally imported)
         const id = 'leaflet-css-injector'
@@ -52,16 +52,15 @@ export default function MapBlockComponent({
 
         if (!isMounted || !mapContainerRef.current) return
 
-        // Fix default marker icons when bundling
-        const DefaultIcon: LeafletIcon = L.icon({
+        // Delete the default icon to force re-creation
+        delete (L.Icon.Default.prototype as any)._getIconUrl
+
+        // Fix default marker icons when bundling - set imagePath
+        L.Icon.Default.mergeOptions({
           iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
           iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
           shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
         })
-        // Assign default icon for markers
-        ;(L as typeof LeafletNamespace).Marker.prototype.options.icon = DefaultIcon
 
         // Initialize map if not already created
         if (!mapRef.current) {
@@ -101,8 +100,12 @@ export default function MapBlockComponent({
                 e.preventDefault()
                 setOverlayMessage('Use Ctrl + scroll to zoom the map')
                 setOverlayVisible(true)
-                if (overlayHideTimeoutRef.current) window.clearTimeout(overlayHideTimeoutRef.current)
-                overlayHideTimeoutRef.current = window.setTimeout(() => setOverlayVisible(false), 2000)
+                if (overlayHideTimeoutRef.current)
+                  window.clearTimeout(overlayHideTimeoutRef.current)
+                overlayHideTimeoutRef.current = window.setTimeout(
+                  () => setOverlayVisible(false),
+                  2000,
+                )
               }
             }
 
