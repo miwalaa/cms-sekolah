@@ -1,43 +1,76 @@
+// src/collections/Posts/hooks/revalidatePost.ts
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
-
-import type { Post } from '../../../payload-types'
-
-export const revalidatePost: CollectionAfterChangeHook<Post> = ({
+/**
+ * Revalidate post after change
+ */
+export const revalidatePostAfterChange: CollectionAfterChangeHook = async ({
   doc,
-  previousDoc,
-  req: { payload, context },
+  req,
+  operation,
 }) => {
-  if (!context.disableRevalidate) {
-    if (doc._status === 'published') {
-      const path = `/posts/${doc.slug}`
+  const revalidateUrl = process.env.NEXT_PUBLIC_SITE_URL
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate`
+    : null
 
-      payload.logger.info(`Revalidating post at path: ${path}`)
-
-      revalidatePath(path)
-      revalidateTag('posts-sitemap')
-    }
-
-    // If the post was previously published, we need to revalidate the old path
-    if (previousDoc._status === 'published' && doc._status !== 'published') {
-      const oldPath = `/posts/${previousDoc.slug}`
-
-      payload.logger.info(`Revalidating old post at path: ${oldPath}`)
-
-      revalidatePath(oldPath)
-      revalidateTag('posts-sitemap')
-    }
+  if (!revalidateUrl || !process.env.REVALIDATE_SECRET) {
+    return doc
   }
+
+  try {
+    await fetch(revalidateUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-revalidate-secret': process.env.REVALIDATE_SECRET,
+      },
+      body: JSON.stringify({
+        collection: 'posts',
+        slug: doc.slug || doc.id,
+        operation: operation === 'create' ? 'update' : operation,
+      }),
+    })
+
+    req.payload.logger.info(`✅ Post revalidated: ${doc.slug || doc.id}`)
+  } catch (error) {
+    req.payload.logger.error(`❌ Error revalidating post: ${doc.slug || doc.id}`, error)
+  }
+
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc, req: { context } }) => {
-  if (!context.disableRevalidate) {
-    const path = `/posts/${doc?.slug}`
+/**
+ * Revalidate post after delete
+ */
+export const revalidatePostAfterDelete: CollectionAfterDeleteHook = async ({ doc, req }) => {
+  const revalidateUrl = process.env.NEXT_PUBLIC_SITE_URL
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate`
+    : null
 
-    revalidatePath(path)
-    revalidateTag('posts-sitemap')
+  if (!revalidateUrl || !process.env.REVALIDATE_SECRET) {
+    return doc
+  }
+
+  try {
+    await fetch(revalidateUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-revalidate-secret': process.env.REVALIDATE_SECRET,
+      },
+      body: JSON.stringify({
+        collection: 'posts',
+        slug: doc.slug || doc.id,
+        operation: 'delete',
+      }),
+    })
+
+    req.payload.logger.info(`✅ Post revalidated after deletion: ${doc.slug || doc.id}`)
+  } catch (error) {
+    req.payload.logger.error(
+      `❌ Error revalidating post after deletion: ${doc.slug || doc.id}`,
+      error,
+    )
   }
 
   return doc

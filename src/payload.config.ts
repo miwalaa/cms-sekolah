@@ -6,7 +6,6 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
-
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -56,7 +55,7 @@ export default buildConfig({
       collections: {
         media: {
           adapter: supabaseAdapter,
-          prefix: 'media', // Optional: add a prefix to all file paths
+          prefix: 'media',
         },
       },
     }),

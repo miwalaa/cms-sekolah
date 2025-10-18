@@ -1,12 +1,35 @@
+// src/Footer/hooks/revalidateFooter.ts
 import type { GlobalAfterChangeHook } from 'payload'
 
-import { revalidateTag } from 'next/cache'
+/**
+ * Revalidate all pages when footer changes
+ */
+export const revalidateFooterAfterChange: GlobalAfterChangeHook = async ({ doc, req }) => {
+  const revalidateUrl = process.env.NEXT_PUBLIC_SITE_URL
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate`
+    : null
 
-export const revalidateFooter: GlobalAfterChangeHook = ({ doc, req: { payload, context } }) => {
-  if (!context.disableRevalidate) {
-    payload.logger.info(`Revalidating footer`)
+  if (!revalidateUrl || !process.env.REVALIDATE_SECRET) {
+    return doc
+  }
 
-    revalidateTag('global_footer')
+  try {
+    await fetch(revalidateUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-revalidate-secret': process.env.REVALIDATE_SECRET,
+      },
+      body: JSON.stringify({
+        collection: 'footer',
+        slug: 'footer',
+        operation: 'update',
+      }),
+    })
+
+    req.payload.logger.info('✅ Footer revalidated')
+  } catch (error) {
+    req.payload.logger.error('❌ Error revalidating footer', error)
   }
 
   return doc
