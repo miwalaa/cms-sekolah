@@ -34,10 +34,10 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
         <div className="lg:col-span-2">
           <article className="bg-white rounded-2xl">
             {left?.image && (
-              <div className="mb-6">
+              <div className="mb-6 overflow-hidden">
                 <Media
                   resource={left.image}
-                  className="w-full object-cover flex items-center justify-center"
+                  className="w-full max-h-[500px] object-cover object-center flex items-center justify-center"
                 />
               </div>
             )}
