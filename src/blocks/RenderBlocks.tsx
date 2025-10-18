@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react'
-
 import type { Page } from '@/payload-types'
-
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { AboutSection } from '@/blocks/AboutSection/Component'
 import { Specialities } from '@/blocks/Specialities/Component'
@@ -32,7 +30,6 @@ export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
 }> = (props) => {
   const { blocks } = props
-
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
   if (hasBlocks) {
@@ -40,24 +37,22 @@ export const RenderBlocks: React.FC<{
       <Fragment>
         {blocks.map((block, index) => {
           const { blockType, id } = block
-          // Use block.id as primary key, fallback to blockType-index for safety
-          const uniqueKey = id || `${blockType}-${index}`
 
           if (blockType && blockType in blockComponents) {
             const Block = blockComponents[blockType]
 
             if (Block) {
+              // Generate a stable key - prefer id, but ensure it exists and is valid
+              const blockKey = id && typeof id === 'string' ? id : `${blockType}-${index}`
+
               const isInfoRegisterBlock = blockType === 'infoRegisterBlock'
               const isMapBlock = blockType === 'mapBlock'
               const isContactBlock = blockType === 'contactBlock'
 
+              const shouldHaveMargin = !isMapBlock && !isInfoRegisterBlock && !isContactBlock
+
               return (
-                <div
-                  className={
-                    isMapBlock ? '' : isInfoRegisterBlock ? '' : isContactBlock ? '' : 'mt-16'
-                  }
-                  key={uniqueKey}
-                >
+                <div className={shouldHaveMargin ? 'mt-16' : ''} key={blockKey}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

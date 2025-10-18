@@ -14,7 +14,7 @@ export const ContactBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
-      defaultValue: 'Get In Touch',
+      defaultValue: 'Hubungi Kami',
       label: 'Title',
     },
     {
@@ -28,7 +28,7 @@ export const ContactBlock: Block = {
       name: 'formTitle',
       type: 'text',
       required: true,
-      defaultValue: 'Send a Message',
+      defaultValue: 'Kirim Pesan',
       label: 'Form Title',
     },
 
@@ -69,6 +69,7 @@ export const ContactBlock: Block = {
       name: 'address',
       type: 'text',
       label: 'Address',
+      defaultValue: 'Cikole, Kec. Cikole, Kota Sukabumi, Jawa Barat',
       admin: {
         condition: (_, siblingData) => siblingData.showAddress,
       },
@@ -77,6 +78,7 @@ export const ContactBlock: Block = {
       name: 'phoneNumber',
       type: 'text',
       label: 'Phone Number',
+      defaultValue: '0857-2326-2812',
       admin: {
         condition: (_, siblingData) => siblingData.showPhone,
       },
@@ -85,6 +87,7 @@ export const ContactBlock: Block = {
       name: 'emailAddress',
       type: 'text',
       label: 'Email Address',
+      defaultValue: 'pkbmpemudapelopor@gmail.com',
       admin: {
         condition: (_, siblingData) => siblingData.showEmail,
       },

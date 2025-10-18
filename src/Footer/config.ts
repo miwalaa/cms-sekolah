@@ -34,16 +34,20 @@ export const Footer: GlobalConfig = {
           name: 'address',
           label: 'Address',
           type: 'text',
+          defaultValue:
+            'Jl. Siliwangi Gg. Kopi No.RT 05/02, Cikole, Kec. Cikole, Kota Sukabumi, Jawa Barat 43113',
         },
         {
           name: 'phone',
           label: 'Phone Number',
           type: 'text',
+          defaultValue: '0857-2326-2812',
         },
         {
           name: 'email',
           label: 'Email',
           type: 'text',
+          defaultValue: 'pkbmpemudapelopor@gmail.com',
         },
       ],
     },
