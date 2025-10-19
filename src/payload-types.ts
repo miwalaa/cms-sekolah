@@ -162,10 +162,12 @@ export interface Page {
     | ContactAndFAQ
     | ContactBlock
     | GalleryBlock
+    | ImageGalleryBlock
     | MapBlock
     | InfoRegisterBlock
     | TentangBlock
     | VideoGallery
+    | VideoSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -432,6 +434,20 @@ export interface GalleryBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageGalleryBlock".
+ */
+export interface ImageGalleryBlock {
+  images: {
+    image: number | Media;
+    title: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageGalleryBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MapBlock".
  */
 export interface MapBlock {
@@ -625,6 +641,23 @@ export interface VideoGallery {
   id?: string | null;
   blockName?: string | null;
   blockType: 'video-gallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoSectionBlock".
+ */
+export interface VideoSectionBlock {
+  /**
+   * Upload a thumbnail image for the video
+   */
+  thumbnail: number | Media;
+  /**
+   * Enter the full YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)
+   */
+  videoUrl: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoSectionBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -884,10 +917,12 @@ export interface PagesSelect<T extends boolean = true> {
         contactAndFAQ?: T | ContactAndFAQSelect<T>;
         contactBlock?: T | ContactBlockSelect<T>;
         galleryBlock?: T | GalleryBlockSelect<T>;
+        imageGalleryBlock?: T | ImageGalleryBlockSelect<T>;
         mapBlock?: T | MapBlockSelect<T>;
         infoRegisterBlock?: T | InfoRegisterBlockSelect<T>;
         tentangBlock?: T | TentangBlockSelect<T>;
         'video-gallery'?: T | VideoGallerySelect<T>;
+        videoSectionBlock?: T | VideoSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1022,6 +1057,21 @@ export interface GalleryBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageGalleryBlock_select".
+ */
+export interface ImageGalleryBlockSelect<T extends boolean = true> {
+  images?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MapBlock_select".
  */
 export interface MapBlockSelect<T extends boolean = true> {
@@ -1096,6 +1146,16 @@ export interface VideoGallerySelect<T extends boolean = true> {
         title?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoSectionBlock_select".
+ */
+export interface VideoSectionBlockSelect<T extends boolean = true> {
+  thumbnail?: T;
+  videoUrl?: T;
   id?: T;
   blockName?: T;
 }

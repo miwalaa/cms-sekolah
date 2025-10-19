@@ -8,10 +8,12 @@ import { NewsCarousel } from '../../blocks/NewsCarousel/config'
 import { ContactAndFAQ } from '../../blocks/ContactAndFAQ/config'
 import { ContactBlock } from '../../blocks/ContactBlock/config'
 import { GalleryBlock } from '../../blocks/GalleryBlock/config'
+import { ImageGalleryBlock } from '../../blocks/ImageGalleryBlock/config'
 import { MapBlock } from '../../blocks/MapBlock/config'
 import { InfoRegisterBlock } from '../../blocks/InfoRegisterBlock/config'
 import { TentangBlock } from '../../blocks/TentangBlock/config'
 import { VideoGallery } from '../../blocks/VideoGallery/config'
+import { VideoSectionBlock } from '../../blocks/VideoSectionBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -87,10 +89,12 @@ export const Pages: CollectionConfig<'pages'> = {
                 ContactAndFAQ,
                 ContactBlock,
                 GalleryBlock,
+                ImageGalleryBlock,
                 MapBlock,
                 InfoRegisterBlock,
                 TentangBlock,
                 VideoGallery,
+                VideoSectionBlock,
               ],
               required: true,
               admin: {

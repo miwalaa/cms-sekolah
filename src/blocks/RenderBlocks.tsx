@@ -7,10 +7,12 @@ import TentangBlock from '@/blocks/TentangBlock/Component'
 import NewsCarouselComponent from '@/blocks/NewsCarousel/Component'
 import ContactAndFAQComponent from '@/blocks/ContactAndFAQ/Component'
 import GalleryBlockComponent from '@/blocks/GalleryBlock/Component'
+import ImageGalleryBlock from '@/blocks/ImageGalleryBlock/Component'
 import MapBlockComponent from '@/blocks/MapBlock/Component'
 import InfoRegisterBlock from '@/blocks/InfoRegisterBlock/Component'
 import VideoGalleryBlock from '@/blocks/VideoGallery/Component'
 import ContactBlock from '@/blocks/ContactBlock/Component'
+import VideoSectionBlock from '@/blocks/VideoSectionBlock/Component'
 
 const blockComponents = {
   mediaBlock: MediaBlock,
@@ -19,11 +21,13 @@ const blockComponents = {
   newsCarousel: NewsCarouselComponent,
   contactAndFAQ: ContactAndFAQComponent,
   galleryBlock: GalleryBlockComponent,
+  imageGalleryBlock: ImageGalleryBlock,
   mapBlock: MapBlockComponent,
   infoRegisterBlock: InfoRegisterBlock,
   tentangBlock: TentangBlock,
   'video-gallery': VideoGalleryBlock,
   contactBlock: ContactBlock,
+  videoSectionBlock: VideoSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{

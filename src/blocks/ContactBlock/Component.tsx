@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import { ContactForm } from './components/ContactForm'
 import { ContactInfo } from './components/ContactInfo'
 import type { SocialMedia } from './components/ContactInfo'
@@ -108,33 +109,53 @@ const ContactBlock: React.FC<ContactBlockProps> = ({
   }
 
   return (
-    <section className="py-16 bg-gray-100">
+    <motion.section
+      className="py-16 bg-gray-100"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Contact Info */}
-          <ContactInfo
-            title={title}
-            description={description}
-            showAddress={showAddress}
-            address={address}
-            showPhone={showPhone}
-            phoneNumber={phoneNumber}
-            showEmail={showEmail}
-            emailAddress={emailAddress}
-            socialMedia={socialMedia}
-          />
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+          >
+            <ContactInfo
+              title={title}
+              description={description}
+              showAddress={showAddress}
+              address={address}
+              showPhone={showPhone}
+              phoneNumber={phoneNumber}
+              showEmail={showEmail}
+              emailAddress={emailAddress}
+              socialMedia={socialMedia}
+            />
+          </motion.div>
 
           {/* Right Column - Contact Form */}
-          <ContactForm
-            formTitle={formTitle}
-            formPlaceholders={formPlaceholders}
-            onSubmit={handleFormSubmit}
-            isSubmitting={isSubmitting}
-            submitStatus={submitStatus}
-          />
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.4 }}
+          >
+            <ContactForm
+              formTitle={formTitle}
+              formPlaceholders={formPlaceholders}
+              onSubmit={handleFormSubmit}
+              isSubmitting={isSubmitting}
+              submitStatus={submitStatus}
+            />
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }
 export default ContactBlock

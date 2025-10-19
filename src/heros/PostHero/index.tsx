@@ -1,27 +1,27 @@
-import { formatDateTime } from 'src/utilities/formatDateTime'
 import React from 'react'
 
-import type { Post } from '@/payload-types'
+import type { Post, Media as MediaType } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { formatAuthors } from '@/utilities/formatAuthors'
 
 export const PostHero: React.FC<{
   post: Post
-}> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors, publishedAt, title } = post
+  defaultHeroImage?: MediaType | null
+}> = ({ post, defaultHeroImage }) => {
+  const { categories, title } = post
 
-  const hasAuthors =
-    populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
+  // Use hero-3.png as default, fallback to post's heroImage if default not available
+  const displayImage =
+    defaultHeroImage || (post.heroImage && typeof post.heroImage !== 'string' ? post.heroImage : null)
 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[70vh] lg:min-h-[60vh] [@media(orientation:landscape)_and_(max-width:1023px)]:min-h-[100vh]">
       {/* Hero Image Background */}
       <div className="absolute inset-0 z-0 w-full h-full">
         <div className="relative w-full h-full overflow-hidden">
-          {heroImage && typeof heroImage !== 'string' ? (
+          {displayImage ? (
             <Media
-              resource={heroImage}
+              resource={displayImage}
               className="absolute inset-0 w-full h-full"
               imgClassName="object-cover w-full h-full select-none"
               fill
@@ -60,26 +60,6 @@ export const PostHero: React.FC<{
 
           {/* Title */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">{title}</h1>
-
-          {/* Author and Date */}
-          <div className="flex flex-wrap items-center gap-6 text-gray-200">
-            {hasAuthors && (
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-gray-300">
-                  <i className="fa-solid fa-user"></i>
-                </span>
-                <span>{formatAuthors(populatedAuthors)}</span>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-gray-300">
-                  <i className="fa-solid fa-calendar"></i>
-                </span>
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>

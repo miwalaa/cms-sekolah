@@ -37,15 +37,19 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
               <div className="mb-6 overflow-hidden">
                 <Media
                   resource={left.image}
-                  className="w-full max-h-[500px] object-cover object-center flex items-center justify-center"
+                  className="w-full max-h-[350px] md:max-h-[400px] lg:max-h-[600px] object-cover object-center flex items-center justify-center"
                 />
               </div>
             )}
             {left?.content && (
-              <RichText
-                data={left.content as unknown as DefaultTypedEditorState}
-                className="prose max-w-none prose-headings:font-semibold prose-headings:text-gray-900 prose-p:text-gray-700"
-              />
+              <div>
+                <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-800 hover:prose-a:text-blue-900 prose-strong:text-gray-900 prose-img:rounded-lg">
+                  <RichText
+                    data={left.content as unknown as DefaultTypedEditorState}
+                    enableGutter={false}
+                  />
+                </div>
+              </div>
             )}
           </article>
         </div>

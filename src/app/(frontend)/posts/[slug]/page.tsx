@@ -74,6 +74,17 @@ export default async function Post({ params: paramsPromise }: Args) {
     sort: '-publishedAt',
   })
 
+  // Fetch default hero image (hero-3.png)
+  const {
+    docs: [defaultHeroImage],
+  } = await payload.find({
+    collection: 'media',
+    where: {
+      filename: { equals: 'hero-3.png' },
+    },
+    limit: 1,
+  })
+
   return (
     <article className="pb-16">
       <PageClient />
@@ -83,7 +94,7 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       {draft && <LivePreviewListener />}
 
-      <PostHero post={post} />
+      <PostHero post={post} defaultHeroImage={defaultHeroImage} />
 
       {/* Two-Column Layout: Content + Sidebar */}
       <div className="container max-w-7xl mx-auto mt-12 px-4">
@@ -92,7 +103,7 @@ export default async function Post({ params: paramsPromise }: Args) {
           <div className="lg:col-span-2">
             {/* Featured/Meta Image */}
             {post.heroImage && typeof post.heroImage !== 'string' && (
-              <div className="w-full aspect-video rounded-lg overflow-hidden bg-gray-200 shadow-sm mb-8">
+              <div className="w-full aspect-video rounded-lg overflow-hidden bg-gray-200 shadow-sm mb-6">
                 <Media
                   resource={post.heroImage}
                   className="w-full h-full"
@@ -100,6 +111,48 @@ export default async function Post({ params: paramsPromise }: Args) {
                 />
               </div>
             )}
+
+            {/* Author and Date */}
+            <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-6 border-b border-gray-200">
+              {post.populatedAuthors &&
+                post.populatedAuthors.length > 0 &&
+                (() => {
+                  const authors = post.populatedAuthors
+                    .map((author) => {
+                      if (typeof author === 'object' && author !== null) {
+                        return author.name || 'Unknown'
+                      }
+                      return null
+                    })
+                    .filter(Boolean)
+                    .join(', ')
+
+                  return (
+                    authors && (
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-gray-700">
+                          <i className="fa-solid fa-user"></i>
+                        </span>
+                        <span>{authors}</span>
+                      </div>
+                    )
+                  )
+                })()}
+              {post.publishedAt && (
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-gray-700">
+                    <i className="fa-solid fa-calendar"></i>
+                  </span>
+                  <time dateTime={post.publishedAt}>
+                    {new Date(post.publishedAt).toLocaleDateString('id-ID', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </div>
+              )}
+            </div>
 
             {/* Post Content - Enhanced with better styling */}
             <div className="bg-white rounded-lg mb-8">

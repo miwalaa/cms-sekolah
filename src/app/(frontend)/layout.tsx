@@ -8,6 +8,7 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
+import { TopLoadingBar } from '@/components/TopLoadingBar'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
@@ -28,6 +29,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body suppressHydrationWarning>
+        {/* Global loading indicator */}
+        <TopLoadingBar />
+        
         <AdminBar
           adminBarProps={{
             preview: isEnabled,

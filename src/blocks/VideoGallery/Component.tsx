@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { motion } from 'framer-motion'
 import type { VideoGalleryType, VideoItem } from './types'
 
 export type Props = {
@@ -28,7 +29,13 @@ export default function VideoGalleryBlock(props: Props) {
   }
 
   return (
-    <section className={`container mx-auto px-4 pb-12 ${className || ''}`}>
+    <motion.section
+      className={`container mx-auto px-4 pb-12 ${className || ''}`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {videos.map((video: VideoItem, index: number) => {
           const videoId = getYouTubeId(video.youtubeUrl)
@@ -37,9 +44,10 @@ export default function VideoGalleryBlock(props: Props) {
             return (
               <div
                 key={index}
-                className="rounded-xl border border-red-200 bg-red-50 p-6 text-center"
+                className="rounded-lg border-2 border-red-200 bg-red-50 p-6 text-center"
               >
-                <p className="text-red-600">Invalid YouTube URL</p>
+                <i className="fas fa-exclamation-triangle text-3xl text-red-500 mb-3"></i>
+                <p className="text-red-600 font-semibold">Invalid YouTube URL</p>
                 <p className="text-sm text-red-500 mt-1">{video.title}</p>
               </div>
             )
@@ -48,33 +56,38 @@ export default function VideoGalleryBlock(props: Props) {
           return (
             <div
               key={index}
-              className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:border-gray-300"
+              className="overflow-hidden rounded-lg bg-white shadow-md hover:shadow-xl transition-all duration-300"
             >
-              {/* Video Container with 16:9 Aspect Ratio */}
-              <div
-                className="relative w-full overflow-hidden bg-gray-100"
-                style={{ paddingBottom: '56.25%' }}
-              >
-                <iframe
-                  src={`https://www.youtube.com/embed/${videoId}`}
-                  title={video.title}
-                  className="absolute left-0 top-0 h-full w-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  loading="lazy"
-                />
+              {/* Video Container with 16:9 Aspect Ratio and Border */}
+              <div className="p-2">
+                <div
+                  className="relative w-full overflow-hidden bg-gray-100 rounded-lg border-2 border-gray-100"
+                  style={{ paddingBottom: '56.25%' }}
+                >
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title={video.title}
+                    className="absolute left-0 top-0 h-full w-full border-0 rounded-lg"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
               </div>
 
-              {/* Video Title */}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors duration-200">
-                  {video.title}
-                </h3>
+              {/* Video Title with icon */}
+              <div className="px-4 pb-4 pt-2">
+                <div className="flex items-start gap-2">
+                  <i className="fas fa-video text-saffron mt-1 flex-shrink-0"></i>
+                  <h3 className="text-base font-semibold text-gray-900 line-clamp-2">
+                    {video.title}
+                  </h3>
+                </div>
               </div>
             </div>
           )
         })}
       </div>
-    </section>
+    </motion.section>
   )
 }
