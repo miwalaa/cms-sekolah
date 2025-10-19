@@ -13,15 +13,52 @@ type Args = {
   searchParams: Promise<{
     q: string
     page?: string
+    category?: string
   }>
 }
 
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
-  const { q: query, page: pageParam } = await searchParamsPromise
+  const { q: query, page: pageParam, category: categorySlug } = await searchParamsPromise
   const currentPage = Number(pageParam) || 1
   const postsPerPage = 6
 
   const payload = await getPayload({ config: configPromise })
+
+  // Build the where clause for filtering
+  const whereConditions: any = {}
+  
+  // Add text search conditions
+  if (query) {
+    whereConditions.or = [
+      {
+        title: {
+          like: query,
+        },
+      },
+      {
+        'meta.description': {
+          like: query,
+        },
+      },
+      {
+        'meta.title': {
+          like: query,
+        },
+      },
+      {
+        slug: {
+          like: query,
+        },
+      },
+    ]
+  }
+  
+  // Add category filter
+  if (categorySlug) {
+    whereConditions['categories.slug'] = {
+      equals: categorySlug,
+    }
+  }
 
   // Fetch search results with full depth for proper rendering
   const posts = await payload.find({
@@ -29,34 +66,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     depth: 2,
     limit: postsPerPage,
     page: currentPage,
-    ...(query
-      ? {
-          where: {
-            or: [
-              {
-                title: {
-                  like: query,
-                },
-              },
-              {
-                'meta.description': {
-                  like: query,
-                },
-              },
-              {
-                'meta.title': {
-                  like: query,
-                },
-              },
-              {
-                slug: {
-                  like: query,
-                },
-              },
-            ],
-          },
-        }
-      : {}),
+    ...(Object.keys(whereConditions).length > 0 ? { where: whereConditions } : {}),
   })
 
   // Fetch categories for sidebar
@@ -66,6 +76,11 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
     limit: 100,
     overrideAccess: false,
   })
+
+  // Get the selected category name if categorySlug is provided
+  const selectedCategory = categorySlug
+    ? categories.docs.find((cat) => cat.slug === categorySlug)
+    : null
 
   // Fetch recent posts for sidebar
   const recentPosts = await payload.find({
@@ -120,6 +135,18 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
                   Showing results for: <span className="font-semibold text-white">&ldquo;{query}&rdquo;</span>
                 </p>
               )}
+              {!query && selectedCategory && (
+                <p className="text-lg text-gray-200">
+                  Showing posts in category:{' '}
+                  <span className="font-semibold text-white">{selectedCategory.title}</span>
+                </p>
+              )}
+              {query && selectedCategory && (
+                <p className="text-base text-gray-300 mt-2">
+                  Filtered by category:{' '}
+                  <span className="font-semibold text-white">{selectedCategory.title}</span>
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -141,9 +168,13 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               ) : (
                 <div className="text-center py-12">
                   <div className="text-gray-500 text-lg">
-                    {query
-                      ? `No results found for "${query}". Try different keywords.`
-                      : 'Enter a search query to find posts.'}
+                    {query && selectedCategory
+                      ? `No results found for "${query}" in category "${selectedCategory.title}".`
+                      : query
+                        ? `No results found for "${query}". Try different keywords.`
+                        : selectedCategory
+                          ? `No posts found in category "${selectedCategory.title}".`
+                          : 'Enter a search query or select a category to find posts.'}
                   </div>
                 </div>
               )}

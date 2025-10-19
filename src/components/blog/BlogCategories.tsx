@@ -26,7 +26,8 @@ export const BlogCategories: React.FC<BlogCategoriesProps> = ({
       <ul className="space-y-2">
         {categories.map((category, index) => {
           if (typeof category === 'object' && category?.title) {
-            const href = `/categories/${category.slug || category.title.toLowerCase().replace(/\s+/g, '-')}`
+            const categorySlug = category.slug || category.title.toLowerCase().replace(/\s+/g, '-')
+            const href = `/search?category=${encodeURIComponent(categorySlug)}`
 
             return (
               <li key={index}>

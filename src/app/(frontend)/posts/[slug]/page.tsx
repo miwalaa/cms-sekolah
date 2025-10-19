@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 
-import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -14,6 +13,8 @@ import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { Sidebar, RelatedPostCard } from '@/components/blog'
+import { Media } from '@/components/Media'
 
 export async function generateStaticParams() {
   try {
@@ -54,8 +55,27 @@ export default async function Post({ params: paramsPromise }: Args) {
 
   if (!post) return <PayloadRedirects url={url} />
 
+  const payload = await getPayload({ config: configPromise })
+
+  // Fetch categories for sidebar
+  const categories = await payload.find({
+    collection: 'categories',
+    depth: 1,
+    limit: 100,
+    overrideAccess: false,
+  })
+
+  // Fetch recent posts for sidebar
+  const recentPosts = await payload.find({
+    collection: 'posts',
+    depth: 2,
+    limit: 5,
+    overrideAccess: false,
+    sort: '-publishedAt',
+  })
+
   return (
-    <article className="pt-16 pb-16">
+    <article className="pb-16">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}
@@ -65,15 +85,62 @@ export default async function Post({ params: paramsPromise }: Args) {
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
-          <RichText className="max-w-[48rem] mx-auto" data={post.content} enableGutter={false} />
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
-            <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((post) => typeof post === 'object')}
-            />
-          )}
+      {/* Two-Column Layout: Content + Sidebar */}
+      <div className="container max-w-7xl mx-auto mt-12 px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content Area (2/3 width on large screens) */}
+          <div className="lg:col-span-2">
+            {/* Featured/Meta Image */}
+            {post.heroImage && typeof post.heroImage !== 'string' && (
+              <div className="w-full aspect-video rounded-lg overflow-hidden bg-gray-200 shadow-sm mb-8">
+                <Media
+                  resource={post.heroImage}
+                  className="w-full h-full"
+                  imgClassName="object-cover w-full h-full"
+                />
+              </div>
+            )}
+
+            {/* Post Content - Enhanced with better styling */}
+            <div className="bg-white rounded-lg mb-8">
+              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-800 hover:prose-a:text-blue-900 prose-strong:text-gray-900 prose-img:rounded-lg">
+                <RichText data={post.content} enableGutter={false} />
+              </div>
+            </div>
+
+            {/* Related Posts */}
+            {post.relatedPosts && post.relatedPosts.length > 0 && (
+              <div className="mt-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-1 w-12 bg-saffron rounded-full"></div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Related Blogs</h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {post.relatedPosts.map((relatedPost, index) => {
+                    if (typeof relatedPost === 'object' && relatedPost !== null) {
+                      return (
+                        <RelatedPostCard key={relatedPost.id || index} post={relatedPost as Post} />
+                      )
+                    }
+                    return null
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar Area (1/3 width on large screens) */}
+          <div className="lg:col-span-1">
+            <div className="lg:sticky lg:top-24">
+              <Sidebar
+                categories={categories.docs || []}
+                recentPosts={recentPosts.docs || []}
+                showSearch={true}
+                showCategories={true}
+                showRecentPosts={true}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </article>

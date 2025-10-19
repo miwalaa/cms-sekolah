@@ -1,9 +1,6 @@
-// src/Header/hooks/revalidateHeader.ts
+// src/Header/hooks/revalidateHeader.ts (WITH DEBUG LOGGING)
 import type { GlobalAfterChangeHook } from 'payload'
 
-/**
- * Revalidate all pages when header changes
- */
 export const revalidateHeaderAfterChange: GlobalAfterChangeHook = async ({ doc, req }) => {
   const revalidateUrl = process.env.NEXT_PUBLIC_SITE_URL
     ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/revalidate`
@@ -14,7 +11,7 @@ export const revalidateHeaderAfterChange: GlobalAfterChangeHook = async ({ doc, 
   }
 
   try {
-    await fetch(revalidateUrl, {
+    const response = await fetch(revalidateUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,8 +24,16 @@ export const revalidateHeaderAfterChange: GlobalAfterChangeHook = async ({ doc, 
       }),
     })
 
-    req.payload.logger.info('✅ Header revalidated')
+    if (!response.ok) {
+      const errorText = await response.text()
+    } else {
+      const result = await response.json()
+      console.log('✅ Header revalidated successfully!')
+      console.log('📋 Revalidated paths:', result.paths)
+      req.payload.logger.info('✅ Header revalidated', { paths: result.paths })
+    }
   } catch (error) {
+    console.error('❌ Error revalidating header:', error)
     req.payload.logger.error('❌ Error revalidating header', error)
   }
 

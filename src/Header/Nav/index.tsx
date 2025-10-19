@@ -109,7 +109,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                     closeMobileMenu()
                     openSearch()
                   }}
-                  className="w-full flex items-center gap-3 px-4 py-3 mb-4 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-3 mb-4 bg-blue-50 hover:bg-blue-100 text-blue-800 rounded-lg transition-colors"
                 >
                   <SearchIcon className="w-5 h-5" />
                   <span className="font-medium">Search</span>
@@ -124,7 +124,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       </div>
 
       {/* Search Overlay */}
-      <SearchOverlay isOpen={isSearchOpen} onClose={closeSearch} navItems={navItems as any[]} />
+      <SearchOverlay isOpen={isSearchOpen} onClose={closeSearch} />
     </>
   )
 }

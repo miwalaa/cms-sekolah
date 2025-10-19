@@ -58,21 +58,31 @@ export async function POST(request: NextRequest) {
         break
 
       case 'header':
-        // Header changes affect all pages
+        // Header changes affect all pages - revalidate main routes
         pathsToRevalidate.push('/')
         pathsToRevalidate.push('/posts')
         pathsToRevalidate.push('/search')
         // Revalidate by tag for all pages that use header
-        revalidateTag('header')
+        try {
+          revalidateTag('header')
+          console.log('✅ Revalidated header tag')
+        } catch (err) {
+          console.error('❌ Error revalidating header tag:', err)
+        }
         break
 
       case 'footer':
-        // Footer changes affect all pages
+        // Footer changes affect all pages - revalidate main routes
         pathsToRevalidate.push('/')
         pathsToRevalidate.push('/posts')
         pathsToRevalidate.push('/search')
         // Revalidate by tag for all pages that use footer
-        revalidateTag('footer')
+        try {
+          revalidateTag('footer')
+          console.log('✅ Revalidated footer tag')
+        } catch (err) {
+          console.error('❌ Error revalidating footer tag:', err)
+        }
         break
 
       default:
