@@ -498,6 +498,7 @@ export interface TentangBlock {
                         relationTo: 'posts';
                         value: number | Post;
                       } | null);
+                  staticPath?: ('' | '/posts') | null;
                   url?: string | null;
                 };
                 image: number | Media;
@@ -1071,6 +1072,7 @@ export interface TentangBlockSelect<T extends boolean = true> {
                           type?: T;
                           newTab?: T;
                           reference?: T;
+                          staticPath?: T;
                           url?: T;
                         };
                     image?: T;
@@ -1317,6 +1319,10 @@ export interface Header {
                 relationTo: 'posts';
                 value: number | Post;
               } | null);
+          /**
+           * Link ke halaman statis internal (tanpa memilih dokumen)
+           */
+          staticPath?: '/posts' | null;
           url?: string | null;
           label: string;
         };
@@ -1337,6 +1343,7 @@ export interface Header {
                       relationTo: 'posts';
                       value: number | Post;
                     } | null);
+                staticPath?: '/posts' | null;
                 url?: string | null;
                 label: string;
               };
@@ -1369,6 +1376,7 @@ export interface Footer {
                 relationTo: 'posts';
                 value: number | Post;
               } | null);
+          staticPath?: ('' | '/posts') | null;
           url?: string | null;
           label: string;
         };
@@ -1397,6 +1405,7 @@ export interface HeaderSelect<T extends boolean = true> {
               type?: T;
               newTab?: T;
               reference?: T;
+              staticPath?: T;
               url?: T;
               label?: T;
             };
@@ -1409,6 +1418,7 @@ export interface HeaderSelect<T extends boolean = true> {
                     type?: T;
                     newTab?: T;
                     reference?: T;
+                    staticPath?: T;
                     url?: T;
                     label?: T;
                   };
@@ -1434,6 +1444,7 @@ export interface FooterSelect<T extends boolean = true> {
               type?: T;
               newTab?: T;
               reference?: T;
+              staticPath?: T;
               url?: T;
               label?: T;
             };

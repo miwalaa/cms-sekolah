@@ -32,17 +32,28 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, parentPath = '', lev
 
   return (
     <div
-      className={`absolute left-0 mt-9 w-64 bg-white rounded-bl-lg rounded-br-lg shadow-lg border border-gray-200 z-50 ${level > 0 ? 'top-0 left-full ml-1' : ''}`}
+      className={`absolute left-0 mt-9 w-64 bg-white rounded-bl-lg rounded-br-lg shadow-lg border border-gray-200 z-50 ${
+        level > 0 ? 'top-0 left-full ml-1' : ''
+      }`}
       onMouseLeave={handleMouseLeave}
     >
       {items.map((item, index) => {
+        // ✅ Tambahkan dukungan untuk staticPath
         const href =
-          item.link?.type === 'reference' && item.link.reference?.value
-            ? `${item.link.reference.relationTo !== 'pages' ? `/${item.link.reference.relationTo}` : ''}/${typeof item.link.reference.value === 'object' ? item.link.reference.value.slug : item.link.reference.value}`
-            : item.link?.url || '#'
+          item.link?.staticPath ||
+          (item.link?.type === 'reference' && item.link.reference?.value
+            ? `${
+                item.link.reference.relationTo !== 'pages'
+                  ? `/${item.link.reference.relationTo}`
+                  : ''
+              }/${
+                typeof item.link.reference.value === 'object'
+                  ? item.link.reference.value.slug
+                  : item.link.reference.value
+              }`
+            : item.link?.url || '#')
 
         const fullPath = parentPath ? `${parentPath}/${href.replace(/^\//, '')}` : href
-
         const hasChildren = item.children && item.children.length > 0
 
         return (
@@ -54,7 +65,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, parentPath = '', lev
           >
             <Link
               href={href}
-              className="flex items-center justify-between  w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:text-white hover:bg-saffron rounded-md transition-colors duration-200"
+              className="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:text-white hover:bg-saffron rounded-md transition-colors duration-200"
               target={item.link?.newTab ? '_blank' : undefined}
               rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
             >

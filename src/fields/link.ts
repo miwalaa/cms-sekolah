@@ -1,5 +1,4 @@
 import type { Field, GroupField } from 'payload'
-
 import deepMerge from '@/utilities/deepMerge'
 
 export type LinkAppearances = 'default' | 'outline'
@@ -18,7 +17,6 @@ export const appearanceOptions: Record<LinkAppearances, { label: string; value: 
 type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
   disableLabel?: boolean
-  // Allow callers to provide a fields transformer function for overrides
   overrides?: Omit<Partial<GroupField>, 'fields'> & {
     fields?: Field[] | ((defaultFields: Field[]) => Field[])
   }
@@ -28,9 +26,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
   const linkResult: GroupField = {
     name: 'link',
     type: 'group',
-    admin: {
-      hideGutter: true,
-    },
+    admin: { hideGutter: true },
     fields: [
       {
         type: 'row',
@@ -44,23 +40,15 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
             },
             defaultValue: 'reference',
             options: [
-              {
-                label: 'Internal link',
-                value: 'reference',
-              },
-              {
-                label: 'Custom URL',
-                value: 'custom',
-              },
+              { label: 'Internal link', value: 'reference' },
+              { label: 'Custom URL', value: 'custom' },
             ],
           },
           {
             name: 'newTab',
             type: 'checkbox',
             admin: {
-              style: {
-                alignSelf: 'flex-end',
-              },
+              style: { alignSelf: 'flex-end' },
               width: '50%',
             },
             label: 'Open in new tab',
@@ -75,11 +63,25 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       name: 'reference',
       type: 'relationship',
       admin: {
-        condition: (_, siblingData) => siblingData?.type === 'reference',
+        condition: (_, siblingData) =>
+          siblingData?.type === 'reference' && !siblingData?.staticPath,
       },
       label: 'Document to link to',
       relationTo: ['pages', 'posts'],
-      required: true,
+    },
+    {
+      name: 'staticPath',
+      type: 'select',
+      label: 'Static Internal Link',
+      admin: {
+        condition: (_, siblingData) => siblingData?.type === 'reference',
+        width: '50%',
+      },
+      options: [
+        { label: 'None', value: '' },
+        { label: 'Posts Page', value: '/posts' },
+      ],
+      defaultValue: '',
     },
     {
       name: 'url',
@@ -88,19 +90,10 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         condition: (_, siblingData) => siblingData?.type === 'custom',
       },
       label: 'Custom URL',
-      required: true,
     },
   ]
 
   if (!disableLabel) {
-    linkTypes.map((linkType) => ({
-      ...linkType,
-      admin: {
-        ...linkType.admin,
-        width: '50%',
-      },
-    }))
-
     linkResult.fields.push({
       type: 'row',
       fields: [
@@ -108,9 +101,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         {
           name: 'label',
           type: 'text',
-          admin: {
-            width: '50%',
-          },
+          admin: { width: '50%' },
           label: 'Label',
           required: true,
         },
@@ -122,11 +113,9 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 
   if (appearances !== false) {
     let appearanceOptionsToUse = [appearanceOptions.default, appearanceOptions.outline]
-
     if (appearances) {
-      appearanceOptionsToUse = appearances.map((appearance) => appearanceOptions[appearance])
+      appearanceOptionsToUse = appearances.map((a) => appearanceOptions[a])
     }
-
     linkResult.fields.push({
       name: 'appearance',
       type: 'select',
@@ -138,7 +127,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     })
   }
 
-  // Resolve functional overrides for fields if provided
+  // Apply overrides
   let overridesToApply = overrides
   if (typeof overrides.fields === 'function') {
     overridesToApply = {

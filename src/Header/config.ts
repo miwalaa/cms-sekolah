@@ -1,5 +1,4 @@
 import type { GlobalConfig } from 'payload'
-
 import { revalidateHeaderAfterChange } from './hooks/revalidateHeader'
 
 export const Header: GlobalConfig = {
@@ -28,23 +27,15 @@ export const Header: GlobalConfig = {
                   },
                   defaultValue: 'reference',
                   options: [
-                    {
-                      label: 'Internal link',
-                      value: 'reference',
-                    },
-                    {
-                      label: 'Custom URL',
-                      value: 'custom',
-                    },
+                    { label: 'Internal link', value: 'reference' },
+                    { label: 'Custom URL', value: 'custom' },
                   ],
                 },
                 {
                   name: 'newTab',
                   type: 'checkbox',
                   admin: {
-                    style: {
-                      alignSelf: 'flex-end',
-                    },
+                    style: { alignSelf: 'flex-end' },
                     width: '50%',
                   },
                   label: 'Open in new tab',
@@ -61,6 +52,26 @@ export const Header: GlobalConfig = {
               relationTo: ['pages', 'posts'],
               required: false,
             },
+
+            // 👇 Tambahan static option untuk Posts Index Page
+            {
+              name: 'staticPath',
+              type: 'select',
+              label: 'Static Internal Link',
+              admin: {
+                condition: (_, siblingData) =>
+                  siblingData?.type === 'reference' && !siblingData?.reference,
+                description: 'Link ke halaman statis internal (tanpa memilih dokumen)',
+              },
+              options: [
+                {
+                  label: 'Posts Page',
+                  value: '/posts',
+                },
+              ],
+              required: false,
+            },
+
             {
               name: 'url',
               type: 'text',
@@ -73,14 +84,14 @@ export const Header: GlobalConfig = {
             {
               name: 'label',
               type: 'text',
-              admin: {
-                width: '50%',
-              },
+              admin: { width: '50%' },
               label: 'Label',
               required: true,
             },
           ],
         },
+
+        // Dropdown children
         {
           name: 'children',
           type: 'array',
@@ -101,23 +112,15 @@ export const Header: GlobalConfig = {
                       },
                       defaultValue: 'reference',
                       options: [
-                        {
-                          label: 'Internal link',
-                          value: 'reference',
-                        },
-                        {
-                          label: 'Custom URL',
-                          value: 'custom',
-                        },
+                        { label: 'Internal link', value: 'reference' },
+                        { label: 'Custom URL', value: 'custom' },
                       ],
                     },
                     {
                       name: 'newTab',
                       type: 'checkbox',
                       admin: {
-                        style: {
-                          alignSelf: 'flex-end',
-                        },
+                        style: { alignSelf: 'flex-end' },
                         width: '50%',
                       },
                       label: 'Open in new tab',
@@ -132,7 +135,25 @@ export const Header: GlobalConfig = {
                   },
                   label: 'Document to link to',
                   relationTo: ['pages', 'posts'],
-                  required: true,
+                  required: false,
+                },
+
+                // 👇 Tambahan static option di dropdown juga
+                {
+                  name: 'staticPath',
+                  type: 'select',
+                  label: 'Static Internal Link',
+                  admin: {
+                    condition: (_, siblingData) =>
+                      siblingData?.type === 'reference' && !siblingData?.reference,
+                  },
+                  options: [
+                    {
+                      label: 'Posts Index Page (/posts)',
+                      value: '/posts',
+                    },
+                  ],
+                  required: false,
                 },
                 {
                   name: 'url',
@@ -146,9 +167,7 @@ export const Header: GlobalConfig = {
                 {
                   name: 'label',
                   type: 'text',
-                  admin: {
-                    width: '50%',
-                  },
+                  admin: { width: '50%' },
                   label: 'Label',
                   required: true,
                 },

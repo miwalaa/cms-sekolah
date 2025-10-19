@@ -30,17 +30,26 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
         const isOpen = openItems[itemId]
         const submenuId = `${itemId}-submenu`
 
+        // 🔧 Tambahan dukungan staticPath
         const href =
-          item.link?.type === 'reference' && item.link.reference?.value
-            ? `${item.link.reference.relationTo !== 'pages' ? `/${item.link.reference.relationTo}` : ''}/${typeof item.link.reference.value === 'object' ? item.link.reference.value.slug : item.link.reference.value}`
-            : item.link?.url || '#'
+          item.link?.staticPath ||
+          (item.link?.type === 'reference' && item.link.reference?.value
+            ? `${
+                item.link.reference.relationTo !== 'pages'
+                  ? `/${item.link.reference.relationTo}`
+                  : ''
+              }/${
+                typeof item.link.reference.value === 'object'
+                  ? item.link.reference.value.slug
+                  : item.link.reference.value
+              }`
+            : item.link?.url || '#')
 
         const fullPath = parentPath ? `${parentPath}/${href.replace(/^\//, '')}` : href
 
         return (
           <div key={itemId} className="mb-2">
             {hasChildren ? (
-              // Item with children - render as div with toggle button
               <div
                 className="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
                 onClick={() => toggleItem(itemId)}
@@ -55,9 +64,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
                 aria-controls={submenuId}
                 tabIndex={0}
               >
-                <span className="flex-1">
-                  {item.link?.label || 'Untitled'}
-                </span>
+                <span className="flex-1">{item.link?.label || 'Untitled'}</span>
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
@@ -72,7 +79,6 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
                 </button>
               </div>
             ) : (
-              // Item without children - render as normal link
               <Link
                 href={href}
                 className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
@@ -87,7 +93,9 @@ const MobileNav: React.FC<MobileNavProps> = ({ items, parentPath = '', level = 0
             {hasChildren && (
               <div
                 id={submenuId}
-                className={`overflow-hidden transition-all duration-200 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                  isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
               >
                 <MobileNav
                   items={item.children || []}

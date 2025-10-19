@@ -8,6 +8,7 @@ export type NavItem = {
     } | null
     url?: string | null
     label: string
+    staticPath?: string | null
   }
   children?: NavItem[]
   id?: string | null

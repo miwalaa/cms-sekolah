@@ -30,10 +30,25 @@ const NavItem: React.FC<Props> = ({ item }) => {
     }, 250) // delay before closing
   }
 
-  const href =
-    item.link?.type === 'reference' && item.link.reference?.value
-      ? `${item.link.reference.relationTo !== 'pages' ? `/${item.link.reference.relationTo}` : ''}/${typeof item.link.reference.value === 'object' ? item.link.reference.value.slug : item.link.reference.value}`
-      : item.link?.url || '#'
+  // 🔗 Generate href dengan dukungan staticPath
+  let href = '#'
+
+  if (item.link?.type === 'reference' && item.link.reference?.value) {
+    // Jika link ke dokumen Pages atau Posts
+    href = `${
+      item.link.reference.relationTo !== 'pages' ? `/${item.link.reference.relationTo}` : ''
+    }/${
+      typeof item.link.reference.value === 'object'
+        ? item.link.reference.value.slug
+        : item.link.reference.value
+    }`
+  } else if (item.link?.type === 'reference' && item.link?.staticPath) {
+    // 🔥 Kalau pilih static internal link seperti /posts
+    href = item.link.staticPath
+  } else if (item.link?.type === 'custom' && item.link?.url) {
+    // Kalau custom URL
+    href = item.link.url
+  }
 
   const hasChildren = item.children && item.children.length > 0
 
