@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import emailjs from '@emailjs/browser'
 import { ContactForm } from './components/ContactForm'
 import { ContactInfo } from './components/ContactInfo'
 import type { SocialMedia } from './components/ContactInfo'
@@ -50,49 +51,36 @@ const ContactBlock: React.FC<ContactBlockProps> = ({
   } | null>(null)
 
   const handleFormSubmit = async (data: { name: string; email: string; message: string }) => {
-    const emailConfig = {
-      emailJsServiceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-      emailJsTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
-      emailJsPublicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '',
-      recipientEmail: process.env.NEXT_PUBLIC_RECIPIENT_EMAIL || '',
-    }
-
-    if (
-      !emailConfig.emailJsServiceId ||
-      !emailConfig.emailJsTemplateId ||
-      !emailConfig.emailJsPublicKey ||
-      !emailConfig.recipientEmail
-    ) {
-      setSubmitStatus({
-        success: false,
-        message: 'Email configuration is missing',
-      })
-      return
-    }
-
     setIsSubmitting(true)
     setSubmitStatus(null)
 
     try {
+      // EmailJS service configuration
+      const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
+      const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || ''
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+
+      if (!serviceID || !templateID || !publicKey) {
+        throw new Error('Email configuration is missing')
+      }
+
+      // Prepare the template parameters
       const templateParams = {
         from_name: data.name,
         from_email: data.email,
         message: data.message,
+        to_email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || '',
+        timestamp: new Date().toLocaleString('id-ID', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+          timeZone: 'Asia/Jakarta',
+        }),
       }
 
-      await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          serviceId: emailConfig.emailJsServiceId,
-          templateId: emailConfig.emailJsTemplateId,
-          publicKey: emailConfig.emailJsPublicKey,
-          templateParams,
-        }),
-      })
+      // Send email using EmailJS
+      const response = await emailjs.send(serviceID, templateID, templateParams, publicKey)
 
+      console.log('Email sent successfully:', response)
       setSubmitStatus({
         success: true,
         message: 'Your message has been sent successfully!',
@@ -100,9 +88,10 @@ const ContactBlock: React.FC<ContactBlockProps> = ({
       setIsSubmitting(false)
     } catch (error) {
       console.error('Error sending email:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send message. Please try again later.'
       setSubmitStatus({
         success: false,
-        message: 'Failed to send message. Please try again later.',
+        message: errorMessage,
       })
       setIsSubmitting(false)
     }

@@ -10,7 +10,7 @@ export const AdminLogo: React.FC = () => {
         width={150}
         height={150}
         className="object-contain"
-        src="/logo-color.png"
+        src="/logo.png"
         priority
       />
     </div>

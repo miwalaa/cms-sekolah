@@ -2,6 +2,7 @@
 'use client'
 
 import React from 'react'
+import { motion } from 'framer-motion'
 import type { Page, Post, Media as MediaType } from '@/payload-types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { TentangBlock as TentangBlockType } from '@/payload-types'
@@ -28,10 +29,22 @@ const isMediaType = (item: unknown): item is MediaType => {
 
 const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <motion.div
+      className="container mx-auto px-4 py-12"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left column: 2/3 width */}
-        <div className="lg:col-span-2">
+        <motion.div
+          className="lg:col-span-2"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+        >
           <article className="bg-white rounded-2xl">
             {left?.image && (
               <div className="mb-6 overflow-hidden">
@@ -52,10 +65,16 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
               </div>
             )}
           </article>
-        </div>
+        </motion.div>
 
         {/* Right column: 1/3 width */}
-        <aside className="lg:col-span-1">
+        <motion.aside
+          className="lg:col-span-1"
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.4 }}
+        >
           <div className="space-y-8">
             {Array.isArray(right?.widgets) &&
               right.widgets
@@ -169,9 +188,9 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
                   )
                 })}
           </div>
-        </aside>
+        </motion.aside>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

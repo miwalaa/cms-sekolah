@@ -1,12 +1,11 @@
 import type { Metadata } from 'next/types'
 
-import { BlogPagination } from '@/components/Pagination/BlogPagination'
-import { PostCard, Sidebar } from '@/components/blog'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
 import { Media } from '@/components/Media'
+import { PostsContent } from './PostsContent'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 600
@@ -100,51 +99,12 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         </div>
 
         {/* Two-Column Blog Layout */}
-        <div className="container mt-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content Area - Posts List (2/3 width on large screens) */}
-            <div className="lg:col-span-2">
-              <div className="space-y-8">
-                {posts.docs?.map((post, index) => {
-                  if (typeof post === 'object' && post !== null) {
-                    return <PostCard key={index} post={post} />
-                  }
-                  return null
-                })}
-
-                {/* Show message when no posts */}
-                {!posts.docs ||
-                  (posts.docs.length === 0 && (
-                    <div className="text-center py-12">
-                      <div className="text-gray-500 text-lg">No posts found.</div>
-                    </div>
-                  ))}
-              </div>
-
-              {/* Pagination at the bottom of posts */}
-              <div className="mt-12">
-                {posts.totalPages && posts.totalPages > 1 && (
-                  <BlogPagination
-                    currentPage={currentPage}
-                    totalPages={posts.totalPages}
-                    basePath="/posts"
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Sidebar Area (1/3 width on large screens) */}
-            <div className="lg:col-span-1">
-              <Sidebar
-                categories={categories.docs || []}
-                recentPosts={recentPosts.docs || []}
-                showSearch={true}
-                showCategories={true}
-                showRecentPosts={true}
-              />
-            </div>
-          </div>
-        </div>
+        <PostsContent
+          posts={posts}
+          categories={categories.docs || []}
+          recentPosts={recentPosts.docs || []}
+          currentPage={currentPage}
+        />
       </div>
     )
   } catch (error) {

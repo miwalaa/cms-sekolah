@@ -67,7 +67,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             id="name"
             type="text"
             {...register('name', { required: 'Name is required' })}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-brand focus:border-transparent ${
               errors.name ? 'border-red-500' : 'border-gray-300'
             }`}
           />
@@ -88,7 +88,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 message: 'Invalid email address',
               },
             })}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-brand focus:border-transparent ${
               errors.email ? 'border-red-500' : 'border-gray-300'
             }`}
           />
@@ -103,7 +103,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             id="message"
             rows={4}
             {...register('message', { required: 'Message is required' })}
-            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-brand focus:border-transparent ${
               errors.message ? 'border-red-500' : 'border-gray-300'
             }`}
           />

@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
+import { motion } from 'framer-motion'
 
 import type { Post } from '@/payload-types'
 
@@ -32,7 +33,13 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   }
 
   return (
-    <article className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <motion.article
+      className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+    >
       {/* Featured Image */}
       <div className="relative w-full h-48 md:h-72 lg:h-72 xl:h-96 overflow-hidden bg-gray-100">
         {featuredImage && typeof featuredImage !== 'string' ? (
@@ -114,6 +121,6 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </svg>
         </Link>
       </div>
-    </article>
+    </motion.article>
   )
 }

@@ -17,6 +17,8 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { AdminLogo } from './components/AdminLogo/AdminLogo'
+import { en } from '@payloadcms/translations/languages/en'
+import { id } from '@payloadcms/translations/languages/id'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,6 +34,10 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     user: Users.slug,
+    theme: 'dark',
+    meta: {
+      titleSuffix: '- PKBM Pemuda Pelopor',
+    },
     livePreview: {
       breakpoints: [
         { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
@@ -39,6 +45,10 @@ export default buildConfig({
         { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
       ],
     },
+  },
+  i18n: {
+    supportedLanguages: { en, id },
+    fallbackLanguage: 'en',
   },
   editor: defaultLexical,
   db: postgresAdapter({
