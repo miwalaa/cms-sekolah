@@ -2,23 +2,24 @@ import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { AboutSection } from '../../blocks/AboutSection/config'
-import { Specialities } from '../../blocks/Specialities/config'
-import { NewsCarousel } from '../../blocks/NewsCarousel/config'
-import { ContactAndFAQ } from '../../blocks/ContactAndFAQ/config'
-import { ContactBlock } from '../../blocks/ContactBlock/config'
-import { GalleryBlock } from '../../blocks/GalleryBlock/config'
-import { ImageGalleryBlock } from '../../blocks/ImageGalleryBlock/config'
+import { AboutSection } from '../../blocks/TentangKami/config'
+import { Specialities } from '../../blocks/Keunggulan/config'
+import { NewsCarousel } from '../../blocks/BeritaTerbaru/config'
+import { ContactAndFAQ } from '../../blocks/KontakDanFAQ/config'
+import { ContactBlock } from '../../blocks/FormKontak/config'
+import { GalleryBlock } from '../../blocks/GaleriKonten/config'
+import { ImageGalleryBlock } from '../../blocks/GaleriFoto/config'
 import { MapBlock } from '../../blocks/MapBlock/config'
-import { InfoRegisterBlock } from '../../blocks/InfoRegisterBlock/config'
-import { TentangBlock } from '../../blocks/TentangBlock/config'
-import { VideoGallery } from '../../blocks/VideoGallery/config'
-import { VideoSectionBlock } from '../../blocks/VideoSectionBlock/config'
+import { InfoRegisterBlock } from '../../blocks/InformasiPendaftaran/config'
+import { TentangBlock } from '../../blocks/KontenDanSidebar/config'
+import { VideoGallery } from '../../blocks/GaleriVideo/config'
+import { VideoSectionBlock } from '../../blocks/BagianVideo/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidatePageAfterChange, revalidatePageAfterDelete } from './hooks/revalidatePage'
+import slug from '../../hooks/slug'
 
 import {
   MetaDescriptionField,
@@ -143,6 +144,7 @@ export const Pages: CollectionConfig<'pages'> = {
     ...slugField(),
   ],
   hooks: {
+    beforeValidate: [slug()],
     afterChange: [revalidatePageAfterChange],
     beforeChange: [populatePublishedAt],
     afterDelete: [revalidatePageAfterDelete],

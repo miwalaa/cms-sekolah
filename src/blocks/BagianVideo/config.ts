@@ -4,8 +4,8 @@ export const VideoSectionBlock: Block = {
   slug: 'videoSectionBlock',
   interfaceName: 'VideoSectionBlock',
   labels: {
-    singular: 'Video Section Block',
-    plural: 'Video Section Blocks',
+    singular: 'Bagian Video',
+    plural: 'Bagian Video',
   },
   fields: [
     {
@@ -24,9 +24,13 @@ export const VideoSectionBlock: Block = {
       label: 'YouTube Video URL',
       required: true,
       admin: {
-        description: 'Enter the full YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)',
+        description:
+          'Enter the full YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)',
         placeholder: 'https://www.youtube.com/watch?v=...',
       },
     },
   ],
+  admin: {
+    group: 'Halaman Beranda',
+  },
 }

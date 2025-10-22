@@ -3,6 +3,10 @@ import { Block } from 'payload'
 export const VideoGallery: Block = {
   slug: 'video-gallery',
   interfaceName: 'VideoGallery',
+  labels: {
+    singular: 'Galeri Video',
+    plural: 'Galeri Video',
+  },
   fields: [
     {
       name: 'videos',

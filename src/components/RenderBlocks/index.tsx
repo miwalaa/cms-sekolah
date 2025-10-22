@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { AboutSection } from '@/blocks/AboutSection/Component'
+import { AboutSection } from '@/blocks/TentangKami/Component'
 
 const blockComponents = {
   mediaBlock: MediaBlock,

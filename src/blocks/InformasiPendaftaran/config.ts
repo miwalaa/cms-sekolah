@@ -4,8 +4,8 @@ export const InfoRegisterBlock: Block = {
   slug: 'infoRegisterBlock',
   interfaceName: 'InfoRegisterBlock',
   labels: {
-    singular: 'Info & Register Block',
-    plural: 'Info & Register Blocks',
+    singular: 'Info Pendaftaran',
+    plural: 'Info Pendaftaran',
   },
   fields: [
     {
@@ -20,7 +20,6 @@ export const InfoRegisterBlock: Block = {
       type: 'text',
       label: 'Button Link',
       required: false,
-      defaultValue: 'https://pkbm.id/wa',
     },
     {
       name: 'buttonLabel',

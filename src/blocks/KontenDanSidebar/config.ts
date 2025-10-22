@@ -14,8 +14,8 @@ export const TentangBlock: Block = {
   slug: 'tentangBlock',
   interfaceName: 'TentangBlock',
   labels: {
-    singular: 'Tentang Block',
-    plural: 'Tentang Blocks',
+    singular: 'Konten & Sidebar',
+    plural: 'Konten & Sidebar',
   },
   fields: [
     // Left Column
@@ -106,4 +106,7 @@ export const TentangBlock: Block = {
       ],
     },
   ],
+  admin: {
+    group: 'Halaman Profil',
+  },
 }

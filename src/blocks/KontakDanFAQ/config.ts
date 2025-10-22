@@ -4,8 +4,8 @@ export const ContactAndFAQ: Block = {
   slug: 'contactAndFAQ',
   interfaceName: 'ContactAndFAQ',
   labels: {
-    singular: 'Contact & FAQ',
-    plural: 'Contact & FAQs',
+    singular: 'Kontak & FAQ',
+    plural: 'Kontak & FAQ',
   },
   fields: [
     // Form Section

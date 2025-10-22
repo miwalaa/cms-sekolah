@@ -63,7 +63,7 @@ export const AboutSection: Block = {
       type: 'text',
       label: 'Button Text',
       admin: {
-        condition: (data) => Boolean(data?.buttonLink),
+        description: 'Optional button text (both text and link required for button to show)',
       },
     },
     {
@@ -78,14 +78,13 @@ export const AboutSection: Block = {
         return true
       },
       admin: {
-        description: 'URL for the button link',
-        condition: (data) => Boolean(data?.buttonText),
+        description: 'Optional button link (both text and link required for button to show)',
       },
     },
   ],
   labels: {
-    singular: 'About Section',
-    plural: 'About Sections',
+    singular: 'Tentang Kami',
+    plural: 'Tentang Kami',
   },
   admin: {
     group: 'Halaman Beranda',

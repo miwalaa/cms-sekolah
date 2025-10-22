@@ -248,9 +248,12 @@ export interface AboutSection {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Optional button text (both text and link required for button to show)
+   */
   buttonText?: string | null;
   /**
-   * URL for the button link
+   * Optional button link (both text and link required for button to show)
    */
   buttonLink?: string | null;
   id?: string | null;

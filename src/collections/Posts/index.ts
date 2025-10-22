@@ -26,6 +26,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
+import slug from '@/hooks/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -220,6 +221,7 @@ export const Posts: CollectionConfig<'posts'> = {
     ...slugField(),
   ],
   hooks: {
+    beforeValidate: [slug()],
     afterChange: [revalidatePostAfterChange],
     afterRead: [populateAuthors],
     afterDelete: [revalidatePostAfterDelete],

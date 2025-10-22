@@ -4,8 +4,8 @@ export const MapBlock: Block = {
   slug: 'mapBlock',
   interfaceName: 'MapBlock',
   labels: {
-    singular: 'Map Block',
-    plural: 'Map Blocks',
+    singular: 'Peta Lokasi',
+    plural: 'Peta Lokasi',
   },
   fields: [
     {

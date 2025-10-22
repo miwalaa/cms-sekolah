@@ -4,8 +4,8 @@ export const ImageGalleryBlock: Block = {
   slug: 'imageGalleryBlock',
   interfaceName: 'ImageGalleryBlock',
   labels: {
-    singular: 'Image Gallery Block',
-    plural: 'Image Gallery Blocks',
+    singular: 'Galeri Foto',
+    plural: 'Galeri Foto',
   },
   fields: [
     {
@@ -31,4 +31,7 @@ export const ImageGalleryBlock: Block = {
       ],
     },
   ],
+  admin: {
+    group: 'Halaman Galeri Foto',
+  },
 }

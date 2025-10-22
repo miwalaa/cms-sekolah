@@ -4,8 +4,8 @@ export const NewsCarousel: Block = {
   slug: 'newsCarousel',
   interfaceName: 'NewsCarousel',
   labels: {
-    singular: 'News Carousel',
-    plural: 'News Carousels',
+    singular: 'Berita Terbaru',
+    plural: 'Berita Terbaru',
   },
   fields: [
     {
