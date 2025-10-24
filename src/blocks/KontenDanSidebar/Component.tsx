@@ -115,6 +115,7 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
                                 const linkType = hrefProps?.type || 'custom'
                                 const url = hrefProps?.url || '#'
                                 const newTab = hrefProps?.newTab || false
+                                const staticPath = hrefProps?.staticPath || null
 
                                 let reference:
                                   | { relationTo: 'pages' | 'posts'; value: string }
@@ -144,6 +145,7 @@ const TentangBlock: React.FC<TentangBlockType> = ({ left, right }) => {
                                     type={linkType}
                                     url={url}
                                     reference={reference}
+                                    staticPath={staticPath}
                                     newTab={newTab}
                                   >
                                     {/* Thumbnail */}

@@ -79,7 +79,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       },
       options: [
         { label: 'None', value: '' },
-        { label: 'Posts Page', value: '/posts' },
+        { label: 'Blog Page', value: '/posts' },
       ],
       defaultValue: '',
     },

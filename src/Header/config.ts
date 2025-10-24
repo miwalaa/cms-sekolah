@@ -149,7 +149,7 @@ export const Header: GlobalConfig = {
                   },
                   options: [
                     {
-                      label: 'Posts Index Page (/posts)',
+                      label: 'Blog Page',
                       value: '/posts',
                     },
                   ],
