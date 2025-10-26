@@ -13,7 +13,7 @@ const Logo: React.FC<LogoProps> = ({ loading, priority, className = '', size = '
   return (
     <div className="flex items-center">
       <Image
-        alt="PKBM Pemuda Pelopor Logo"
+        alt="CMS Sekolah Logo"
         className={cn(`object-contain h-auto ${className}`, {
           'w-16 h-16': size === 'sm',
           'w-24 h-24': size === 'md',

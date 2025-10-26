@@ -11,12 +11,18 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { Students } from './collections/Students'
+import { Teachers } from './collections/Teachers'
+import { Classes } from './collections/Classes'
+import { Schedules } from './collections/Schedules'
+import { Announcements } from './collections/Announcements'
+import { Gallery } from './collections/Gallery'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { SchoolSettings } from './globals/SchoolSettings'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { AdminLogo } from './components/AdminLogo/AdminLogo'
 import { en } from '@payloadcms/translations/languages/en'
 import { id } from '@payloadcms/translations/languages/id'
 
@@ -27,7 +33,13 @@ export default buildConfig({
   admin: {
     components: {
       graphics: {
-        Logo: AdminLogo as any,
+        Logo: '@/components/AdminLogo/AdminLogo#AdminLogo',
+      },
+      providers: ['@/components/AdminRoot/AdminRoot#AdminRoot'],
+      views: {
+        Dashboard: {
+          Component: '@/components/Dashboard/Dashboard#Dashboard',
+        },
       },
     },
     importMap: {
@@ -35,9 +47,9 @@ export default buildConfig({
     },
     user: Users.slug,
     theme: 'dark',
-    meta: {
-      titleSuffix: '- PKBM Pemuda Pelopor',
-    },
+    // meta: {
+    //   titleSuffix: '- CMS Sekolah',
+    // },
     livePreview: {
       breakpoints: [
         { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
@@ -56,9 +68,21 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Students,
+    Teachers,
+    Classes,
+    Schedules,
+    Announcements,
+    Gallery,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SchoolSettings],
   plugins: [
     ...plugins,
     cloudStoragePlugin({

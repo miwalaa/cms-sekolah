@@ -9,8 +9,8 @@ const defaultOpenGraph: Metadata['openGraph'] = {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: 'PKBM Pemuda Pelopor',
-  title: 'PKBM Pemuda Pelopor',
+  siteName: 'CMS Sekolah',
+  title: 'CMS Sekolah',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

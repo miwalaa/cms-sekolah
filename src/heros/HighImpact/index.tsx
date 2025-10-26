@@ -22,7 +22,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ highImpactMedia, title 
       >
         <div className="container">
           <div
-            className="mx-auto max-w-[45rem] text-center"
+            className="mx-auto max-w-[40rem] text-center"
             style={{ pointerEvents: 'auto' }} // Re-enable pointer events for interactive elements
           >
             {title && <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6">{title}</h1>}

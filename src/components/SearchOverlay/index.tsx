@@ -126,11 +126,11 @@ export const SearchOverlay = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
               <p className="text-white/60 text-sm mb-3">Quick links:</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {[
-                  'Pendidikan Kesetaraan',
-                  'Kegiatan PKBM',
-                  'Informasi Pendaftaran',
-                  'Inspirasi Belajar',
-                  'Berita & Pengumuman',
+                  'Fitur Unggulan',
+                  'Digitalisasi Sekolah',
+                  'Studi Kasus',
+                  'Panduan Pengguna',
+                  'Berita & Pembaruan',
                 ].map((label) => (
                   <button
                     key={label}

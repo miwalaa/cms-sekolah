@@ -12,7 +12,7 @@ export const Specialities: Block = {
       name: 'sectionTitle',
       type: 'text',
       required: false,
-      defaultValue: 'Kenapa PKBM Pemuda Pelopor?',
+      defaultValue: 'Kenapa CMS Sekolah?',
       admin: {
         description: 'Title for the specialities section',
       },

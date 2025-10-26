@@ -12,7 +12,7 @@ type Props = SpecialitiesProps & {
 
 export const Specialities: React.FC<Props> = (props) => {
   const {
-    sectionTitle = 'Kenapa PKBM Pemuda Pelopor?',
+    sectionTitle = 'Kenapa CMS Sekolah?',
     items,
     className,
     disableInnerContainer = false,

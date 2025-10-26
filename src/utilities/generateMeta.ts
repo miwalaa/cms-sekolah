@@ -26,9 +26,7 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | PKBM Pemuda Pelopor'
-    : 'PKBM Pemuda Pelopor'
+  const title = doc?.meta?.title ? doc?.meta?.title + ' | CMS Sekolah' : 'CMS Sekolah'
 
   return {
     description: doc?.meta?.description,

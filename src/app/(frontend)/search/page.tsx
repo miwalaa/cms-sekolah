@@ -26,7 +26,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
   // Build the where clause for filtering
   const whereConditions: any = {}
-  
+
   // Add text search conditions
   if (query) {
     whereConditions.or = [
@@ -52,7 +52,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       },
     ]
   }
-  
+
   // Add category filter
   if (categorySlug) {
     whereConditions['categories.slug'] = {
@@ -132,7 +132,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
               </div>
               {query && (
                 <p className="text-lg text-gray-200">
-                  Showing results for: <span className="font-semibold text-white">&ldquo;{query}&rdquo;</span>
+                  Showing results for:{' '}
+                  <span className="font-semibold text-white">&ldquo;{query}&rdquo;</span>
                 </p>
               )}
               {!query && selectedCategory && (
@@ -220,6 +221,6 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Search - PKBM Pemuda Pelopor`,
+    title: `Search - CMS Sekolah`,
   }
 }

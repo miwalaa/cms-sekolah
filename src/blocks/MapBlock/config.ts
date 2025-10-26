@@ -38,7 +38,7 @@ export const MapBlock: Block = {
       name: 'label',
       type: 'text',
       label: 'Marker Label',
-      defaultValue: 'PKBM Pemuda Pelopor - Sekolah Kesetaraan Sukabumi',
+      defaultValue: 'CMS Sekolah',
     },
   ],
   admin: {
