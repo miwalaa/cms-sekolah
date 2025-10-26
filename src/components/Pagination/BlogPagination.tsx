@@ -18,7 +18,6 @@ export const BlogPagination: React.FC<BlogPaginationProps> = ({
   basePath = '/posts',
   className,
 }) => {
-  const pathname = usePathname()
   const searchParams = useSearchParams()
 
   // Build URL with page parameter

@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { anyone } from '../access/anyone'
 import {
-  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,

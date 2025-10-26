@@ -26,6 +26,8 @@ export const revalidateHeaderAfterChange: GlobalAfterChangeHook = async ({ doc, 
 
     if (!response.ok) {
       const errorText = await response.text()
+      console.error('❌ Error revalidating header:', errorText)
+      req.payload.logger.error('❌ Error revalidating header', errorText)
     } else {
       const result = await response.json()
       console.log('✅ Header revalidated successfully!')

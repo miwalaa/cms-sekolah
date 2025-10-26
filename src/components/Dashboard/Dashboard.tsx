@@ -1,5 +1,6 @@
 'use client'
 
+import { Link } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 interface DashboardStats {
@@ -72,7 +73,7 @@ export const Dashboard: React.FC = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1 className="dashboard-title">School Management Dashboard</h1>
-        <p className="dashboard-subtitle">Welcome back! Here's an overview of your school.</p>
+        <p className="dashboard-subtitle">Welcome back! Here&apos;s an overview of your school.</p>
       </div>
 
       <div className="stats-grid">
@@ -180,7 +181,7 @@ export const Dashboard: React.FC = () => {
         <div className="dashboard-card">
           <h2 className="card-title">Quick Actions</h2>
           <div className="quick-actions">
-            <a href="/admin/collections/students/create" className="action-button">
+            <Link href="/admin/collections/students/create" className="action-button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -198,8 +199,8 @@ export const Dashboard: React.FC = () => {
                 <line x1="22" y1="11" x2="16" y2="11" />
               </svg>
               Add New Student
-            </a>
-            <a href="/admin/collections/teachers/create" className="action-button">
+            </Link>
+            <Link href="/admin/collections/teachers/create" className="action-button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -217,8 +218,8 @@ export const Dashboard: React.FC = () => {
                 <line x1="22" y1="11" x2="16" y2="11" />
               </svg>
               Add New Teacher
-            </a>
-            <a href="/admin/collections/announcements/create" className="action-button">
+            </Link>
+            <Link href="/admin/collections/announcements/create" className="action-button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -234,8 +235,8 @@ export const Dashboard: React.FC = () => {
                 <path d="M5 12h14" />
               </svg>
               Create Announcement
-            </a>
-            <a href="/admin/collections/schedules/create" className="action-button">
+            </Link>
+            <Link href="/admin/collections/schedules/create" className="action-button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -253,28 +254,28 @@ export const Dashboard: React.FC = () => {
                 <line x1="3" y1="10" x2="21" y2="10" />
               </svg>
               Add Schedule
-            </a>
+            </Link>
           </div>
         </div>
 
         <div className="dashboard-card">
           <h2 className="card-title">Important Links</h2>
           <div className="links-list">
-            <a href="/admin/collections/students" className="link-item">
+            <Link href="/admin/collections/students" className="link-item">
               View All Students
-            </a>
-            <a href="/admin/collections/teachers" className="link-item">
+            </Link>
+            <Link href="/admin/collections/teachers" className="link-item">
               View All Teachers
-            </a>
-            <a href="/admin/collections/classes" className="link-item">
+            </Link>
+            <Link href="/admin/collections/classes" className="link-item">
               Manage Classes
-            </a>
-            <a href="/admin/collections/schedules" className="link-item">
+            </Link>
+            <Link href="/admin/collections/schedules" className="link-item">
               View Schedule
-            </a>
-            <a href="/admin/globals/school-settings" className="link-item">
+            </Link>
+            <Link href="/admin/globals/school-settings" className="link-item">
               School Settings
-            </a>
+            </Link>
           </div>
         </div>
       </div>

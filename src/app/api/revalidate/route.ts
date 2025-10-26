@@ -8,10 +8,6 @@ type RevalidateRequestBody = {
   operation: 'update' | 'delete'
 }
 
-type RevalidateRedirectsBody = {
-  type?: 'redirects'
-}
-
 export async function POST(request: NextRequest) {
   // Verify the secret token
   const secret = request.headers.get('x-revalidate-secret')
