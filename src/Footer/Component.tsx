@@ -1,14 +1,14 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import React from 'react'
 
-import type { Post } from '@/payload-types'
+import type { Footer, Post } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { FooterClient } from './FooterClient'
 
 export async function Footer() {
-  const footerData = await getCachedGlobal('footer', 1)()
+  const footerData: Footer = (await getCachedGlobal('footer', 1)()) as Footer
 
   const navItems = footerData?.navItems || []
 
