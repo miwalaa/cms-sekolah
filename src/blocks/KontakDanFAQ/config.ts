@@ -77,7 +77,7 @@ export const ContactAndFAQ: Block = {
       name: 'faqTitle',
       type: 'text',
       label: 'FAQ Title',
-      defaultValue: 'Seputar Pendidikan Kesetaraan',
+      defaultValue: 'Seputar CMS Sekolah',
     },
     {
       name: 'faqs',

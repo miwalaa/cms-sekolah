@@ -19,14 +19,14 @@ export const MapBlock: Block = {
       type: 'number',
       label: 'Latitude',
       required: true,
-      defaultValue: -6.910885460422086,
+      defaultValue: -6.88837356492601,
     },
     {
       name: 'longitude',
       type: 'number',
       label: 'Longitude',
       required: true,
-      defaultValue: 106.93640189572253,
+      defaultValue: 106.9410537775636,
     },
     {
       name: 'zoom',
