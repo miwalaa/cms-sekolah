@@ -6,20 +6,8 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : undefined || process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
-// Extract Supabase hostname for image optimization
-const getSupabaseHostname = () => {
-  if (process.env.SUPABASE_URL) {
-    try {
-      const url = new URL(process.env.SUPABASE_URL)
-      return url.hostname
-    } catch {
-      return null
-    }
-  }
-  return null
-}
-
-const supabaseHostname = getSupabaseHostname()
+// Get Cloudinary cloud name for image optimization
+const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -38,13 +26,13 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
-      // Add Supabase storage for image optimization
-      ...(supabaseHostname
+      // Add Cloudinary for image optimization
+      ...(cloudinaryCloudName
         ? [
             {
-              hostname: supabaseHostname,
+              hostname: 'res.cloudinary.com',
               protocol: 'https',
-              pathname: '/storage/v1/object/public/**',
+              pathname: `/${cloudinaryCloudName}/**`,
             },
           ]
         : []),

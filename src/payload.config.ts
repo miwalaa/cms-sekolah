@@ -1,7 +1,7 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage'
-import { supabaseAdapter } from './utilities/supabaseStorageAdapter'
+import { cloudinaryAdapter } from './utilities/cloudinaryStorageAdapter'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -69,7 +69,7 @@ export default buildConfig({
     cloudStoragePlugin({
       collections: {
         media: {
-          adapter: supabaseAdapter,
+          adapter: cloudinaryAdapter,
           prefix: 'media',
         },
       },
