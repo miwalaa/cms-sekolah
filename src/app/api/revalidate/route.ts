@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         pathsToRevalidate.push('/search')
         // Revalidate by tag for all pages that use header
         try {
-          revalidateTag('header')
+          ;(revalidateTag as any)('header')
           console.log('✅ Revalidated header tag')
         } catch (err) {
           console.error('❌ Error revalidating header tag:', err)
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         pathsToRevalidate.push('/search')
         // Revalidate by tag for all pages that use footer
         try {
-          revalidateTag('footer')
+          ;(revalidateTag as any)('footer')
           console.log('✅ Revalidated footer tag')
         } catch (err) {
           console.error('❌ Error revalidating footer tag:', err)

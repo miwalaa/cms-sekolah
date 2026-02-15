@@ -33,7 +33,7 @@ export const revalidatePostAfterChange: CollectionAfterChangeHook = async ({
 
     req.payload.logger.info(`✅ Post revalidated: ${doc.slug || doc.id}`)
   } catch (error) {
-    req.payload.logger.error(`❌ Error revalidating post: ${doc.slug || doc.id}`, error)
+    req.payload.logger.error({ err: error }, `❌ Error revalidating post: ${doc.slug || doc.id}`)
   }
 
   return doc
@@ -68,8 +68,8 @@ export const revalidatePostAfterDelete: CollectionAfterDeleteHook = async ({ doc
     req.payload.logger.info(`✅ Post revalidated after deletion: ${doc.slug || doc.id}`)
   } catch (error) {
     req.payload.logger.error(
+      { err: error },
       `❌ Error revalidating post after deletion: ${doc.slug || doc.id}`,
-      error,
     )
   }
 

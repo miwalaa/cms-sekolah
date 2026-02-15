@@ -27,16 +27,16 @@ export const revalidateHeaderAfterChange: GlobalAfterChangeHook = async ({ doc, 
     if (!response.ok) {
       const errorText = await response.text()
       console.error('❌ Error revalidating header:', errorText)
-      req.payload.logger.error('❌ Error revalidating header', errorText)
+      req.payload.logger.error({ error: errorText }, '❌ Error revalidating header')
     } else {
       const result = await response.json()
       console.log('✅ Header revalidated successfully!')
       console.log('📋 Revalidated paths:', result.paths)
-      req.payload.logger.info('✅ Header revalidated', { paths: result.paths })
+      req.payload.logger.info({ paths: result.paths }, '✅ Header revalidated')
     }
   } catch (error) {
     console.error('❌ Error revalidating header:', error)
-    req.payload.logger.error('❌ Error revalidating header', error)
+    req.payload.logger.error({ err: error }, '❌ Error revalidating header')
   }
 
   return doc

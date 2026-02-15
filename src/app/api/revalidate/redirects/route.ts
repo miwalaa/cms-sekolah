@@ -12,10 +12,12 @@ export async function POST(request: NextRequest) {
 
   try {
     console.log('🔄 Revalidating redirects cache tag')
-    
+
     // Revalidate the redirects cache tag
-    revalidateTag('redirects')
-    
+    if (revalidateTag) {
+      ;(revalidateTag as any)('redirects')
+    }
+
     console.log('✅ Successfully revalidated redirects')
 
     return NextResponse.json({

@@ -26,13 +26,13 @@ export const revalidateRedirects: CollectionAfterChangeHook = async ({ doc, req:
 
     if (!response.ok) {
       const errorText = await response.text()
-      payload.logger.error(`❌ Redirects revalidation failed: ${errorText}`)
+      payload.logger.error({ error: errorText }, `❌ Redirects revalidation failed`)
     } else {
       const result = await response.json()
-      payload.logger.info(`✅ Redirects revalidation successful`, result)
+      payload.logger.info(result, `✅ Redirects revalidation successful`)
     }
   } catch (error) {
-    payload.logger.error(`❌ Error calling redirects revalidation webhook:`, error)
+    payload.logger.error({ err: error }, `❌ Error calling redirects revalidation webhook`)
   }
 
   return doc

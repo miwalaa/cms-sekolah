@@ -33,7 +33,7 @@ export const revalidatePageAfterChange: CollectionAfterChangeHook = async ({
 
     req.payload.logger.info(`✅ Page revalidated: ${doc.slug || doc.id}`)
   } catch (error) {
-    req.payload.logger.error(`❌ Error revalidating page: ${doc.slug || doc.id}`, error)
+    req.payload.logger.error({ err: error }, `❌ Error revalidating page: ${doc.slug || doc.id}`)
   }
 
   return doc
@@ -68,8 +68,8 @@ export const revalidatePageAfterDelete: CollectionAfterDeleteHook = async ({ doc
     req.payload.logger.info(`✅ Page revalidated after deletion: ${doc.slug || doc.id}`)
   } catch (error) {
     req.payload.logger.error(
+      { err: error },
       `❌ Error revalidating page after deletion: ${doc.slug || doc.id}`,
-      error,
     )
   }
 

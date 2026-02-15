@@ -49,15 +49,13 @@ async function sendRevalidationRequest({
 
     if (!response.ok) {
       const errorText = await response.text()
-      logger.error(`❌ Revalidation failed for ${collection}/${slug}: ${errorText}`)
+      logger.error({ error: errorText }, `❌ Revalidation failed for ${collection}/${slug}`)
     } else {
       const result = await response.json()
-      logger.info(`✅ Revalidation successful for ${collection}/${slug}`, {
-        paths: result.paths,
-      })
+      logger.info({ paths: result.paths }, `✅ Revalidation successful for ${collection}/${slug}`)
     }
   } catch (error) {
-    logger.error(`❌ Error calling revalidation webhook for ${collection}/${slug}:`, error)
+    logger.error({ err: error }, `❌ Error calling revalidation webhook for ${collection}/${slug}`)
   }
 }
 
