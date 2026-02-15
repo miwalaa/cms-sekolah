@@ -12,26 +12,27 @@ export const PostHero: React.FC<{
 
   // Use hero-3.png as default, fallback to post's heroImage if default not available
   const displayImage =
-    defaultHeroImage || (post.heroImage && typeof post.heroImage !== 'string' ? post.heroImage : null)
+    defaultHeroImage ||
+    (post.heroImage && typeof post.heroImage !== 'string' ? post.heroImage : null)
 
   return (
     <div className="relative w-full min-h-[80vh] md:min-h-[70vh] lg:min-h-[60vh] [@media(orientation:landscape)_and_(max-width:1023px)]:min-h-[100vh]">
       {/* Hero Image Background */}
-      <div className="absolute inset-0 z-0 w-full h-full">
-        <div className="relative w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <div className="absolute inset-0 z-0">
           {displayImage ? (
             <Media
               resource={displayImage}
-              className="absolute inset-0 w-full h-full"
-              imgClassName="object-cover w-full h-full select-none"
               fill
+              htmlElement={null}
+              imgClassName="object-cover w-full h-full select-none"
               priority
             />
           ) : (
             <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900" />
           )}
         </div>
-        <div className="absolute inset-0 bg-black/70 z-10" />
+        <div className="absolute inset-0 bg-black/70 z-[5] pointer-events-none" />
       </div>
 
       {/* Content */}

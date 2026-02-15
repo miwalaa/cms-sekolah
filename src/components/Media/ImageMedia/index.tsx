@@ -74,7 +74,11 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .join(', ')
 
   return (
-    <picture className={cn(pictureClassName, { 'relative w-full h-full block': imageFill })}>
+    <picture
+      className={cn(pictureClassName, {
+        'relative w-full h-full block overflow-hidden': imageFill,
+      })}
+    >
       <NextImage
         alt={alt}
         className={cn(imgClassName)}
@@ -83,7 +87,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         priority={priority}
         quality={85}
         loading={loading}
-        sizes={sizes}
+        sizes={sizes || '100vw'}
         src={src}
         unoptimized={isApiUrl}
         width={!imageFill ? width : undefined}

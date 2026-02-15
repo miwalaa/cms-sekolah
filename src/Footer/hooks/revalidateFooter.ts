@@ -32,11 +32,11 @@ export const revalidateFooterAfterChange: GlobalAfterChangeHook = async ({ doc, 
       const result = await response.json()
       console.log('✅ Footer revalidated successfully!')
       console.log('📋 Revalidated paths:', result.paths)
-      req.payload.logger.info('✅ Footer revalidated', { paths: result.paths })
+      req.payload.logger.info({ paths: result.paths }, '✅ Footer revalidated')
     }
   } catch (error) {
     console.error('❌ Error revalidating footer:', error)
-    req.payload.logger.error('❌ Error revalidating footer', error)
+    req.payload.logger.error({ err: error }, '❌ Error revalidating footer')
   }
 
   return doc
