@@ -9,12 +9,21 @@ import { getClientSideURL } from '@/utilities/getURL'
 export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | null): string => {
   if (!url) return ''
 
+  const baseUrl = getClientSideURL()
+
   // Check if URL already has http/https protocol
   if (url.startsWith('http://') || url.startsWith('https://')) {
+    // If running locally, strip localhost URL to allow Next.js image optimization
+    if (baseUrl.includes('localhost') && url.startsWith(baseUrl)) {
+      const relativeUrl = url.replace(baseUrl, '')
+      return relativeUrl
+    }
     return cacheTag ? `${url}?${cacheTag}` : url
   }
 
-  // Otherwise prepend client-side URL
-  const baseUrl = getClientSideURL()
+  if (baseUrl.includes('localhost')) {
+    return url || ''
+  }
+
   return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
 }

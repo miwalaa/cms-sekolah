@@ -1,6 +1,12 @@
+import path from 'path'
+import { createRequire } from 'module'
+
 import { withPayload } from '@payloadcms/next/withPayload'
 
 import redirects from './redirects.js'
+
+const require = createRequire(import.meta.url)
+const payloadScssDir = path.dirname(require.resolve('@payloadcms/ui/scss'))
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
@@ -11,9 +17,13 @@ const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  sassOptions: {
+    includePaths: [payloadScssDir],
+  },
   images: {
     // Enable modern image formats for better compression
     formats: ['image/avif', 'image/webp'],
+    qualities: [75, 85],
     // Reduce quality for better performance (default is 75)
     minimumCacheTTL: 60,
     // Add remote patterns for image optimization
@@ -53,6 +63,7 @@ const nextConfig = {
 
     return webpackConfig
   },
+
   reactStrictMode: true,
   redirects,
 }

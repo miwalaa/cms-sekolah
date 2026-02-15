@@ -71,10 +71,11 @@ export default function ImageSlider({ media }: { media: HeroMedia[] }) {
             }}
             className="absolute inset-0"
           >
-            <div className="w-full h-full pointer-events-none">
+            <div className="relative w-full h-full pointer-events-none">
               <Media
                 resource={media[current].image}
                 fill
+                htmlElement={null}
                 imgClassName="object-cover select-none"
                 priority={current === 0}
                 draggable={false}

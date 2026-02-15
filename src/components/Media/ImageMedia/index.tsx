@@ -32,14 +32,13 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let src: StaticImageData | string = srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
+    const { alt: altFromResource, height: fullHeight, url, width: fullWidth, updatedAt } = resource
 
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
 
-    const cacheTag = resource.updatedAt
-
+    const cacheTag = updatedAt // Use updatedAt from resource
     src = getMediaUrl(url, cacheTag)
   }
 
@@ -54,15 +53,17 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   // Ensure NextImage has valid sizing: if width/height are unknown, force fill
   const imageFill = typeof fill === 'boolean' ? fill : !width || !height
 
+  const isApiUrl = typeof src === 'string' && src.startsWith('/api/')
+
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value * 2}w`)
+        .map(([, value]) => `(max-width: ${value}px) ${value}px`)
         .join(', ')
 
   return (
-    <picture className={cn(pictureClassName)}>
+    <picture className={cn(pictureClassName, { 'relative h-full w-full': imageFill })}>
       <NextImage
         alt={alt || ''}
         className={cn(imgClassName)}
@@ -73,6 +74,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         loading={loading}
         sizes={sizes}
         src={src}
+        unoptimized={isApiUrl}
         width={!imageFill ? width : undefined}
       />
     </picture>
