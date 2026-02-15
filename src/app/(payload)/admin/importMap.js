@@ -36,6 +36,7 @@ import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/
 import { AdminLogo as AdminLogo_f2ba2073977147834d17165d929c8500 } from '@/components/AdminLogo/AdminLogo'
 import { AdminRoot as AdminRoot_6f55925ca69918b8e6f38eb6665f9122 } from '@/components/AdminRoot/AdminRoot'
 import { Dashboard as Dashboard_42921ae0431eb6010b1102cf230a27df } from '@/components/Dashboard/Dashboard'
+import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -75,5 +76,6 @@ export const importMap = {
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "@/components/AdminLogo/AdminLogo#AdminLogo": AdminLogo_f2ba2073977147834d17165d929c8500,
   "@/components/AdminRoot/AdminRoot#AdminRoot": AdminRoot_6f55925ca69918b8e6f38eb6665f9122,
-  "@/components/Dashboard/Dashboard#Dashboard": Dashboard_42921ae0431eb6010b1102cf230a27df
+  "@/components/Dashboard/Dashboard#Dashboard": Dashboard_42921ae0431eb6010b1102cf230a27df,
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

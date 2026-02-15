@@ -28,34 +28,45 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   let width: number | undefined
   let height: number | undefined
-  let alt = altFromProps
+  let alt = altFromProps || ''
   let src: StaticImageData | string = srcFromProps || ''
 
-  if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth, updatedAt } = resource
+  if (!src && resource) {
+    if (typeof resource === 'object') {
+      const {
+        alt: altFromResource,
+        height: fullHeight,
+        url,
+        width: fullWidth,
+        updatedAt,
+      } = resource
 
-    width = fullWidth!
-    height = fullHeight!
-    alt = altFromResource || ''
+      width = fullWidth ?? undefined
+      height = fullHeight ?? undefined
+      alt = altFromResource || alt || 'Image'
 
-    const cacheTag = updatedAt // Use updatedAt from resource
-    src = getMediaUrl(url, cacheTag)
+      const cacheTag = updatedAt
+      src = getMediaUrl(url, cacheTag)
+    } else if (typeof resource === 'number' || typeof resource === 'string') {
+      // If we only have an ID but no src, we can't render anything useful without a URL.
+      // However, Payload should ideally handle this population.
+      // We'll keep it as empty for now but avoid returning null too early if there's a chance.
+      src = getMediaUrl(null)
+    }
   }
 
-  // If still no src, render nothing
   if (!src) return null
 
-  // Ensure alt always has a sensible default
+  // Ensure alt is never empty
   if (!alt) alt = 'Image'
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
 
-  // Ensure NextImage has valid sizing: if width/height are unknown, force fill
-  const imageFill = typeof fill === 'boolean' ? fill : !width || !height
+  // If fill is explicitly set, use it; otherwise, use fill when dimensions are missing
+  const imageFill = fill ?? (!width || !height)
 
   const isApiUrl = typeof src === 'string' && src.startsWith('/api/')
 
-  // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
@@ -63,9 +74,9 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         .join(', ')
 
   return (
-    <picture className={cn(pictureClassName, { 'relative h-full w-full': imageFill })}>
+    <picture className={cn(pictureClassName, { 'relative w-full h-full block': imageFill })}>
       <NextImage
-        alt={alt || ''}
+        alt={alt}
         className={cn(imgClassName)}
         fill={imageFill}
         height={!imageFill ? height : undefined}
